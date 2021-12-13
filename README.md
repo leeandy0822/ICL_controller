@@ -1,6 +1,11 @@
 # ICL_controller
 
 ## Dynamics
-- $\dot{x}= a^2sin(x) + u$
+\begin{equation}
+\dot{x}= a^2sin(x) + u 
+\end{equation}
 ## Desire Trajectory
-- $x_d = cos(4t)$
+\begin{equation}
+x_d = cos(4t)
+\end{equation}
+
