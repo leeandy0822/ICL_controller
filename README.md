@@ -11,3 +11,7 @@ x_d = cos(4t)
 
 ## Simulation Result
 ![](https://i.imgur.com/HHniCWP.png)
+
+
+## Reference
+- https://arxiv.org/abs/1512.03464
