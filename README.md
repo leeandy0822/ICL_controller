@@ -2,7 +2,7 @@
 
 ## Dynamics
 ```math
-x_dot = a^2sin(x) + u
+x_dot = a^2*sin(x) + u
 ```
 ## Desire Trajectory
 ```math
