@@ -8,3 +8,6 @@ x_dot = a^2sin(x) + u
 ```math
 x_d = cos(4t)
 ```
+
+## Simulation Result
+![](https://i.imgur.com/HHniCWP.png)
