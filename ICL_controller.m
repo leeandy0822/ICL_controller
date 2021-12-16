@@ -106,7 +106,7 @@ for i=1:length(t)
     icl_term = 0;
 
     % when time > 5s (0.01*500), ICL starts to work
-    if i > 200
+    if i > 100
         % Assume N = 100
         for j = 1:100
             icl_term = icl_term + record_Y(i-j)*(record_x(i-j) - record_u(i-j) - record_Y(i-j)*theta_hat_1);
