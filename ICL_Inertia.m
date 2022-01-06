@@ -2,15 +2,15 @@ clear all, close all, clc;
 
 
 
-kr0 = 11;
-ko0 = 2;
+kr0 = 15;
+ko0 = 5;
 gamma_j = diag([35,6,85]);
-cr = 0.2;
-kcl_j = 80;
+cr = 0.5;
+kcl_j = 90;
 
 
 g = 9.8;
-e3 = [0 ; 0 ; -1];
+e3 = [0 ; 0 ; 1];
 
 t = (1:1:6000);
 dt = 0.01;
@@ -47,7 +47,9 @@ x0d_dot = [10*cos(i*dt) ; -10*sin(i*dt) ; 0];
 
 % Desire attitude Desire rotation
 R0d_before = R0d;
-R0d = [x0d_dot/norm(x0d_dot) (hat_map(e3)*x0d_dot)/(norm(hat_map(e3)*x0d_dot)) -e3];
+x0d_dot  = vec_enu_to_ned(x0d_dot);
+e3_ned = vec_enu_to_ned(e3);
+R0d = [x0d_dot/norm(x0d_dot) (hat_map(e3)*x0d_dot)/(norm(hat_map(e3)*x0d_dot)) e3_ned];
 
 omega0d = [ 0 ; 0 ; 0];
 
@@ -67,8 +69,8 @@ record_Yjcl(:,:,i) = Yj_cl;
 record_Md(:,i) = Md*dt;
 
 % Error
-er0 = 0.5*vee_map(R0d.'*R0 - R0.'*R0d);
-eo0 = omega0 - R0.'*R0d*omega0d;
+er0 = 0.5*vee_map(R0d'*R0 - R0'*R0d);
+eo0 = omega0 - R0'*R0d*omega0d;
 
 record_er(:,i) = er0;
 record_eo(:,i) = eo0;

@@ -67,9 +67,43 @@ for i=2:length(payload.t)
     Xd_enu = tra(1:9, i-1);
     b1d = tra(10:12, i);
     
+    % Regression Matrix
+    Ym = -x0d_double_dot + g*e3;
     
-end
+    Ym_cl = -x0_double_dot + g*e3;
+    
+    % ICL record
+    record_Ymcl(:,i) = Ym_cl*dt;
+    record_Fd(:,i) = Fd*dt;
+    
+    % Error
+    ex0 = x0 - x0d;
+    ev0 = x0_dot - x0d_dot;
+    record_ex(:,i) = ex0;
+    record_ev(:,i) = ev0;
+    
+    icl_term = 0;
+    % when time > 0.5s (0.01*50), ICL starts to work
+    if i > 50
+    % Assume N = 20
+        for j = 1:10
+            icl_term = icl_term + record_Ymcl(i-j)*(record_Fd(i-j) - record_Ymcl(i-j)*theta_m_hat);
+        end
+    end
+    
+    theta_m_hat_dot = gamma_m * Ym.' * (ev0 + cx*ex0) + kcl_m * gamma_m * icl_term;
+    theta_m_hat = theta_m_hat + theta_m_hat_dot*dt;
+    record_theta_m(i) = theta_m_hat;
+    
+    % Control Input
+    Fd = -kx0*ex0 - kv0*ev0 - Ym*theta_m_hat ;
+    %Fd = theta_m*(-kx0*ex0 - kv0*ev0 + x0_double_dot - g*e3);
+    
+    x0_double_dot = (Fd + theta_m*g*e3)/theta_m;
+    x0_dot = x0_dot + x0_double_dot * dt;
+    x0 = x0 + x0_dot*dt + 0.5*x0_double_dot*dt*dt ;
 
+end
 
 figure(1);
 
