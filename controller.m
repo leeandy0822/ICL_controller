@@ -38,7 +38,7 @@ methods
         % prepare the mass estimated last time
         mass_est_last = payload.mass_estimation(:, iter-1);
         force_ff = feedforward_force_ctrl;
-        [F_ff, mass_est] = (ad_ned, multirotor, ex_ned, ev_ned, mass_est_last, dt);
+        [F_ff, mass_est] = force_ff.feedforward_force_use_adaptive_ICL(ad_ned, multirotor, ex_ned, ev_ned, mass_est_last, dt);
         
         % f
         f = (-kx*ex_ned - kv*ev_ned + F_ff);
@@ -54,8 +54,27 @@ methods
         J_est_last = payload.inertia_estimation(:, iter-1);
 
         moment_ff = feedward_moment_ctrl;
-        [M_ff, J_est, icl] = moment_feedforward.feedforward_moment_use_adaptive_ICL(W, multirotor, eR, eW, J_est_last, icl, dt, iter, select_moment_adaptive_w_wo_ICL, SELECT_FILTER);
+        [M_ff, J_est, icl] = moment_ff.feedforward_moment_use_adaptive_ICL(W, multirotor, eR, eW, J_est_last, icl, dt, iter);
         
+        % M
+        M = -kR*eR - kW*eW - M_ff;
+
+
+        % f, M
+        control(1) = f;
+        control(2) = M(1);
+        control(3) = M(2);
+        control(4) = M(3);
+       % ex, ev, eR, eW
+       error(1:3) = ex_ned;
+       error(4:6) = ev_ned;
+       error(7:9) = eR;
+       error(10:12) = eW;
+       
+       end
+    end
+end
+
 
     
     

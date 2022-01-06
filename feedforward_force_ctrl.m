@@ -5,7 +5,7 @@ classdef feedforward_force_ctrl
     end
 
     methods
-        function [F_ff, theta_m_hat] = FF_ICL(obj, ad, payload, ex, ev, mass_est_last, dt)
+        function [F_ff, theta_m_hat] = feedforward_force_use_adaptive_ICL(obj, ad, payload, ex, ev, mass_est_last, dt)
 
             Y_m = [ad(1) ; ad(2) ; ad(3) - payload.g];
             
