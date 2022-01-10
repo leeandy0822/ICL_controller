@@ -2,15 +2,15 @@ clear all, close all, clc;
 
 
 
-kr0 = 15;
-ko0 = 5;
+kr0 = 11;
+ko0 = 2;
 gamma_j = diag([35,6,85]);
-cr = 0.5;
-kcl_j = 90;
+cr = 0.2;
+kcl_j = 80;
 
 
 g = 9.8;
-e3 = [0 ; 0 ; 1];
+e3 = [0 ; 0 ; -1];
 
 t = (1:1:6000);
 dt = 0.01;
@@ -47,9 +47,7 @@ x0d_dot = [10*cos(i*dt) ; -10*sin(i*dt) ; 0];
 
 % Desire attitude Desire rotation
 R0d_before = R0d;
-x0d_dot  = vec_enu_to_ned(x0d_dot);
-e3_ned = vec_enu_to_ned(e3);
-R0d = [x0d_dot/norm(x0d_dot) (hat_map(e3)*x0d_dot)/(norm(hat_map(e3)*x0d_dot)) e3_ned];
+R0d = [x0d_dot/norm(x0d_dot) (hat_map(e3)*x0d_dot)/(norm(hat_map(e3)*x0d_dot)) -e3];
 
 omega0d = [ 0 ; 0 ; 0];
 
@@ -63,14 +61,14 @@ Yj_cl = [ omega0(1) - omega0_before(1), -omega0(2)*omega0(3)*dt , omega0(2)*omeg
 omega0(1)*omega0(3)*dt , omega0(2) - omega0_before(2) , -omega0(1)*omega0(3)*dt;
 -omega0(1)*omega0(2)*dt, omega0(1)*omega0(2)*dt , omega0(3) - omega0_before(3) ];
 
-    
+
 % ICL record
 record_Yjcl(:,:,i) = Yj_cl;
 record_Md(:,i) = Md*dt;
 
 % Error
-er0 = 0.5*vee_map(R0d'*R0 - R0'*R0d);
-eo0 = omega0 - R0'*R0d*omega0d;
+er0 = 0.5*vee_map(R0d.'*R0 - R0.'*R0d);
+eo0 = omega0 - R0.'*R0d*omega0d;
 
 record_er(:,i) = er0;
 record_eo(:,i) = eo0;
@@ -117,9 +115,9 @@ plot(t,record_er(1,:),t,record_er(2,:),t,record_er(3,:))
 title("Rotation Errors");
 legend('er_1','er_2','er_3')
 nexttile
-% plot velocity tracking error
+% Plot velocity tracking error
 plot(t,record_eo(1,:),t,record_eo(2,:),t,record_eo(3,:))
-title("angular velocity errors");
+title("Angular Velocity Errors");
 legend('eo_1','eo_2','eo_3')
 
 figure(4);
@@ -137,3 +135,13 @@ plot(t,record_theta_j_hat(3,:),t,record_theta_j(3,:))
 title("Inertia zz");
 legend('zz','groundtruth')
 
+theta_j_hat_final
+theta_j
+
+
+function x = hat_map(x)
+x=[0 -x(3) x(2) ; x(3) 0 -x(1) ; -x(2) x(1) 0 ];
+end
+function x = vee_map(x)
+x=[x(6) ;x(7) ;x(2)];
+end
