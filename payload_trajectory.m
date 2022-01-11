@@ -1,10 +1,10 @@
 classdef payload_trajectory
     methods
         function out = traj_generate(~, t)
-            
-            x = [1.2*sin(0.4*pi*t); 4.2*cos(0.2*pi*t); 3];
-            v = [0.48*pi*cos(0.4*pi*t) ; -0.84*pi*sin(0.2*pi*t) ; 0];
-            a = [ -0.192*pi*pi*sin(0.4*pi*t) ;-0.168*pi*pi*cos(0.2*pi*t) ; 0];
+
+            x = [12*sin(t); 5*cos(t); 0.2*sin(t)];
+            v = [12*cos(t) ; -5*sin(t) ; 0.2*cos(t)];
+            a = [-12*sin(t) ; -5*cos(t) ; 0.2*-sin(t)];
 
             % xd, vd, ad
             out = zeros(9, 1);

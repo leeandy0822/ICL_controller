@@ -75,9 +75,9 @@ record_eo(:,i) = eo0;
 
 icl_term = 0;
 % when time > 0.5s (0.01*50), ICL starts to work
-if i > 50
+if i > 20
 % Assume N = 20
-for j = 1:50
+for j = 1:20
 icl_term = icl_term + record_Yjcl(:,:,i-j)'*(record_Md(:,i-j) - record_Yjcl(:,:,i-j)*theta_j_hat);
 end
 end

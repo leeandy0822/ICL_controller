@@ -8,7 +8,7 @@ classdef payload_dynamics
         % parameters
         m
         J
-        g = 9.81
+        g = 9.81;
 
         % unit vector
         e1 = [1; 0; 0];
@@ -18,7 +18,8 @@ classdef payload_dynamics
         % states
         x 
         v
-        a
+        R
+        W
 
         % errors
         ex 
@@ -36,12 +37,29 @@ classdef payload_dynamics
     end
 
     methods
-        function dX = dynamics(obj, t , X , F)
-            dX = zeros(6,1);
+        function dX = dynamics(obj, t , X , control)
+            
+            % state
+            dX = zeros(18,1);
+
+            R_now = reshape(X(7:15), 3, 3);
+            W_now = X(16:18);
+            
+            % input
+            f = control(1:3);
+            M = control(4:6);
+
+            % Next state 
             dx = X(4:6);
-            dv = obj.g*obj.e3 + (F/obj.m);
+            dv = obj.g*obj.e3 + (f/obj.m);
+            dR = R_now*hat_map(W_now);
+            dW = obj.J\(-vec_cross(W_now, obj.J*W_now) + M);
+
+            % Output 
             dX(1:3) = dx;
             dX(4:6) = dv;
+            dX(7:15) = reshape(dR, 9, 1);
+            dX(16:18) = dW;
         end
     end
 end
