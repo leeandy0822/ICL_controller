@@ -2,17 +2,17 @@ classdef controller
 
     properties
 
-        kx0 = 10;
+        kx0 = 14;
         kv0 = 10;
         gamma_m = 0.5;
         cx = 2;
         kcl_m = 0.00001;
 
-        kr0 = 29;
-        ko0 = 5;    
-        gamma_j = diag([36,20,60]);
-        cr = 0.2;
-        kcl_j = 100;
+        kr0 = 9;
+        ko0 = 3;    
+        gamma_j = diag([12,8,8]);
+        cr = 0.05;
+        kcl_j = 80;
 
         e3 = [0; 0; 1];
     end
@@ -71,19 +71,19 @@ classdef controller
         end
 
 
-        function [Md, error, J_est, icl_moment] = moment_ctrl(obj, iter, payload, Xd, icl_moment, dt)
+        function [Md, error, J_est, icl_moment, Rd] = moment_ctrl(obj, iter, payload, Xd, icl_moment, dt)
 
             x0d_dot_enu = Xd(4:6);
             
             % convert position and velocity from enu to ned
-            x0d_dot = vec_enu_to_ned(x0d_dot_enu);
+            x0d_dot = x0d_dot_enu;
 
             % states 
             R = reshape(payload.R(:,iter-1), 3,3);
             W = payload.W(: , iter-1);
             
             % Desire 
-            Rd = [x0d_dot/norm(x0d_dot) (hat_map(-obj.e3)*x0d_dot)/(norm(hat_map(-obj.e3)*x0d_dot)) obj.e3];
+            Rd = [x0d_dot/norm(x0d_dot) (hat_map(obj.e3)*x0d_dot)/(norm(hat_map(obj.e3)*x0d_dot)) obj.e3];
             Wd = [0; 0; 0];
            
             % eR and eW
@@ -135,7 +135,7 @@ classdef controller
             M_ff = Y_diag*theta_diag_hat;
 
             Md = -obj.kr0*eR - obj.ko0*eW - M_ff;
-
+            M_ff
             error(1:3) = eR;
             error(4:6) = eW;
         

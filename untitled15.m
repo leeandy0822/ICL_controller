@@ -10,7 +10,7 @@ kcl_j = 80;
 
 
 g = 9.8;
-e3 = [0 ; 0 ; -1];
+e3 = [0 ; 0 ; 1];
 
 t = (1:1:6000);
 dt = 0.01;
@@ -43,11 +43,13 @@ omega0_before = [ 0 ; 0 ; 0];
 for i=1:length(t)
 
 % desire trajectory
-x0d_dot = [10*cos(i*dt) ; -10*sin(i*dt) ; 0];
+% desire trajectory
+X0d = [25*sin(0.02*i*dt) ; 25*cos(0.02*i*dt); 3*sin(0.1*i*dt)];
+x0d_dot = [0.5*cos(0.02*i*dt) ; -0.5*sin(0.02*i*dt) ; 0.3*cos(0.1*i*dt)];
 
 % Desire attitude Desire rotation
 R0d_before = R0d;
-R0d = [x0d_dot/norm(x0d_dot) (hat_map(e3)*x0d_dot)/(norm(hat_map(e3)*x0d_dot)) -e3];
+R0d = [x0d_dot/norm(x0d_dot) (hat_map(e3)*x0d_dot)/(norm(hat_map(e3)*x0d_dot)) e3];
 
 omega0d = [ 0 ; 0 ; 0];
 
@@ -75,9 +77,9 @@ record_eo(:,i) = eo0;
 
 icl_term = 0;
 % when time > 0.5s (0.01*50), ICL starts to work
-if i > 20
+if i > 50
 % Assume N = 20
-for j = 1:20
+for j = 1:50
 icl_term = icl_term + record_Yjcl(:,:,i-j)'*(record_Md(:,i-j) - record_Yjcl(:,:,i-j)*theta_j_hat);
 end
 end

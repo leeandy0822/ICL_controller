@@ -19,8 +19,9 @@ classdef payload_dynamics
         x 
         v
         R
+        Rd
         W
-
+        eul
         % errors
         ex 
         ev

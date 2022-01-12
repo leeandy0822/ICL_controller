@@ -2,7 +2,7 @@ clear all, close all, clc;
 
 % initial condition
 dt = 0.01;
-sim_t = 100;
+sim_t = 60;
 payload = payload_dynamics;
 payload.dt = dt;
 payload.sim_t = sim_t;
@@ -10,12 +10,14 @@ payload.t = 0:dt:sim_t;
 payload.m = 0.755;
 payload.J = [0.0820, 0, 0;
                 0, 0.0845, 0;
-                0, 0, 0.079];
+                0, 0, 0.139];
 
 payload.x = zeros(3,length(payload.t));
 payload.v = zeros(3,length(payload.t));
 payload.R = zeros(9, length(payload.t));
+payload.Rd = zeros(9, length(payload.t));
 payload.W = zeros(3, length(payload.t));
+payload.eul = zeros(3, length(payload.t));
 payload.ex = zeros(3, length(payload.t));
 payload.ev = zeros(3, length(payload.t));
 payload.mass_estimation = zeros(1, length(payload.t));
@@ -23,7 +25,7 @@ payload.inertia_estimation = zeros(3, length(payload.t));
 payload.force = zeros(3,length(payload.t));
 
 % initial condition
-eul = [pi/9 pi/10 pi/8];
+eul = [-pi/8 pi/8 pi/8];
 R0 = eul2rotm(eul);
 payload.R(:,1) = reshape(R0,9,1);
 payload.W(:,1) = [0.03, -0.05, 0.05];
@@ -48,7 +50,7 @@ icl_mass.current_force = zeros(1, 1);
 
 % initialize integral concurrent learning
 icl_moment = integral_concurrent_learning;
-icl_moment.N_diag = 50;
+icl_moment.N_diag = 10;
 icl_moment.mat_diag_matrix = zeros(3, icl_moment.N_diag);
 icl_moment.mat_diag_sum = zeros(3, 1);
 icl_moment.index_diag = 0;
@@ -72,7 +74,7 @@ for i= 2:length(payload.t)
     [Fd, force_error, mass_est, icl_mass] = ctrl.force_ctrl(i,payload , Xd,  icl_mass,dt);
     
     % moment controller 
-    [Md, moment_error, inertia_est, icl_moment] = ctrl.moment_ctrl(i, payload, Xd, icl_moment, dt);
+    [Md, moment_error, inertia_est, icl_moment, Rd] = ctrl.moment_ctrl(i, payload, Xd, icl_moment, dt);
 
     % initial condition
     X0 = [vec_enu_to_ned(payload.x(:,i-1)); vec_enu_to_ned(payload.v(:,i-1));
@@ -89,6 +91,7 @@ for i= 2:length(payload.t)
     payload.v(:,i) = vec_ned_to_enu(X_new(end,4:6));
     payload.R(:, i) = X_new(end, 7:15);
     payload.W(:, i) = X_new(end, 16:18);
+    payload.Rd(:, i) =  reshape(payload.R(:, i), 9, 1);
 
     payload.ex(:,i) = error(1:3);
     payload.ev(:,i) = error(4:6);
@@ -102,17 +105,26 @@ for i= 2:length(payload.t)
 end
 
 t = payload.t;
-
+B = [ 0 1 0 ; 1 0 0 ; 0 0 -1];
 % plot
 figure(1);
-tiledlayout(3,3)
-nexttile
+tra(1:3,:) = B*tra(1:3,:);
+payload.x(1:3,:) = B*payload.x(1:3,:);
 plot3(tra(1,:),tra(2,:),tra(3,:),payload.x(1,:),payload.x(2,:),payload.x(3,:))
-xlabel('X')
-ylabel('Y')
-zlabel('Z')
-title("Trajectory");
-grid on
+hold on;
+
+for i = 1:200:length(payload.t)
+    matrix = reshape(payload.R(:,i),3,3);
+    matrix = B*matrix;
+    quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,1),matrix(2,1),matrix(3,1),'r',"LineWidth",0.4); 
+    quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,2),matrix(2,2),matrix(3,2),'g',"LineWidth",0.4); 
+    quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,3),matrix(2,3),matrix(3,3),'b',"LineWidth",0.4); 
+end
+hold on;
+grid on;
+
+figure(2);
+tiledlayout(2,4)
 nexttile
 % Plot position tracking error
 plot(t,payload.ex(1,:),t,payload.ex(2,:),t,payload.ex(3,:))
@@ -123,11 +135,6 @@ nexttile
 plot(t,payload.ev(1,:),t,payload.ev(2,:),t,payload.ev(3,:))
 title("Velocity Tracking errors");
 legend('ev_1','ev_2','ev_3')
-nexttile
-% Plot velocity tracking error
-theta_m_ground_truth = ones(1, length(payload.t))*payload.m;
-plot(t,payload.mass_estimation,t,theta_m_ground_truth)
-title("Theta");
 
 nexttile
 % Plot position tracking error
@@ -139,6 +146,12 @@ nexttile
 plot(t,payload.eW(1,:),t,payload.eW(2,:),t,payload.eW(3,:))
 title("Angular Velocity Errors");
 legend('eo_1','eo_2','eo_3')
+
+nexttile
+% Plot velocity tracking error
+theta_m_ground_truth = ones(1, length(payload.t))*payload.m;
+plot(t,payload.mass_estimation,t,theta_m_ground_truth)
+title("Theta");
 
 nexttile
 plot(t, payload.inertia_estimation(1,:),t,ones(1,length(t))*payload.J(1))
