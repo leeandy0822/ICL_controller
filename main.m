@@ -2,15 +2,15 @@ clear all, close all, clc;
 
 % initial condition
 dt = 0.01;
-sim_t = 60;
+sim_t = 20;
 payload = payload_dynamics;
 payload.dt = dt;
 payload.sim_t = sim_t;
 payload.t = 0:dt:sim_t;
 payload.m = 0.755;
-payload.J = [0.0820, 0, 0;
+payload.J = [0.0920, 0, 0;
                 0, 0.0845, 0;
-                0, 0, 0.139];
+                0, 0, 0.120];
 
 payload.x = zeros(3,length(payload.t));
 payload.v = zeros(3,length(payload.t));
@@ -103,7 +103,7 @@ for i= 2:length(payload.t)
     icl_mass.current_force = Fd;
     icl_moment.current_moment = Md;
 end
-
+payload.inertia_estimation(:,end)
 t = payload.t;
 B = [ 0 1 0 ; 1 0 0 ; 0 0 -1];
 % plot

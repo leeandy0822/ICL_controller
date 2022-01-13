@@ -10,8 +10,8 @@ classdef controller
 
         kr0 = 9;
         ko0 = 3;    
-        gamma_j = diag([12,8,8]);
-        cr = 0.05;
+        gamma_j = diag([11,8,10.5]);
+        cr = 0.2;
         kcl_j = 80;
 
         e3 = [0; 0; 1];
