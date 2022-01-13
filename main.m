@@ -2,7 +2,7 @@ clear all, close all, clc;
 
 % initial condition
 dt = 0.01;
-sim_t = 30;
+sim_t = 80;
 payload = payload_dynamics;
 payload.dt = dt;
 payload.sim_t = sim_t;
@@ -43,7 +43,7 @@ payload.R(:,1) = reshape(R0,9,1);
 payload.W(:,1) = [0.03, -0.05, 0.05];
 payload.inertia_estimation(:, 1) = [0.01; 0.01; 0.01];
 
-x0 = [0 ; 20 ;0];
+x0 = [5 ; 32 ; -5];
 x0_dot = [0 ; 0; 0];
 payload.x(:,1) = x0;
 payload.v(:,1) = x0_dot;
@@ -76,7 +76,11 @@ tra(:,1) = traj.traj_generate(payload.t(1));
 
 
 for i= 2:length(payload.t)
-
+    
+    if mod(i,500) ==  0
+        x = round(i/length(payload.t),5)*100;
+        disp(round(x,2));
+    end
     t_now = payload.t(i);
     % desire trajectory
     tra(:,i) = traj.traj_generate(t_now);
@@ -133,19 +137,20 @@ for i= 2:length(payload.t)
     icl_mass.current_force = Fd;
     icl_moment.current_moment = Md;
 end
+
 payload.inertia_estimation(:,end)
 t = payload.t;
 B = [ 0 1 0 ; 1 0 0 ; 0 0 -1];
-
 
 % plot
 figure(1);
 tra(1:3,:) = B*tra(1:3,:);
 payload.x(1:3,:) = B*payload.x(1:3,:);
-plot3(tra(1,:),tra(2,:),tra(3,:),payload.x(1,:),payload.x(2,:),payload.x(3,:))
+plot3(tra(1,:),tra(2,:),tra(3,:),'LineWidth', 2, 'Color','k')
 hold on;
-
-for i = 1:200:length(payload.t)
+plot3(payload.x(1,:),payload.x(2,:),payload.x(3,:),'LineWidth', 1.5, 'Color','#4DBEEE')
+hold on;
+for i = 1:500:length(payload.t)
     matrix = reshape(payload.R(:,i),3,3);
     matrix = B*matrix;
     quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,1),matrix(2,1),matrix(3,1),'r',"LineWidth",0.4); 
@@ -155,6 +160,9 @@ end
 
 hold on;
 grid on;
+xlabel('x(m)'), ylabel('y(m)'), zlabel('z(m)')
+title('Trajectory')
+axis equal
 
 figure(2);
 tiledlayout(2,4)
@@ -185,19 +193,20 @@ nexttile
 theta_m_ground_truth = ones(1, length(payload.t))*payload.m;
 plot(t,payload.mass_estimation,t,theta_m_ground_truth)
 title("Theta");
+legend('Estimated Mass','Ground Truth')
 
 nexttile
 plot(t, payload.inertia_estimation(1,:),t,ones(1,length(t))*payload.J(1))
 title("Inertia xx");
-legend('xx','groundtruth')
+legend('xx','Ground Truth')
 nexttile
 plot(t, payload.inertia_estimation(2,:),t,ones(1,length(t))*payload.J(5))
 title("Inertia yy");
-legend('yy','groundtruth')
+legend('yy','Ground Truth')
 nexttile
 plot(t, payload.inertia_estimation(3,:),t,ones(1,length(t))*payload.J(9))
 title("Inertia zz");
-legend('zz','groundtruth')
+legend('zz','Ground Truth')
 
 figure(3)
 tiledlayout(2,1)

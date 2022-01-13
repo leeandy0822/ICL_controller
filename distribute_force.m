@@ -22,8 +22,6 @@ classdef distribute_force
                 Fd_error = Fd - Fd_new;
                 Md_error = Md - Md_new;
 
-                disp(Fd_error);
-                disp(Md_error);
         end
     end
 end
