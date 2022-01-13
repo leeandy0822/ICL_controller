@@ -10,7 +10,7 @@ classdef controller
 
         kr0 = 9;
         ko0 = 3;    
-        gamma_j = diag([11,8,10.5]);
+        gamma_j = diag([12,8,10.5]);
         cr = 0.2;
         kcl_j = 80;
 
@@ -135,7 +135,7 @@ classdef controller
             M_ff = Y_diag*theta_diag_hat;
 
             Md = -obj.kr0*eR - obj.ko0*eW - M_ff;
-            M_ff
+
             error(1:3) = eR;
             error(4:6) = eW;
         

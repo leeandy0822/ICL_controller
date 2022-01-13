@@ -2,7 +2,7 @@ clear all, close all, clc;
 
 % initial condition
 dt = 0.01;
-sim_t = 20;
+sim_t = 30;
 payload = payload_dynamics;
 payload.dt = dt;
 payload.sim_t = sim_t;
@@ -23,6 +23,18 @@ payload.ev = zeros(3, length(payload.t));
 payload.mass_estimation = zeros(1, length(payload.t));
 payload.inertia_estimation = zeros(3, length(payload.t));
 payload.force = zeros(3,length(payload.t));
+payload.moment = zeros(3,length(payload.t));
+
+payload.u1 = zeros(3, length(payload.t));
+payload.u2 = zeros(3, length(payload.t));
+payload.u3 = zeros(3, length(payload.t));
+% contact point
+payload.p1 = [0.5 ; 0 ; -0.1];
+payload.p2 = [-0.5 ; 0.4; -0.1];
+payload.p3 = [-0.5 ; -0.4 ; -0.1];
+
+payload.grasp_matrix = [ eye(3) eye(3) eye(3) ; hat_map(payload.p1) hat_map(payload.p2) hat_map(payload.p3)];
+
 
 % initial condition
 eul = [-pi/8 pi/8 pi/8];
@@ -31,7 +43,7 @@ payload.R(:,1) = reshape(R0,9,1);
 payload.W(:,1) = [0.03, -0.05, 0.05];
 payload.inertia_estimation(:, 1) = [0.01; 0.01; 0.01];
 
-x0 = [0 ; 0 ;0];
+x0 = [0 ; 20 ;0];
 x0_dot = [0 ; 0; 0];
 payload.x(:,1) = x0;
 payload.v(:,1) = x0_dot;
@@ -76,12 +88,27 @@ for i= 2:length(payload.t)
     % moment controller 
     [Md, moment_error, inertia_est, icl_moment, Rd] = ctrl.moment_ctrl(i, payload, Xd, icl_moment, dt);
 
+
+
+    % distribute force
+    dis = distribute_force;
+    [Fd, Md, u] = dis.cal_u(payload,Fd,Md,i); 
+
+    payload.u1(:,i-1) = u(1:3);
+    payload.u2(:,i-1) = u(4:6);
+    payload.u3(:,i-1) = u(7:9);
+
+    payload.force(:,i-1) = Fd;
+    payload.moment(:,i-1) = Md;
+
     % initial condition
     X0 = [vec_enu_to_ned(payload.x(:,i-1)); vec_enu_to_ned(payload.v(:,i-1));
         reshape(reshape(payload.R(:, i-1), 3, 3), 9, 1); payload.W(:, i-1)];
 
     control = [Fd ; Md];
     error = [force_error moment_error];
+    
+    
 
     % dynamics update
     [T, X_new] = ode45(@(t, x) payload.dynamics(t, x, control), [0, dt], X0, control);
@@ -100,12 +127,17 @@ for i= 2:length(payload.t)
     payload.mass_estimation(:,i) = mass_est;
     payload.inertia_estimation(:,i) = inertia_est;
     
+    
+
+
     icl_mass.current_force = Fd;
     icl_moment.current_moment = Md;
 end
 payload.inertia_estimation(:,end)
 t = payload.t;
 B = [ 0 1 0 ; 1 0 0 ; 0 0 -1];
+
+
 % plot
 figure(1);
 tra(1:3,:) = B*tra(1:3,:);
@@ -120,6 +152,7 @@ for i = 1:200:length(payload.t)
     quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,2),matrix(2,2),matrix(3,2),'g',"LineWidth",0.4); 
     quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,3),matrix(2,3),matrix(3,3),'b',"LineWidth",0.4); 
 end
+
 hold on;
 grid on;
 
@@ -165,3 +198,30 @@ nexttile
 plot(t, payload.inertia_estimation(3,:),t,ones(1,length(t))*payload.J(9))
 title("Inertia zz");
 legend('zz','groundtruth')
+
+figure(3)
+tiledlayout(2,1)
+nexttile
+plot(t, payload.force(1,:), t , payload.force(2,:), t , payload.force(3,:));
+title("Force Input");
+legend('x','y','z')
+nexttile
+plot(t, payload.moment(1,:), t , payload.moment(2,:), t , payload.moment(3,:));
+title("Moment Input");
+legend('x','y','z')
+
+
+figure(4)
+tiledlayout(3,1)
+nexttile
+plot(t, payload.u1(1,:), t , payload.u1(2,:), t , payload.u1(3,:));
+title("Distributed force - u1");
+legend('x','y','z')
+nexttile
+plot(t, payload.u2(1,:), t , payload.u2(2,:), t , payload.u2(3,:));
+title("Distributed force - u2");
+legend('x','y','z')
+nexttile
+plot(t, payload.u3(1,:), t , payload.u3(2,:), t , payload.u3(3,:));
+title("Distributed force - u3");
+legend('x','y','z')

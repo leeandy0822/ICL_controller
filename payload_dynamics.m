@@ -10,6 +10,16 @@ classdef payload_dynamics
         J
         g = 9.81;
 
+        length = 1.0
+        width = 0.8;
+        height = 0.2;
+
+        p1
+        p2
+        p3
+
+        grasp_matrix
+
         % unit vector
         e1 = [1; 0; 0];
         e2 = [0; 1; 0];
@@ -35,6 +45,9 @@ classdef payload_dynamics
         % control input
         force
         moment
+        u1
+        u2
+        u3
     end
 
     methods
