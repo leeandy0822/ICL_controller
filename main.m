@@ -17,7 +17,6 @@ payload.v = zeros(3,length(payload.t));
 payload.R = zeros(9, length(payload.t));
 payload.Rd = zeros(9, length(payload.t));
 payload.W = zeros(3, length(payload.t));
-payload.eul = zeros(3, length(payload.t));
 payload.ex = zeros(3, length(payload.t));
 payload.ev = zeros(3, length(payload.t));
 payload.mass_estimation = zeros(1, length(payload.t));
@@ -29,9 +28,7 @@ payload.u1 = zeros(3, length(payload.t));
 payload.u2 = zeros(3, length(payload.t));
 payload.u3 = zeros(3, length(payload.t));
 % contact point
-payload.p1 = [0.5 ; 0 ; -0.1];
-payload.p2 = [-0.5 ; 0.4; -0.1];
-payload.p3 = [-0.5 ; -0.4 ; -0.1];
+
 
 payload.grasp_matrix = [ eye(3) eye(3) eye(3) ; hat_map(payload.p1) hat_map(payload.p2) hat_map(payload.p3)];
 
@@ -199,6 +196,7 @@ plot(t, payload.inertia_estimation(3,:),t,ones(1,length(t))*payload.J(9))
 title("Inertia zz");
 legend('zz','groundtruth')
 
+% resultant force
 figure(3)
 tiledlayout(2,1)
 nexttile
@@ -210,7 +208,7 @@ plot(t, payload.moment(1,:), t , payload.moment(2,:), t , payload.moment(3,:));
 title("Moment Input");
 legend('x','y','z')
 
-
+% distributed force
 figure(4)
 tiledlayout(3,1)
 nexttile

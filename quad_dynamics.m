@@ -1,24 +1,13 @@
-classdef payload_dynamics
+classdef quad_dynamics
     properties
-        dt = 0.01;
-        sim_t = 10;
-        t
-        iter
 
         % parameters
         m
         J
         g = 9.81;
 
-        length = 1.0
-        width = 0.8;
-        height = 0.2;
+        l = 1.0
 
-        p1 = [0.5 ; 0 ; -0.1];
-        p2 = [-0.5 ; 0.4; -0.1];
-        p3 = [-0.5 ; -0.4 ; -0.1];
-
-        grasp_matrix
 
         % unit vector
         e1 = [1; 0; 0];
@@ -32,13 +21,11 @@ classdef payload_dynamics
         Rd
         W
         
-        q1
-        q2
-        q3
-
-        a1
-        a2
-        a3
+        % rope direction
+        q   
+        % connect point acceleration
+        a
+        
         % errors
         ex 
         ev
