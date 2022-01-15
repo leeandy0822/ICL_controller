@@ -5,7 +5,7 @@ classdef controller
         kx0 = 10;
         kv0 = 3;
         gamma_m = 0.3;
-        cx = 2;
+        cx = 1;
         kcl_m = 0.000001;
 
         kr0 = 9;

@@ -170,54 +170,54 @@ figure(2);
 tiledlayout(2,4)
 nexttile
 % Plot position tracking error
-plot(t,payload.ex(1,:),t,payload.ex(2,:),t,payload.ex(3,:))
+plot(t,payload.ex(1,:),t,payload.ex(2,:),t,payload.ex(3,:),LineWidth=2.0)
 title("Postion Tracking errors",'FontSize', 20);
 legend('ex_1','ex_2','ex_3','FontSize', 15)
 nexttile
 % Plot velocity tracking error
-plot(t,payload.ev(1,:),t,payload.ev(2,:),t,payload.ev(3,:))
+plot(t,payload.ev(1,:),t,payload.ev(2,:),t,payload.ev(3,:),LineWidth=2.0)
 title("Velocity Tracking errors",'FontSize', 20);
 legend('ev_1','ev_2','ev_3','FontSize', 15)
 
 nexttile
 % Plot position tracking error
-plot(t,payload.eR(1,:),t,payload.eR(2,:),t,payload.eR(3,:))
+plot(t,payload.eR(1,:),t,payload.eR(2,:),t,payload.eR(3,:),LineWidth=2.0)
 title("Rotation Errors",'FontSize', 20);
 legend('er_1','er_2','er_3','FontSize', 15)
 nexttile
 % Plot velocity tracking error
-plot(t,payload.eW(1,:),t,payload.eW(2,:),t,payload.eW(3,:))
+plot(t,payload.eW(1,:),t,payload.eW(2,:),t,payload.eW(3,:),LineWidth=2.0)
 title("Angular Velocity Errors",'FontSize', 20);
 legend('eo_1','eo_2','eo_3','FontSize', 15)
 
 nexttile
 % Plot velocity tracking error
 theta_m_ground_truth = ones(1, length(payload.t))*payload.m;
-plot(t,payload.mass_estimation,t,theta_m_ground_truth)
+plot(t,payload.mass_estimation,t,theta_m_ground_truth,LineWidth=2.0)
 title("Theta",'FontSize', 20);
 legend('Estimated Mass','Ground Truth','FontSize', 15)
 
 nexttile
-plot(t, payload.inertia_estimation(1,:),t,ones(1,length(t))*payload.J(1))
-title("Inertia xx",'FontSize', 15);
+plot(t, payload.inertia_estimation(1,:),t,ones(1,length(t))*payload.J(1),LineWidth=2.0)
+title("Inertia xx",'FontSize', 20);
 legend('xx','Ground Truth','FontSize', 15)
 nexttile
-plot(t, payload.inertia_estimation(2,:),t,ones(1,length(t))*payload.J(5))
-title("Inertia yy",'FontSize', 15);
+plot(t, payload.inertia_estimation(2,:),t,ones(1,length(t))*payload.J(5),LineWidth=2.0)
+title("Inertia yy",'FontSize', 20);
 legend('yy','Ground Truth','FontSize', 15)
 nexttile
-plot(t, payload.inertia_estimation(3,:),t,ones(1,length(t))*payload.J(9))
-title("Inertia zz",'FontSize', 15);
+plot(t, payload.inertia_estimation(3,:),t,ones(1,length(t))*payload.J(9),LineWidth=2.0)
+title("Inertia zz",'FontSize', 20);
 legend('zz','Ground Truth','FontSize', 15)
 
 figure(3)
 tiledlayout(2,1)
 nexttile
-plot(t, payload.force(1,:), t , payload.force(2,:), t , payload.force(3,:));
+plot(t, payload.force(1,:), t , payload.force(2,:), t , payload.force(3,:),LineWidth=2.0);
 title("Force Input",'FontSize', 20);
 legend('x','y','z','FontSize', 15)
 nexttile
-plot(t, payload.moment(1,:), t , payload.moment(2,:), t , payload.moment(3,:));
+plot(t, payload.moment(1,:), t , payload.moment(2,:), t , payload.moment(3,:),LineWidth=2.0);
 title("Moment Input",'FontSize', 20);
 legend('x','y','z','FontSize', 15)
 
@@ -225,15 +225,15 @@ legend('x','y','z','FontSize', 15)
 figure(4)
 tiledlayout(3,1)
 nexttile
-plot(t, payload.u1(1,:), t , payload.u1(2,:), t , payload.u1(3,:));
+plot(t, payload.u1(1,:), t , payload.u1(2,:), t , payload.u1(3,:),LineWidth=2.0);
 title("Distributed force - u1",'FontSize', 20);
 legend('x','y','z','FontSize', 15)
 nexttile
-plot(t, payload.u2(1,:), t , payload.u2(2,:), t , payload.u2(3,:));
+plot(t, payload.u2(1,:), t , payload.u2(2,:), t , payload.u2(3,:),LineWidth=2.0);
 title("Distributed force - u2",'FontSize', 20);
 legend('x','y','z','FontSize', 15)
 nexttile
-plot(t, payload.u3(1,:), t , payload.u3(2,:), t , payload.u3(3,:));
+plot(t, payload.u3(1,:), t , payload.u3(2,:), t , payload.u3(3,:),LineWidth=2.0);
 title("Distributed force - u3",'FontSize', 20);
 legend('x','y','z','FontSize', 15)
 
