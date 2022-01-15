@@ -12,10 +12,11 @@ classdef distribute_force
                 
                 u = rotation_term*grasp_term*[temp_f;temp_m];
 
-                 u1 = u(1:3);
-                 u2 = u(4:6);
-                 u3 = u(7:9);
+                u1 = u(1:3);
+                u2 = u(4:6);
+                u3 = u(7:9);
                     
+
                 Fd_new =  u1 +  u2 +  u3;
                 Md_new = hat_map(payload.p1)*R'* u1 + hat_map(payload.p2)*R'* u2 + hat_map(payload.p3)*R'* u3 ;
                 

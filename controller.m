@@ -2,16 +2,16 @@ classdef controller
 
     properties
 
-        kx0 = 8;
-        kv0 = 5;
+        kx0 = 10;
+        kv0 = 3;
         gamma_m = 0.3;
         cx = 2;
         kcl_m = 0.000001;
 
         kr0 = 9;
-        ko0 = 3;    
-        gamma_j = diag([12,8,10.5]);
-        cr = 0.2;
+        ko0 = 2;    
+        gamma_j = diag([10.5,9.5,14]);
+        cr = 0.5;
         kcl_j = 80;
 
         e3 = [0; 0; 1];
