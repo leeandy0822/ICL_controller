@@ -7,13 +7,13 @@ classdef distribute_force
 
                 temp_f = R'*Fd;
                 temp_m = Md;
-                grasp_term = payload.grasp_matrix'/(payload.grasp_matrix*payload.grasp_matrix');
+                grasp_term = payload.B'/(payload.B*payload.B');
                 rotation_term = [R zeros(3) zeros(3) ; zeros(3) R zeros(3); zeros(3) zeros(3) R];
                 
                 u = rotation_term*grasp_term*[temp_f;temp_m];
 
                 u1 = u(1:3);
-                u2 = u(4:6);
+                u2 = u(4:6); 
                 u3 = u(7:9);
                     
 

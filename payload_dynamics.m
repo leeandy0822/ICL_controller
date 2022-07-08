@@ -1,7 +1,7 @@
 classdef payload_dynamics
     properties
         dt = 0.01;
-        sim_t = 10;
+        sim_t = 30;
         t
         iter
 
@@ -14,11 +14,11 @@ classdef payload_dynamics
         width = 0.8;
         height = 0.2;
 
+        % grasp matrix
         p1 = [0.5 ; 0 ; -0.1];
         p2 = [-0.5 ; 0.4; -0.1];
         p3 = [-0.5 ; -0.4 ; -0.1];
-
-        grasp_matrix
+        B 
 
         % unit vector
         e1 = [1; 0; 0];

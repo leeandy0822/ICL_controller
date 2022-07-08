@@ -2,11 +2,11 @@ classdef controller
 
     properties
 
-        kx0 = 10;
-        kv0 = 3;
-        gamma_m = 0.3;
+        kx0 = 30;
+        kv0 = 10;
+        gamma_m = 0.1;
         cx = 1;
-        kcl_m = 0.000001;
+        kcl_m = 0.00001;
 
         kr0 = 9;
         ko0 = 2;    

@@ -1,15 +1,17 @@
 clear all, close all, clc;
-
+addpath('./tools/')
 tic;
 
-% initial condition
+%% Simulation time
 dt = 0.01;
-sim_t = 10;
+sim_t = 20;
 payload = payload_dynamics;
 payload.dt = dt;
 payload.sim_t = sim_t;
 payload.t = 0:dt:sim_t;
-payload.m = 0.755;
+
+%% Physical property
+payload.m = 6;
 payload.J = [0.0850, 0, 0;
                 0, 0.0815, 0;
                 0, 0, 0.120];
@@ -26,16 +28,16 @@ payload.inertia_estimation = zeros(3, length(payload.t));
 payload.force = zeros(3,length(payload.t));
 payload.moment = zeros(3,length(payload.t));
 
+%% Grasp position 
+
+payload.B = [eye(3) eye(3) eye(3); hat_map(payload.p1) hat_map(payload.p2) hat_map(payload.p3)];
+
 payload.u1 = zeros(3, length(payload.t));
 payload.u2 = zeros(3, length(payload.t));
 payload.u3 = zeros(3, length(payload.t));
-% contact point
 
 
-payload.grasp_matrix = [ eye(3) eye(3) eye(3) ; hat_map(payload.p1) hat_map(payload.p2) hat_map(payload.p3)];
-
-
-% initial condition
+%% initial condition
 eul = [-pi/10 pi/10 pi/10];
 R0 = eul2rotm(eul);
 payload.R(:,1) = reshape(R0,9,1);
@@ -51,6 +53,7 @@ t = payload.t;
 % initialize controller
 ctrl = controller;
 
+%% ICL initialize
 % initialize integral concurrent learning
 icl_mass = integral_concurrent_learning;
 icl_mass.N_diag = 30;
@@ -68,7 +71,7 @@ icl_moment.index_diag = 0;
 icl_moment.current_moment = zeros(3,1);
 icl_moment.W_last = zeros(3, 1);
 
-% initial trajectory
+%% trajectory
 tra = zeros(9, length(t));
 traj = payload_trajectory;
 tra(:,1) = traj.traj_generate(payload.t(1));
@@ -90,7 +93,6 @@ for i= 2:length(payload.t)
     
     % moment controller 
     [Md, moment_error, inertia_est, icl_moment, Rd] = ctrl.moment_ctrl(i, payload, Xd, icl_moment, dt);
-
 
 
     % distribute force
