@@ -14,8 +14,7 @@ payload.t = 0:dt:sim_t;
 payload.m = 6;
 payload.J = [0.0850, 0, 0;
                 0, 0.0815, 0;
-                0, 0, 0.120];
-
+                0, 0, 0.150];
 payload.x = zeros(3,length(payload.t));
 payload.v = zeros(3,length(payload.t));
 payload.R = zeros(9, length(payload.t));
