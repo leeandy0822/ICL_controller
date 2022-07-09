@@ -18,20 +18,29 @@ classdef payload_dynamics
         p1 = [0.5 ; 0 ; -0.1];
         p2 = [-0.5 ; 0.4; -0.1];
         p3 = [-0.5 ; -0.4 ; -0.1];
+
+        % CoG vector 
+        body2CoG =[0.05; 0.05; 0];
+
+        % control grasp matrix
         B 
+        % real control grasp matrix by CoG drift
+        B_real
 
         % unit vector
         e1 = [1; 0; 0];
         e2 = [0; 1; 0];
         e3 = [0; 0; 1];
         
+
         % states
         x 
         v
         R
         Rd
         W
-        
+        dW
+
         q1
         q2
         q3

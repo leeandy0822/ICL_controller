@@ -11,7 +11,7 @@ payload.sim_t = sim_t;
 payload.t = 0:dt:sim_t;
 
 %% Physical property
-payload.m = 6;
+payload.m = 4;
 payload.J = [0.0850, 0, 0;
                 0, 0.0815, 0;
                 0, 0, 0.120];
@@ -28,10 +28,12 @@ payload.inertia_estimation = zeros(3, length(payload.t));
 payload.force = zeros(3,length(payload.t));
 payload.moment = zeros(3,length(payload.t));
 
+
 %% Grasp position 
 
 payload.B = [eye(3) eye(3) eye(3); hat_map(payload.p1) hat_map(payload.p2) hat_map(payload.p3)];
-
+payload.B_real =  payload.B(4:6,:) + [hat_map(payload.body2CoG) hat_map(payload.body2CoG) hat_map(payload.body2CoG)];
+payload.B_real = [eye(3) eye(3) eye(3) ; payload.B_real];
 payload.u1 = zeros(3, length(payload.t));
 payload.u2 = zeros(3, length(payload.t));
 payload.u3 = zeros(3, length(payload.t));
@@ -94,7 +96,7 @@ for i= 2:length(payload.t)
     % moment controller 
     [Md, moment_error, inertia_est, icl_moment, Rd] = ctrl.moment_ctrl(i, payload, Xd, icl_moment, dt);
 
-
+    
     % distribute force
 
     dis = distribute_force;
@@ -111,8 +113,11 @@ for i= 2:length(payload.t)
     X0 = [vec_enu_to_ned(payload.x(:,i-1)); vec_enu_to_ned(payload.v(:,i-1));
         reshape(reshape(payload.R(:, i-1), 3, 3), 9, 1); payload.W(:, i-1)];
 
+    
     control = [Fd ; Md];
     error = [force_error moment_error];
+    
+    %% add the CoG to body effect
     
     
 
@@ -209,33 +214,33 @@ plot(t, payload.inertia_estimation(3,:),t,ones(1,length(t))*payload.J(9),LineWid
 title("Inertia zz",'FontSize', 20);
 legend('zz','Ground Truth','FontSize', 15)
 
-% resultant force
-figure(3)
-tiledlayout(2,1)
-nexttile
-plot(t, payload.force(1,:), t , payload.force(2,:), t , payload.force(3,:),LineWidth=2.0);
-title("Force Input",'FontSize', 20);
-legend('x','y','z','FontSize', 15)
-nexttile
-plot(t, payload.moment(1,:), t , payload.moment(2,:), t , payload.moment(3,:),LineWidth=2.0);
-title("Moment Input",'FontSize', 20);
-legend('x','y','z','FontSize', 15)
+% % resultant force
+% figure(3)
+% tiledlayout(2,1)
+% nexttile
+% plot(t, payload.force(1,:), t , payload.force(2,:), t , payload.force(3,:),LineWidth=2.0);
+% title("Force Input",'FontSize', 20);
+% legend('x','y','z','FontSize', 15)
+% nexttile
+% plot(t, payload.moment(1,:), t , payload.moment(2,:), t , payload.moment(3,:),LineWidth=2.0);
+% title("Moment Input",'FontSize', 20);
+% legend('x','y','z','FontSize', 15)
 
-% distributed force
-figure(4)
-tiledlayout(3,1)
-nexttile
-plot(t, payload.u1(1,:), t , payload.u1(2,:), t , payload.u1(3,:),LineWidth=2.0);
-title("Distributed force - u1",'FontSize', 20);
-legend('x','y','z','FontSize', 15)
-nexttile
-plot(t, payload.u2(1,:), t , payload.u2(2,:), t , payload.u2(3,:),LineWidth=2.0);
-title("Distributed force - u2",'FontSize', 20);
-legend('x','y','z','FontSize', 15)
-nexttile
-plot(t, payload.u3(1,:), t , payload.u3(2,:), t , payload.u3(3,:),LineWidth=2.0);
-title("Distributed force - u3",'FontSize', 20);
-legend('x','y','z','FontSize', 15)
+% % distributed force
+% figure(4)
+% tiledlayout(3,1)
+% nexttile
+% plot(t, payload.u1(1,:), t , payload.u1(2,:), t , payload.u1(3,:),LineWidth=2.0);
+% title("Distributed force - u1",'FontSize', 20);
+% legend('x','y','z','FontSize', 15)
+% nexttile
+% plot(t, payload.u2(1,:), t , payload.u2(2,:), t , payload.u2(3,:),LineWidth=2.0);
+% title("Distributed force - u2",'FontSize', 20);
+% legend('x','y','z','FontSize', 15)
+% nexttile
+% plot(t, payload.u3(1,:), t , payload.u3(2,:), t , payload.u3(3,:),LineWidth=2.0);
+% title("Distributed force - u3",'FontSize', 20);
+% legend('x','y','z','FontSize', 15)
 
 text = sprintf('\nElapsed time : %.2f seconds\n', toc);
 disp(text);
