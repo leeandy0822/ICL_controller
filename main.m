@@ -23,11 +23,12 @@ payload.Rd = zeros(9, length(payload.t));
 payload.W = zeros(3, length(payload.t));
 payload.ex = zeros(3, length(payload.t));
 payload.ev = zeros(3, length(payload.t));
-payload.mass_estimation = zeros(1, length(payload.t));
-payload.inertia_estimation = zeros(3, length(payload.t));
 payload.force = zeros(3,length(payload.t));
 payload.moment = zeros(3,length(payload.t));
 
+% translation: m m*CoG  rotation: CoG J3x1 (todo: 6x1)
+payload.translation_estimation = zeros(4, length(payload.t));
+payload.rotation_estimation = zeros(6, length(payload.t));
 
 %% Grasp position 
 
@@ -44,7 +45,9 @@ eul = [-pi/10 pi/10 pi/10];
 R0 = eul2rotm(eul);
 payload.R(:,1) = reshape(R0,9,1);
 payload.W(:,1) = [0.03, -0.05, 0.05];
-payload.inertia_estimation(:, 1) = [0.01; 0.01; 0.01];
+% initial theta guess
+payload.translation_estimation(:,1) = [2; 0 ; 0 ; 0 ];
+payload.rotation_estimation(:, 1) = [0; 0; 0; 0.01; 0.01; 0.01];
 
 x0 = [0 ; 30 ; 0];
 x0_dot = [0 ; 0; 0];
@@ -57,21 +60,21 @@ ctrl = controller;
 
 %% ICL initialize
 % initialize integral concurrent learning
-icl_mass = integral_concurrent_learning;
-icl_mass.N_diag = 30;
-icl_mass.mat_diag_matrix = zeros(1, icl_mass.N_diag);
-icl_mass.mat_diag_sum = zeros(1, 1);
-icl_mass.index_diag = 0;
-icl_mass.current_force = zeros(1, 1);
+icl_translation = integral_concurrent_learning;
+icl_translation.N_diag = 30;
+icl_translation.mat_diag_matrix = zeros(1, icl_translation.N_diag);
+icl_translation.mat_diag_sum = zeros(1, 1);
+icl_translation.index_diag = 0;
+icl_translation.current_force = zeros(1, 1);
 
 % initialize integral concurrent learning
-icl_moment = integral_concurrent_learning;
-icl_moment.N_diag = 10;
-icl_moment.mat_diag_matrix = zeros(3, icl_moment.N_diag);
-icl_moment.mat_diag_sum = zeros(3, 1);
-icl_moment.index_diag = 0;
-icl_moment.current_moment = zeros(3,1);
-icl_moment.W_last = zeros(3, 1);
+icl_rotation = integral_concurrent_learning;
+icl_rotation.N_diag = 10;
+icl_rotation.mat_diag_matrix = zeros(3, icl_rotation.N_diag);
+icl_rotation.mat_diag_sum = zeros(3, 1);
+icl_rotation.index_diag = 0;
+icl_rotation.current_moment = zeros(3,1);
+icl_rotation.W_last = zeros(3, 1);
 
 %% trajectory
 tra = zeros(9, length(t));
@@ -91,10 +94,10 @@ for i= 2:length(payload.t)
     Xd = tra(1:9, i);
     
     % force controller
-    [Fd, force_error, mass_est, icl_mass] = ctrl.force_ctrl(i,payload , Xd,  icl_mass,dt);
+    [Fd, force_error, translation_est, icl_translation] = ctrl.force_ctrl(i,payload , Xd,  icl_translation,dt);
     
     % moment controller 
-    [Md, moment_error, inertia_est, icl_moment, Rd] = ctrl.moment_ctrl(i, payload, Xd, icl_moment, dt);
+    [Md, moment_error, rotation_est, icl_rotation, Rd] = ctrl.moment_ctrl(i, payload, Xd, icl_rotation, dt);
 
     
     % distribute force
@@ -135,11 +138,11 @@ for i= 2:length(payload.t)
     payload.ev(:,i) = error(4:6);
     payload.eR(:,i) = error(7:9);
     payload.eW(:,i) = error(10:12);
-    payload.mass_estimation(:,i) = mass_est;
-    payload.inertia_estimation(:,i) = inertia_est;
+    payload.translation_estimation(:,i) = translation_est;
+    payload.rotation_estimation(:,i) = rotation_est;
     
-    icl_mass.current_force = Fd;
-    icl_moment.current_moment = Md;
+    icl_translation.current_force = Fd;
+    icl_rotation.current_moment = Md;
 end
 
 

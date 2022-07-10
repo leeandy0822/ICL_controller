@@ -2,50 +2,65 @@ classdef controller
 
     properties
 
-        kx0 = 30;
-        kv0 = 10;
+        kx = 30;
+        kv = 10;
         gamma_m = 0.1;
         cx = 1;
         kcl_m = 0.00001;
 
-        kr0 = 9;
-        ko0 = 2;    
+        kr = 9;
+        ko = 2;    
         gamma_j = diag([10.5,9.5,14]);
         cr = 0.5;
         kcl_j = 80;
 
         e3 = [0; 0; 1];
+        last_w = [0;0;0];
+
     end
 
 
     methods 
         function [Fd, error, theta_m_hat, icl_mass] = force_ctrl(obj, iter, payload, Xd, icl_mass, dt)
            
-            x0_enu = payload.x(:,iter-1);
-            x0_dot_enu = payload.v(:,iter-1);
+            x_enu = payload.x(:,iter-1);
+            x_dot_enu = payload.v(:,iter-1);
 
-            x0d_enu = Xd(1:3);
-            x0d_dot_enu = Xd(4:6);
-            x0d_double_dot_enu = Xd(7:9);
+            xd_enu = Xd(1:3);
+            xd_dot_enu = Xd(4:6);
+            xd_double_dot_enu = Xd(7:9);
             
 
             % convert position and velocity from enu to ned
-            x0 = vec_enu_to_ned(x0_enu);
-            x0_dot = vec_enu_to_ned(x0_dot_enu);
-            x0d = vec_enu_to_ned(x0d_enu);
-            x0d_dot = vec_enu_to_ned(x0d_dot_enu);
-            x0d_double_dot = vec_enu_to_ned(x0d_double_dot_enu);
+            x = vec_enu_to_ned(x_enu);
+            x_dot = vec_enu_to_ned(x_dot_enu);
+            xd = vec_enu_to_ned(xd_enu);
+            xd_dot = vec_enu_to_ned(xd_dot_enu);
+            xd_double_dot = vec_enu_to_ned(xd_double_dot_enu);
             
 
-            theta_m_hat = payload.mass_estimation(:,iter-1);
+            theta_m_hat = payload.translation_estimation(:,iter-1);
 
-            % Repayload.gression Matrix
-            Ym = -x0d_double_dot + payload.g*obj.e3;
-            Ym_cl = -x0_dot + payload.g*obj.e3*dt;
+            % payload.gression Matrix
+            R = reshape(payload.R(:,iter-1), 3,3);
+            W = payload.W(: , iter-1);
+            W_dot = W- payload.last_W;
+
+            a = -R*(hat_map(W_dot) + hat_map(W) * hat_map(W));
+            b = -xd_double_dot + payload.g*obj.e3;
+
+            % adaptive term 
+            Ym = [b zeros(3,3); zeros(3,1) a];
+
+            % integral term 
+            icl_a = a*dt;
+            c = -x_dot + payload.g*obj.e3*dt;
+
+            Ym_cl = [c zeros(3,3); zeros(3,1) icl_a];
             
             % Error
-            ex = x0 - x0d;
-            ev = x0_dot - x0d_dot;
+            ex = x - xd;
+            ev = x_dot - xd_dot;
             
             F_bar = icl_mass.current_force*dt;
             
@@ -63,29 +78,32 @@ classdef controller
             theta_m_hat = theta_m_hat + theta_m_hat_dot*dt;
 
             % Control Input
-            Fd = -obj.kx0*ex - obj.kv0*ev - Ym*theta_m_hat ;
+            Fd = obj.kx*ex + obj.kv*ev + Ym*theta_m_hat ;
             icl_mass.current_force = Fd;            
             
             error(1:3) = ex;
             error(4:6) = ev;
+
+            obj.last_w = W;
         end
 
 
         function [Md, error, J_est, icl_moment, Rd] = moment_ctrl(obj, iter, payload, Xd, icl_moment, dt)
 
-            x0d_dot_enu = Xd(4:6);
+            xd_dot_enu = Xd(4:6);
             
             % convert position and velocity from enu to ned
-            x0d_dot = x0d_dot_enu;
+            xd_dot = xd_dot_enu;
 
             % states 
             R = reshape(payload.R(:,iter-1), 3,3);
             W = payload.W(: , iter-1);
-            
+            W_dot = W- payload.last_W;
+
             % Desire 
-            Rd = [x0d_dot/norm(x0d_dot) (hat_map(obj.e3)*x0d_dot)/(norm(hat_map(obj.e3)*x0d_dot)) obj.e3];
+            Rd = [xd_dot/norm(xd_dot) (hat_map(obj.e3)*xd_dot)/(norm(hat_map(obj.e3)*xd_dot)) obj.e3];
             Wd = [0; 0; 0];
-           
+            
             % eR and eW
             eR = 1/2*vee_map(Rd'*R - R'*Rd);
             eW = W - R'*Rd*Wd;
@@ -134,7 +152,7 @@ classdef controller
             % moment feedforward control input
             M_ff = Y_diag*theta_diag_hat;
 
-            Md = -obj.kr0*eR - obj.ko0*eW - M_ff;
+            Md = -obj.kr*eR - obj.ko*eW - M_ff;
 
             error(1:3) = eR;
             error(4:6) = eW;

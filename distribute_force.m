@@ -23,9 +23,7 @@ classdef distribute_force
                 % so do R'
                 Fd_new =  u1 +  u2 +  u3;
                 Md_new = hat_map(payload.p1 + payload.body2CoG)*R'* u1 + hat_map(payload.p2+ payload.body2CoG)*R'* u2 + hat_map(payload.p3+ payload.body2CoG)*R'* u3 ;
-                
-                Fd_error = Fd - Fd_new;
-                Md_error = Md - Md_new;
+
 
         end
     end

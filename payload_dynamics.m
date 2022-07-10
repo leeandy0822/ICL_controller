@@ -55,8 +55,8 @@ classdef payload_dynamics
         eW
         
         % estimation value
-        mass_estimation
-        inertia_estimation
+        translation_estimation
+        rotation_estimation
 
         % control input
         force
