@@ -4,14 +4,14 @@ tic;
 
 %% Simulation time
 dt = 0.01;
-sim_t = 60;
+sim_t = 30;
 payload = payload_dynamics;
 payload.dt = dt;
 payload.sim_t = sim_t;
 payload.t = 0:dt:sim_t;
 
 %% Physical property
-payload.m = 4;
+payload.m = 5;
 payload.J = [0.0850, 0, 0;
                 0, 0.0815, 0;
                 0, 0, 0.120];
@@ -21,6 +21,7 @@ payload.v = zeros(3,length(payload.t));
 payload.R = zeros(9, length(payload.t));
 payload.Rd = zeros(9, length(payload.t));
 payload.W = zeros(3, length(payload.t));
+payload.dW = zeros(3, length(payload.t));
 payload.ex = zeros(3, length(payload.t));
 payload.ev = zeros(3, length(payload.t));
 payload.force = zeros(3,length(payload.t));
@@ -41,13 +42,13 @@ payload.u3 = zeros(3, length(payload.t));
 
 
 %% initial condition
-eul = [-pi/10 pi/10 pi/10];
+eul = [pi/10 pi/10 pi/10];
 R0 = eul2rotm(eul);
 payload.R(:,1) = reshape(R0,9,1);
-payload.W(:,1) = [0.03, -0.05, 0.05];
+payload.W(:,1) = [0.1, 0.05, 0.05];
 % initial theta guess
 payload.translation_estimation(:,1) = [2; 0 ; 0 ; 0 ];
-payload.rotation_estimation(:, 1) = [0; 0; 0; 0.01; 0.01; 0.01];
+payload.rotation_estimation(:, 1) = [0; 0; 0; 0; 0; 0];
 
 x0 = [0 ; 30 ; 0];
 x0_dot = [0 ; 0; 0];
@@ -61,7 +62,7 @@ ctrl = controller;
 %% ICL initialize
 % initialize integral concurrent learning
 icl_trans = integral_concurrent_learning;
-icl_trans.N_diag = 30;
+icl_trans.N_diag = 5;
 icl_trans.mat_diag_matrix = zeros(4, icl_trans.N_diag);
 icl_trans.mat_diag_sum = zeros(4, 1);
 icl_trans.index_diag = 0;
@@ -70,7 +71,7 @@ icl_trans.current_force = zeros(3, 1);
 
 % initialize integral concurrent learning
 icl_rot = integral_concurrent_learning;
-icl_rot.N_diag = 10;
+icl_rot.N_diag = 5;
 icl_rot.mat_diag_matrix = zeros(6, icl_rot.N_diag);
 icl_rot.mat_diag_sum = zeros(6, 1);
 icl_rot.index_diag = 0;
@@ -207,7 +208,7 @@ title("Theta",'FontSize', 20);
 legend('Estimated Mass','Ground Truth','FontSize', 15)
 
 % turn mass x CoG -> CoG
-payload.translation_estimation(2:4) = payload.translation_estimation(2:4) / payload.translation_estimation(1);
+payload.translation_estimation(2:4,:) = payload.translation_estimation(2:4,:) ./ payload.translation_estimation(1,:);
 
 nexttile
 plot(t, payload.translation_estimation(2,:),t,ones(1,length(t))*-payload.body2CoG(1),LineWidth=2.0)
@@ -252,17 +253,17 @@ plot(t, payload.rotation_estimation(3,:),t,ones(1,length(t))*-payload.body2CoG(3
 title("CoG (z)",'FontSize', 20);
 legend('Estimate','Ground Truth','FontSize', 15)
 
-% % resultant force
-% figure(3)
-% tiledlayout(2,1)
-% nexttile
-% plot(t, payload.force(1,:), t , payload.force(2,:), t , payload.force(3,:),LineWidth=2.0);
-% title("Force Input",'FontSize', 20);
-% legend('x','y','z','FontSize', 15)
-% nexttile
-% plot(t, payload.moment(1,:), t , payload.moment(2,:), t , payload.moment(3,:),LineWidth=2.0);
-% title("Moment Input",'FontSize', 20);
-% legend('x','y','z','FontSize', 15)
+% resultant force
+figure(3)
+tiledlayout(2,1)
+nexttile
+plot(t, payload.force(1,:), t , payload.force(2,:), t , payload.force(3,:),LineWidth=2.0);
+title("Force Input",'FontSize', 20);
+legend('x','y','z','FontSize', 15)
+nexttile
+plot(t, payload.moment(1,:), t , payload.moment(2,:), t , payload.moment(3,:),LineWidth=2.0);
+title("Moment Input",'FontSize', 20);
+legend('x','y','z','FontSize', 15)
 
 % % distributed force
 % figure(4)
