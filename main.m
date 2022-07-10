@@ -60,21 +60,21 @@ ctrl = controller;
 
 %% ICL initialize
 % initialize integral concurrent learning
-icl_translation = integral_concurrent_learning;
-icl_translation.N_diag = 30;
-icl_translation.mat_diag_matrix = zeros(1, icl_translation.N_diag);
-icl_translation.mat_diag_sum = zeros(1, 1);
-icl_translation.index_diag = 0;
-icl_translation.current_force = zeros(1, 1);
+icl_trans = integral_concurrent_learning;
+icl_trans.N_diag = 30;
+icl_trans.mat_diag_matrix = zeros(4, icl_trans.N_diag);
+icl_trans.mat_diag_sum = zeros(4, 1);
+icl_trans.index_diag = 0;
+icl_trans.current_force = zeros(3, 1);
 
 % initialize integral concurrent learning
-icl_rotation = integral_concurrent_learning;
-icl_rotation.N_diag = 10;
-icl_rotation.mat_diag_matrix = zeros(3, icl_rotation.N_diag);
-icl_rotation.mat_diag_sum = zeros(3, 1);
-icl_rotation.index_diag = 0;
-icl_rotation.current_moment = zeros(3,1);
-icl_rotation.W_last = zeros(3, 1);
+icl_rot = integral_concurrent_learning;
+icl_rot.N_diag = 10;
+icl_rot.mat_diag_matrix = zeros(6, icl_rot.N_diag);
+icl_rot.mat_diag_sum = zeros(6, 1);
+icl_rot.index_diag = 0;
+icl_rot.current_moment = zeros(3,1);
+icl_rot.W_last = zeros(3, 1);
 
 %% trajectory
 tra = zeros(9, length(t));
@@ -94,10 +94,10 @@ for i= 2:length(payload.t)
     Xd = tra(1:9, i);
     
     % force controller
-    [Fd, force_error, translation_est, icl_translation] = ctrl.force_ctrl(i,payload , Xd,  icl_translation,dt);
+    [Fd, force_error, translation_est, icl_trans] = ctrl.force_ctrl(i,payload , Xd,  icl_rot,icl_trans,dt);
     
     % moment controller 
-    [Md, moment_error, rotation_est, icl_rotation, Rd] = ctrl.moment_ctrl(i, payload, Xd, icl_rotation, dt);
+    [Md, moment_error, rotation_est, icl_rot, Rd] = ctrl.moment_ctrl(i, payload, Xd, icl_rot, icl_trans,dt);
 
     
     % distribute force
@@ -122,8 +122,6 @@ for i= 2:length(payload.t)
     
     %% add the CoG to body effect
     
-    
-
     % dynamics update
     [T, X_new] = ode45(@(t, x) payload.dynamics(t, x, control), [0, dt], X0, control);
 
@@ -141,8 +139,8 @@ for i= 2:length(payload.t)
     payload.translation_estimation(:,i) = translation_est;
     payload.rotation_estimation(:,i) = rotation_est;
     
-    icl_translation.current_force = Fd;
-    icl_rotation.current_moment = Md;
+    icl_trans.current_force = Fd;
+    icl_rot.current_moment = Md;
 end
 
 
@@ -198,22 +196,22 @@ title("Angular Velocity Errors",'FontSize', 20);
 legend('eo_1','eo_2','eo_3','FontSize', 15)
 
 nexttile
-% Plot velocity tracking error
+% Plot mass estimation
 theta_m_ground_truth = ones(1, length(payload.t))*payload.m;
-plot(t,payload.mass_estimation,t,theta_m_ground_truth,LineWidth=2.0)
+plot(t,payload.translation_estimation,t,theta_m_ground_truth,LineWidth=2.0)
 title("Theta",'FontSize', 20);
 legend('Estimated Mass','Ground Truth','FontSize', 15)
 
 nexttile
-plot(t, payload.inertia_estimation(1,:),t,ones(1,length(t))*payload.J(1),LineWidth=2.0)
+plot(t, payload.rotation_estimation(1,:),t,ones(1,length(t))*payload.J(1),LineWidth=2.0)
 title("Inertia xx",'FontSize', 20);
 legend('xx','Ground Truth','FontSize', 15)
 nexttile
-plot(t, payload.inertia_estimation(2,:),t,ones(1,length(t))*payload.J(5),LineWidth=2.0)
+plot(t, payload.rotation_estimation(2,:),t,ones(1,length(t))*payload.J(5),LineWidth=2.0)
 title("Inertia yy",'FontSize', 20);
 legend('yy','Ground Truth','FontSize', 15)
 nexttile
-plot(t, payload.inertia_estimation(3,:),t,ones(1,length(t))*payload.J(9),LineWidth=2.0)
+plot(t, payload.rotation_estimation(3,:),t,ones(1,length(t))*payload.J(9),LineWidth=2.0)
 title("Inertia zz",'FontSize', 20);
 legend('zz','Ground Truth','FontSize', 15)
 

@@ -18,9 +18,14 @@ classdef distribute_force
                 u2 = u(4:6); 
                 u3 = u(7:9);
                 
+                Fd_desire = u1 + u2 + u3;
+                Md_desire = hat_map(payload.p1)*R'* u1 + hat_map(payload.p2)*R'* u2 + hat_map(payload.p3)*R'* u3 ;
 
-                % but remember the moment should allocate at the body frame
-                % so do R'
+
+                Fd_error = Fd_desire - Fd;
+                Md_error = Md_desire - Md;
+
+                % Add the CoG effect
                 Fd_new =  u1 +  u2 +  u3;
                 Md_new = hat_map(payload.p1 + payload.body2CoG)*R'* u1 + hat_map(payload.p2+ payload.body2CoG)*R'* u2 + hat_map(payload.p3+ payload.body2CoG)*R'* u3 ;
 

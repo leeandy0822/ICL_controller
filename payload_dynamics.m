@@ -20,7 +20,7 @@ classdef payload_dynamics
         p3 = [-0.5 ; -0.4 ; -0.1];
 
         % CoG vector 
-        body2CoG =[0.05; 0.05; 0];
+        body2CoG =[0; 0; 0];
 
         % control grasp matrix
         B 
@@ -81,15 +81,15 @@ classdef payload_dynamics
 
             % Next state 
             dx = X(4:6);
-            dv = obj.g*obj.e3 + (f/obj.m);
+            dv = obj.g*obj.e3 - (f/obj.m);
             dR = R_now*hat_map(W_now);
-            dW = obj.J\(-vec_cross(W_now, obj.J*W_now) + M);
+            dOmega = obj.J\(-vec_cross(W_now, obj.J*W_now) + M);
 
             % Output 
             dX(1:3) = dx;
             dX(4:6) = dv;
             dX(7:15) = reshape(dR, 9, 1);
-            dX(16:18) = dW;
+            dX(16:18) = dOmega;
         end
     end
 end
