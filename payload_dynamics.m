@@ -20,7 +20,7 @@ classdef payload_dynamics
         p3 = [-0.5 ; -0.4 ; -0.1];
 
         % CoG vector 
-        body2CoG =[0; 0; 0];
+        body2CoG =[0.06; 0.07; 0.03];
 
         % control grasp matrix
         B 

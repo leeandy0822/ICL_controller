@@ -4,7 +4,7 @@ tic;
 
 %% Simulation time
 dt = 0.01;
-sim_t = 20;
+sim_t = 60;
 payload = payload_dynamics;
 payload.dt = dt;
 payload.sim_t = sim_t;
@@ -67,6 +67,7 @@ icl_trans.mat_diag_sum = zeros(4, 1);
 icl_trans.index_diag = 0;
 icl_trans.current_force = zeros(3, 1);
 
+
 % initialize integral concurrent learning
 icl_rot = integral_concurrent_learning;
 icl_rot.N_diag = 10;
@@ -75,6 +76,7 @@ icl_rot.mat_diag_sum = zeros(6, 1);
 icl_rot.index_diag = 0;
 icl_rot.current_moment = zeros(3,1);
 icl_rot.W_last = zeros(3, 1);
+icl_rot.f_last = zeros(3, 1);
 
 %% trajectory
 tra = zeros(9, length(t));
@@ -172,7 +174,7 @@ xlabel('x(m)'), ylabel('y(m)'), zlabel('z(m)')
 axis equal
 
 figure(2);
-tiledlayout(2,4)
+tiledlayout(2,2)
 nexttile
 % Plot position tracking error
 plot(t,payload.ex(1,:),t,payload.ex(2,:),t,payload.ex(3,:),LineWidth=2.0)
@@ -185,35 +187,70 @@ title("Velocity Tracking errors",'FontSize', 20);
 legend('ev_1','ev_2','ev_3','FontSize', 15)
 
 nexttile
-% Plot position tracking error
+% Plot rotation tracking error
 plot(t,payload.eR(1,:),t,payload.eR(2,:),t,payload.eR(3,:),LineWidth=2.0)
 title("Rotation Errors",'FontSize', 20);
 legend('er_1','er_2','er_3','FontSize', 15)
 nexttile
-% Plot velocity tracking error
+% Plot Omega tracking error
 plot(t,payload.eW(1,:),t,payload.eW(2,:),t,payload.eW(3,:),LineWidth=2.0)
 title("Angular Velocity Errors",'FontSize', 20);
 legend('eo_1','eo_2','eo_3','FontSize', 15)
 
+figure(3);
+tiledlayout(4,1)
 nexttile
 % Plot mass estimation
 theta_m_ground_truth = ones(1, length(payload.t))*payload.m;
-plot(t,payload.translation_estimation,t,theta_m_ground_truth,LineWidth=2.0)
+plot(t,payload.translation_estimation(1,:),t,theta_m_ground_truth,LineWidth=2.0)
 title("Theta",'FontSize', 20);
 legend('Estimated Mass','Ground Truth','FontSize', 15)
 
+% turn mass x CoG -> CoG
+payload.translation_estimation(2:4) = payload.translation_estimation(2:4) / payload.translation_estimation(1);
+
 nexttile
-plot(t, payload.rotation_estimation(1,:),t,ones(1,length(t))*payload.J(1),LineWidth=2.0)
+plot(t, payload.translation_estimation(2,:),t,ones(1,length(t))*-payload.body2CoG(1),LineWidth=2.0)
+title("From Mass CoG (x)",'FontSize', 20);
+legend('Estimate','Ground Truth','FontSize', 15)
+nexttile
+plot(t, payload.translation_estimation(3,:),t,ones(1,length(t))*-payload.body2CoG(2),LineWidth=2.0)
+title("From Mass CoG (y)",'FontSize', 20);
+legend('Estimate','Ground Truth','FontSize', 15)
+nexttile
+plot(t, payload.translation_estimation(4,:),t,ones(1,length(t))*-payload.body2CoG(3),LineWidth=2.0)
+title("From Mass CoG (z)",'FontSize', 20);
+legend('Estimate','Ground Truth','FontSize', 15)
+
+
+% Plot inertia
+figure(4);
+tiledlayout(3,2)
+nexttile
+plot(t, payload.rotation_estimation(4,:),t,ones(1,length(t))*payload.J(1),LineWidth=2.0)
 title("Inertia xx",'FontSize', 20);
-legend('xx','Ground Truth','FontSize', 15)
+legend('Estimate','Ground Truth','FontSize', 15)
 nexttile
-plot(t, payload.rotation_estimation(2,:),t,ones(1,length(t))*payload.J(5),LineWidth=2.0)
+plot(t, payload.rotation_estimation(5,:),t,ones(1,length(t))*payload.J(5),LineWidth=2.0)
 title("Inertia yy",'FontSize', 20);
-legend('yy','Ground Truth','FontSize', 15)
+legend('Estimate','Ground Truth','FontSize', 15)
 nexttile
-plot(t, payload.rotation_estimation(3,:),t,ones(1,length(t))*payload.J(9),LineWidth=2.0)
+plot(t, payload.rotation_estimation(6,:),t,ones(1,length(t))*payload.J(9),LineWidth=2.0)
 title("Inertia zz",'FontSize', 20);
-legend('zz','Ground Truth','FontSize', 15)
+legend('Estimate','Ground Truth','FontSize', 15)
+
+nexttile
+plot(t, payload.rotation_estimation(1,:),t,ones(1,length(t))*-payload.body2CoG(1),LineWidth=2.0)
+title("CoG (x)",'FontSize', 20);
+legend('Estimate','Ground Truth','FontSize', 15)
+nexttile
+plot(t, payload.rotation_estimation(2,:),t,ones(1,length(t))*-payload.body2CoG(2),LineWidth=2.0)
+title("CoG (y)",'FontSize', 20);
+legend('Estimate','Ground Truth','FontSize', 15)
+nexttile
+plot(t, payload.rotation_estimation(3,:),t,ones(1,length(t))*-payload.body2CoG(3),LineWidth=2.0)
+title("CoG (z)",'FontSize', 20);
+legend('Estimate','Ground Truth','FontSize', 15)
 
 % % resultant force
 % figure(3)

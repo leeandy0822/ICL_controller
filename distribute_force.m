@@ -26,6 +26,7 @@ classdef distribute_force
                 Md_error = Md_desire - Md;
 
                 % Add the CoG effect
+                
                 Fd_new =  u1 +  u2 +  u3;
                 Md_new = hat_map(payload.p1 + payload.body2CoG)*R'* u1 + hat_map(payload.p2+ payload.body2CoG)*R'* u2 + hat_map(payload.p3+ payload.body2CoG)*R'* u3 ;
 

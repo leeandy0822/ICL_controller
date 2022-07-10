@@ -3,19 +3,20 @@ classdef controller
     properties
 
         kx = 10;
-        kv = 5;
-        gamma_m = diag([1,1,1,1]);
+        kv = 4;
+        gamma_m = diag([0.1,0.1,0.1,0.5]);
         cx = 0.2;
-        kcl_m = 0.000001;
+        kcl_m = 0.01;
 
-        kr = 5;
+        kr = 6;
         ko = 3;    
         %gamma_j = diag([1,1,1,10.5,9.5,14]);
-        gamma_j = diag([1,1,1,1,1,1]);
+        gamma_j = diag([0.3,0.3,0.2, 12, 9, 15]);
         cr = 0.3;
-        kcl_j = 0.0000001;
+        kcl_j = 10;
 
         e3 = [0; 0; 1];
+
         last_f = [0; 0; 0];
 
     end
@@ -121,9 +122,9 @@ classdef controller
                      -W(1)*W(3), 0, W(1)*W(3);
                      W(1)*W(2), -W(1)*W(2), 0];
             
-            Fx = obj.last_f(1);
-            Fy = obj.last_f(2);
-            Fz = obj.last_f(3);
+            Fx = icl_rot.f_last(1);
+            Fy = icl_rot.f_last(2);
+            Fz = icl_rot.f_last(3);
             force_Y_diag = [   0    Fz  -Fy;
                                -Fz   0   Fx;
                                Fy    -Fx  0];
@@ -158,8 +159,9 @@ classdef controller
             
             % moment of inertia update law
             theta_diag_hat_dot_adaptive = -obj.gamma_j * Y_diag_transpose*(eW + obj.cr*eR);
-            theta_diag_hat_dot_icl_moment = obj.kcl_j * obj.gamma_j * icl_rot.mat_diag_sum;
-            theta_diag_hat_dot = theta_diag_hat_dot_adaptive + theta_diag_hat_dot_icl_moment;
+            theta_diag_hat_dot_icl = obj.kcl_j * obj.gamma_j * icl_rot.mat_diag_sum;
+            
+            theta_diag_hat_dot = theta_diag_hat_dot_adaptive + theta_diag_hat_dot_icl;
             
             % moment of inertia estimation
             theta_diag_hat = J_est_last + theta_diag_hat_dot*dt;
@@ -174,10 +176,10 @@ classdef controller
             %Md = -obj.kr*eR - obj.ko*eW - M_ff ;
 
             error(1:3) = eR;
-            error(4:6) = eW
+            error(4:6) = eW;
 
             icl_rot.W_last = W;
-            obj.last_f = icl_trans.current_force;
+            icl_rot.f_last = icl_trans.current_force;
         
         end
 
