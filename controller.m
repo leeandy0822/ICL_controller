@@ -4,18 +4,18 @@ classdef controller
 
         kx = 40;
         kv = 8;
-        gamma_m = diag([0.01,0.0005,0.0005,0.0006]);
+        gamma_m = diag([0.01,0.1,0.1,0.003]);
         cx = 10;
-        kcl_m = diag([0.001, 100,100,100]);
+        kcl_m = diag([0.0001, 5000 , 5000 ,5000]);
 
 
         kr = 20*eye(3);
         ko = 7*eye(3);    
         %gamma_j = diag([1,1,1,10.5,9.5,14]);
         %                         CoG              Inertia
-        gamma_j = diag([0.0001,0.0001,0.0001, 0.0001, 0.0001, 0.0001]);
+        gamma_j = diag([0.0001,0.0001,0.0001, 0.02, 0.01, 0.002]);
         cr = 20;
-        kcl_j = diag([  150, 150, 300 ,  800000, 800000, 800000]);
+        kcl_j = diag([  150, 150, 300 ,  4000, 800, 40000]);
 
         e3 = [0; 0; 1];
         last_f = [0; 0; 0];
@@ -47,7 +47,7 @@ classdef controller
             % payload.gression Matrix
             R = reshape(payload.R(:,iter-1), 3,3);
             W = payload.W(: , iter-1);
-            W_dot = (W - icl_rot.W_last)/dt;
+            W_dot = (W - icl_rot.W_last);
 
             payload.dW(: , iter-1) = W_dot;
 

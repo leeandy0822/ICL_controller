@@ -4,7 +4,7 @@ tic;
 
 %% Simulation time
 dt = 1/400;
-sim_t = 50;
+sim_t = 30;
 payload = payload_dynamics;
 payload.dt = dt;
 payload.sim_t = sim_t;
@@ -12,9 +12,9 @@ payload.t = 0:dt:sim_t;
 
 %% Physical property
 payload.m = 5;
-payload.J = [0.040, 0, 0;
-                0, 0.04, 0;
-                0, 0, 0.0800];
+payload.J = [0.020, 0, 0;
+                0, 0.02, 0;
+                0, 0, 0.0400];
 
 payload.x = zeros(3,length(payload.t));
 payload.v = zeros(3,length(payload.t));
@@ -45,7 +45,7 @@ payload.u3 = zeros(3, length(payload.t));
 eul = [pi/7 pi/7 pi/7];
 R0 = eul2rotm(eul);
 payload.R(:,1) = reshape(R0,9,1);
-payload.W(:,1) = [0.05, 0.05, 0.05];
+payload.W(:,1) = [0.1, 0.1, 0.05];
 % initial theta guess
 payload.translation_estimation(:,1) = [3; 0.05 ; 0.05 ; 0.05 ];
 payload.rotation_estimation(:, 1) = [0.05; 0.05; 0.05; 0; 0; 0];
@@ -87,12 +87,8 @@ tra(:,1) = traj.traj_generate(payload.t(1));
 h = waitbar(0,'please wait');
 for i= 2:length(payload.t)
     
-    str=["caculating...",num2str(i/length(payload.t)*100),'%'];
+    str=['Caculating...',num2str(i/length(payload.t)*100),'%'];
     waitbar(i/length(payload.t),h,str)
-    if mod(i,500) ==  0
-        x = round(i/length(payload.t),5)*100;
-        disp(round(x,2));
-    end
     t_now = payload.t(i);
     % desire trajectory
     tra(:,i) = traj.traj_generate(t_now);
@@ -207,22 +203,22 @@ nexttile
 % Plot mass estimation
 theta_m_ground_truth = ones(1, length(payload.t))*payload.m;
 plot(t,payload.translation_estimation(1,:),t,theta_m_ground_truth,LineWidth=2.0)
-title("Theta",'FontSize', 20);
+title("Mass",'FontSize', 20);
 legend('Estimated Mass','Ground Truth','FontSize', 15)
 
 % turn mass x CoG -> CoG
 payload.translation_estimation(2:4,:) = payload.translation_estimation(2:4,:) ./ payload.translation_estimation(1,:);
 
 nexttile
-plot(t, payload.translation_estimation(2,:),t,ones(1,length(t))*-payload.body2CoG(1),LineWidth=2.0)
+plot(t, payload.translation_estimation(2,:),t,ones(1,length(t))*payload.body2CoG(1),LineWidth=2.0)
 title("From Mass CoG (x)",'FontSize', 20);
 legend('Estimate','Ground Truth','FontSize', 15)
 nexttile
-plot(t, payload.translation_estimation(3,:),t,ones(1,length(t))*-payload.body2CoG(2),LineWidth=2.0)
+plot(t, payload.translation_estimation(3,:),t,ones(1,length(t))*payload.body2CoG(2),LineWidth=2.0)
 title("From Mass CoG (y)",'FontSize', 20);
 legend('Estimate','Ground Truth','FontSize', 15)
 nexttile
-plot(t, payload.translation_estimation(4,:),t,ones(1,length(t))*-payload.body2CoG(3),LineWidth=2.0)
+plot(t, payload.translation_estimation(4,:),t,ones(1,length(t))*payload.body2CoG(3),LineWidth=2.0)
 title("From Mass CoG (z)",'FontSize', 20);
 legend('Estimate','Ground Truth','FontSize', 15)
 

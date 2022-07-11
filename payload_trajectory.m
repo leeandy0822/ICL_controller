@@ -7,10 +7,15 @@ classdef payload_trajectory
 %             v = [15*0.03*pi*cos(0.03*pi*t) ; -0.32*pi*sin(0.01*pi*t) ; -0.005];
 %             a = [-15*0.03*0.03*pi*pi*sin(0.03*pi*t) ; -0.01*0.32*pi*pi*cos(0.01*pi*t) ; 0];
             
+% circle
             x = [ 2*sin(2*t) ;  2*cos(2*t);   -0.3 - 0.2*t];
             v = [ 4*cos(2*t) ; -4*sin(2*t) ;  -0.2];
             a = [-8*sin(2*t) ; -8*cos(2*t) ; 0];
 
+%             x = [1.2*sin(2*pi*t) ; 4.2*cos(1*pi*t); -0.5];
+%             v = [1.2*pi*2*cos(2*pi*t); 4.2*pi*(-sin(1*pi*t)); 0];
+%             a = [1.2*pi*2*2*pi*(-sin(2*pi*t)) ; 4.2*pi*pi*(-cos(1*pi*t)) ; 0];
+            
             % xd, vd, ad
             out = zeros(9, 1);
 
