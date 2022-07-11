@@ -4,7 +4,7 @@ tic;
 
 %% Simulation time
 dt = 1/400;
-sim_t = 20;
+sim_t = 50;
 payload = payload_dynamics;
 payload.dt = dt;
 payload.sim_t = sim_t;
@@ -12,9 +12,9 @@ payload.t = 0:dt:sim_t;
 
 %% Physical property
 payload.m = 5;
-payload.J = [0.0350, 0, 0;
-                0, 0.0315, 0;
-                0, 0, 0.100];
+payload.J = [0.040, 0, 0;
+                0, 0.04, 0;
+                0, 0, 0.0800];
 
 payload.x = zeros(3,length(payload.t));
 payload.v = zeros(3,length(payload.t));
@@ -45,12 +45,12 @@ payload.u3 = zeros(3, length(payload.t));
 eul = [pi/7 pi/7 pi/7];
 R0 = eul2rotm(eul);
 payload.R(:,1) = reshape(R0,9,1);
-payload.W(:,1) = [0.1, 0.05, 0.05];
+payload.W(:,1) = [0.05, 0.05, 0.05];
 % initial theta guess
-payload.translation_estimation(:,1) = [2; 0 ; 0 ; 0 ];
-payload.rotation_estimation(:, 1) = [0; 0; 0; 0; 0; 0];
+payload.translation_estimation(:,1) = [3; 0.05 ; 0.05 ; 0.05 ];
+payload.rotation_estimation(:, 1) = [0.05; 0.05; 0.05; 0; 0; 0];
 
-x0 = [0 ; 30 ; 0];
+x0 = [0 ; 0 ; 0];
 x0_dot = [0 ; 0; 0];
 payload.x(:,1) = x0;
 payload.v(:,1) = x0_dot;
@@ -84,9 +84,11 @@ tra = zeros(9, length(t));
 traj = payload_trajectory;
 tra(:,1) = traj.traj_generate(payload.t(1));
 
-
+h = waitbar(0,'please wait');
 for i= 2:length(payload.t)
     
+    str=["caculating...",num2str(i/length(payload.t)*100),'%'];
+    waitbar(i/length(payload.t),h,str)
     if mod(i,500) ==  0
         x = round(i/length(payload.t),5)*100;
         disp(round(x,2));
@@ -154,9 +156,9 @@ B = [ 0 1 0 ; 1 0 0 ; 0 0 -1];
 figure(1);
 tra(1:3,:) = B*tra(1:3,:);
 payload.x(1:3,:) = B*payload.x(1:3,:);
-plot3(tra(1,:),tra(2,:),tra(3,:),'LineWidth', 2, 'Color','k')
+plot3(tra(1,:),tra(2,:),tra(3,:),'LineWidth', 1.5, 'Color','r')
 hold on;
-plot3(payload.x(1,:),payload.x(2,:),payload.x(3,:),'LineWidth', 1.5, 'Color','#4DBEEE')
+plot3(payload.x(1,:),payload.x(2,:),payload.x(3,:),'LineWidth', 1.5, 'Color','b')
 hold on;
 title('Trajectory','FontSize', 20);
 hold on;
@@ -164,9 +166,10 @@ hold on;
 for i = 1:1500:length(payload.t)
     matrix = reshape(payload.R(:,i),3,3);
     matrix = B*matrix;
-    quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,1),matrix(2,1),matrix(3,1),'r',"LineWidth",2); 
-    quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,2),matrix(2,2),matrix(3,2),'g',"LineWidth",2); 
-    quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,3),matrix(2,3),matrix(3,3),'b',"LineWidth",2); 
+    norm = 3;
+    quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,1)/norm,matrix(2,1)/norm,matrix(3,1)/norm,'r',"LineWidth",1); 
+    quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,2)/norm,matrix(2,2)/norm,matrix(3,2)/norm,'g',"LineWidth",1); 
+    quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,3)/norm,matrix(2,3)/norm,matrix(3,3)/norm,'b',"LineWidth",1); 
 end
 
 hold on;

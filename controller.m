@@ -2,23 +2,22 @@ classdef controller
 
     properties
 
-        kx = 30;
-        kv = 10;
-        gamma_m = diag([0.1,0.005,0.005,0.006]);
-        cx = 1;
-        kcl_m = diag([0.001, 100,100,700]);
+        kx = 40;
+        kv = 8;
+        gamma_m = diag([0.01,0.0005,0.0005,0.0006]);
+        cx = 10;
+        kcl_m = diag([0.001, 100,100,100]);
 
 
-        kr = 10;
-        ko = 4;    
+        kr = 20*eye(3);
+        ko = 7*eye(3);    
         %gamma_j = diag([1,1,1,10.5,9.5,14]);
-        %                 CoG              Inertia
-        gamma_j = diag([0.1,0.2,0.004,   2, 0.5, 4]);
-        cr = 0.3;
-        kcl_j = diag([  15,10, 50 ,  100, 100, 80]);
+        %                         CoG              Inertia
+        gamma_j = diag([0.0001,0.0001,0.0001, 0.0001, 0.0001, 0.0001]);
+        cr = 20;
+        kcl_j = diag([  150, 150, 300 ,  800000, 800000, 800000]);
 
         e3 = [0; 0; 1];
-
         last_f = [0; 0; 0];
 
     end
@@ -84,7 +83,6 @@ classdef controller
             theta_m_hat_dot_icl =  obj.kcl_m * obj.gamma_m * icl_term;
             theta_m_hat = theta_m_hat + (theta_m_hat_dot_adaptive+theta_m_hat_dot_icl)*dt;
             
-
             % Control Input
             %Fd = -obj.kx*ex - obj.kv*ev  + Ym*theta_m_hat;
             
@@ -95,7 +93,6 @@ classdef controller
             
             error(1:3) = ex;
             error(4:6) = ev;
-
         end
 
 
@@ -111,7 +108,8 @@ classdef controller
             W = payload.W(: , iter-1);
 
             % Desire 
-            Rd = [xd_dot/norm(xd_dot) (hat_map(obj.e3)*xd_dot)/(norm(hat_map(obj.e3)*xd_dot)) obj.e3];
+            b1c = [1 ; 0 ;  0];
+            Rd = [b1c hat_map(obj.e3)*b1c obj.e3];
             Wd = [0; 0; 0];
             
             % eR and eW
@@ -122,9 +120,9 @@ classdef controller
             J_est_last = payload.rotation_estimation(:, iter-1);
 
             % calculate the regression matrix
-            inertia_Y_diag = [0, -W(2)*W(3), W(2)*W(3);
-                     W(1)*W(3), 0, -W(1)*W(3);
-                     -W(1)*W(2), W(1)*W(2), 0];
+            inertia_Y_diag =    [0, -W(2)*W(3), W(2)*W(3);
+                                W(1)*W(3), 0, -W(1)*W(3);
+                                -W(1)*W(2), W(1)*W(2), 0];
             
             Fx = icl_rot.f_last(1);
             Fy = icl_rot.f_last(2);
@@ -138,8 +136,10 @@ classdef controller
 
             % y_diag_cl_integral and y_diag_cl_integral transpose
             inertia_y_diag_cl_integral = [W(1) - icl_rot.W_last(1), -W(2)*W(3)*dt, W(2)*W(3)*dt;
-                                  W(1)*W(3)*dt, W(2) - icl_rot.W_last(2), -W(1)*W(3)*dt;
-                                 -W(1)*W(2)*dt, W(1)*W(2)*dt, W(3) - icl_rot.W_last(3)];
+                                        
+                                          W(1)*W(3)*dt, W(2) - icl_rot.W_last(2), -W(1)*W(3)*dt;
+                                         
+                                           -W(1)*W(2)*dt, W(1)*W(2)*dt, W(3) - icl_rot.W_last(3)];
             
             force_y_diag_cl_integral = force_Y_diag*dt;
 
