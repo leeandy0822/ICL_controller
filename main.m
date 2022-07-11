@@ -3,8 +3,8 @@ addpath('./tools/')
 tic;
 
 %% Simulation time
-dt = 0.01;
-sim_t = 30;
+dt = 1/400;
+sim_t = 20;
 payload = payload_dynamics;
 payload.dt = dt;
 payload.sim_t = sim_t;
@@ -12,9 +12,9 @@ payload.t = 0:dt:sim_t;
 
 %% Physical property
 payload.m = 5;
-payload.J = [0.0850, 0, 0;
-                0, 0.0815, 0;
-                0, 0, 0.120];
+payload.J = [0.0350, 0, 0;
+                0, 0.0315, 0;
+                0, 0, 0.100];
 
 payload.x = zeros(3,length(payload.t));
 payload.v = zeros(3,length(payload.t));
@@ -42,7 +42,7 @@ payload.u3 = zeros(3, length(payload.t));
 
 
 %% initial condition
-eul = [pi/10 pi/10 pi/10];
+eul = [pi/7 pi/7 pi/7];
 R0 = eul2rotm(eul);
 payload.R(:,1) = reshape(R0,9,1);
 payload.W(:,1) = [0.1, 0.05, 0.05];
@@ -226,7 +226,7 @@ legend('Estimate','Ground Truth','FontSize', 15)
 
 % Plot inertia
 figure(4);
-tiledlayout(3,2)
+tiledlayout(2,3)
 nexttile
 plot(t, payload.rotation_estimation(4,:),t,ones(1,length(t))*payload.J(1),LineWidth=2.0)
 title("Inertia xx",'FontSize', 20);
@@ -253,17 +253,17 @@ plot(t, payload.rotation_estimation(3,:),t,ones(1,length(t))*-payload.body2CoG(3
 title("CoG (z)",'FontSize', 20);
 legend('Estimate','Ground Truth','FontSize', 15)
 
-% resultant force
-figure(3)
-tiledlayout(2,1)
-nexttile
-plot(t, payload.force(1,:), t , payload.force(2,:), t , payload.force(3,:),LineWidth=2.0);
-title("Force Input",'FontSize', 20);
-legend('x','y','z','FontSize', 15)
-nexttile
-plot(t, payload.moment(1,:), t , payload.moment(2,:), t , payload.moment(3,:),LineWidth=2.0);
-title("Moment Input",'FontSize', 20);
-legend('x','y','z','FontSize', 15)
+% % resultant force
+% figure(5)
+% tiledlayout(2,1)
+% nexttile
+% plot(t, payload.force(1,:), t , payload.force(2,:), t , payload.force(3,:),LineWidth=2.0);
+% title("Force Input",'FontSize', 20);
+% legend('x','y','z','FontSize', 15)
+% nexttile
+% plot(t, payload.moment(1,:), t , payload.moment(2,:), t , payload.moment(3,:),LineWidth=2.0);
+% title("Moment Input",'FontSize', 20);
+% legend('x','y','z','FontSize', 15)
 
 % % distributed force
 % figure(4)

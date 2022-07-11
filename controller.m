@@ -2,20 +2,20 @@ classdef controller
 
     properties
 
-        kx = 10;
-        kv = 4;
-        gamma_m = diag([0.5,0.05,0.05,0.05]);
-        cx = 0.3;
-        kcl_m = 0.001;
+        kx = 30;
+        kv = 10;
+        gamma_m = diag([0.1,0.005,0.005,0.006]);
+        cx = 1;
+        kcl_m = diag([0.001, 100,100,700]);
 
 
-        kr = 5;
-        ko = 2;    
+        kr = 10;
+        ko = 4;    
         %gamma_j = diag([1,1,1,10.5,9.5,14]);
-        % CoG Inertia
-        gamma_j = diag([0.2,0.2,0.05, 10, 9, 15]);
-        cr = 0.5;
-        kcl_j = 7;
+        %                 CoG              Inertia
+        gamma_j = diag([0.1,0.2,0.004,   2, 0.5, 4]);
+        cr = 0.3;
+        kcl_j = diag([  15,10, 50 ,  100, 100, 80]);
 
         e3 = [0; 0; 1];
 
@@ -122,9 +122,9 @@ classdef controller
             J_est_last = payload.rotation_estimation(:, iter-1);
 
             % calculate the regression matrix
-            inertia_Y_diag = [0, W(2)*W(3), -W(2)*W(3);
-                     -W(1)*W(3), 0, W(1)*W(3);
-                     W(1)*W(2), -W(1)*W(2), 0];
+            inertia_Y_diag = [0, -W(2)*W(3), W(2)*W(3);
+                     W(1)*W(3), 0, -W(1)*W(3);
+                     -W(1)*W(2), W(1)*W(2), 0];
             
             Fx = icl_rot.f_last(1);
             Fy = icl_rot.f_last(2);
