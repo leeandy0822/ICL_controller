@@ -4,7 +4,7 @@ tic;
 
 %% Simulation time
 dt = 1/400;
-sim_t = 20;
+sim_t = 60;
 payload = payload_dynamics;
 payload.dt = dt;
 payload.sim_t = sim_t;
@@ -150,7 +150,6 @@ end
 t = payload.t;
 B = [ 0 1 0 ; 1 0 0 ; 0 0 -1];
 
-% plot
 figure(1);
 tra(1:3,:) = B*tra(1:3,:);
 payload.x(1:3,:) = B*payload.x(1:3,:);
@@ -198,30 +197,30 @@ plot(t,payload.eW(1,:),t,payload.eW(2,:),t,payload.eW(3,:),LineWidth=2.0)
 title("Angular Velocity Errors",'FontSize', 20);
 legend('eo_1','eo_2','eo_3','FontSize', 15)
 
-figure(3);
-tiledlayout(4,1)
-nexttile
-% Plot mass estimation
-theta_m_ground_truth = ones(1, length(payload.t))*payload.m;
-plot(t,payload.translation_estimation(1,:),t,theta_m_ground_truth,LineWidth=2.0)
-title("Theta",'FontSize', 20);
-legend('Estimated Mass','Ground Truth','FontSize', 15)
-
-% turn mass x CoG -> CoG
-payload.translation_estimation(2:4,:) = payload.translation_estimation(2:4,:) ./ payload.translation_estimation(1,:);
-
-nexttile
-plot(t, payload.translation_estimation(2,:),t,ones(1,length(t))*-payload.body2CoG(1),LineWidth=2.0)
-title("From Mass CoG (x)",'FontSize', 20);
-legend('Estimate','Ground Truth','FontSize', 15)
-nexttile
-plot(t, payload.translation_estimation(3,:),t,ones(1,length(t))*-payload.body2CoG(2),LineWidth=2.0)
-title("From Mass CoG (y)",'FontSize', 20);
-legend('Estimate','Ground Truth','FontSize', 15)
-nexttile
-plot(t, payload.translation_estimation(4,:),t,ones(1,length(t))*-payload.body2CoG(3),LineWidth=2.0)
-title("From Mass CoG (z)",'FontSize', 20);
-legend('Estimate','Ground Truth','FontSize', 15)
+% figure(3);
+% tiledlayout(4,1)
+% nexttile
+% % Plot mass estimation
+% theta_m_ground_truth = ones(1, length(payload.t))*payload.m;
+% plot(t,payload.translation_estimation(1,:),t,theta_m_ground_truth,LineWidth=2.0)
+% title("Theta",'FontSize', 20);
+% legend('Estimated Mass','Ground Truth','FontSize', 15)
+% 
+% % turn mass x CoG -> CoG
+% payload.translation_estimation(2:4,:) = payload.translation_estimation(2:4,:) ./ payload.translation_estimation(1,:);
+% 
+% nexttile
+% plot(t, payload.translation_estimation(2,:),t,ones(1,length(t))*-payload.body2CoG(1),LineWidth=2.0)
+% title("From Mass CoG (x)",'FontSize', 20);
+% legend('Estimate','Ground Truth','FontSize', 15)
+% nexttile
+% plot(t, payload.translation_estimation(3,:),t,ones(1,length(t))*-payload.body2CoG(2),LineWidth=2.0)
+% title("From Mass CoG (y)",'FontSize', 20);
+% legend('Estimate','Ground Truth','FontSize', 15)
+% nexttile
+% plot(t, payload.translation_estimation(4,:),t,ones(1,length(t))*-payload.body2CoG(3),LineWidth=2.0)
+% title("From Mass CoG (z)",'FontSize', 20);
+% legend('Estimate','Ground Truth','FontSize', 15)
 
 
 % Plot inertia

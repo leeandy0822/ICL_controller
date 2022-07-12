@@ -12,10 +12,10 @@ classdef controller
         kr = 10;
         ko = 4;    
         %gamma_j = diag([1,1,1,10.5,9.5,14]);
-        %                 CoG              Inertia
-        gamma_j = diag([0.1,0.2,0.004,   2, 0.5, 4]);
-        cr = 0.3;
-        kcl_j = diag([  15,10, 50 ,  100, 100, 80]);
+        %                          CoG                Inertia
+        gamma_j = diag([0.1   ,0.2   ,0.004,    2     , 0.9    , 6]);
+        cr = 0.4;
+        kcl_j = diag([  15    ,10    , 50 ,  200   , 100    , 80]);
 
         e3 = [0; 0; 1];
 
@@ -112,6 +112,7 @@ classdef controller
 
             % Desire 
             Rd = [xd_dot/norm(xd_dot) (hat_map(obj.e3)*xd_dot)/(norm(hat_map(obj.e3)*xd_dot)) obj.e3];
+            
             Wd = [0; 0; 0];
             
             % eR and eW
@@ -122,9 +123,9 @@ classdef controller
             J_est_last = payload.rotation_estimation(:, iter-1);
 
             % calculate the regression matrix
-            inertia_Y_diag = [0, -W(2)*W(3), W(2)*W(3);
-                     W(1)*W(3), 0, -W(1)*W(3);
-                     -W(1)*W(2), W(1)*W(2), 0];
+            inertia_Y_diag =        [0,              -W(2)*W(3),    W(2)*W(3);
+                                    W(1)*W(3),            0,       -W(1)*W(3);
+                                    -W(1)*W(2),      W(1)*W(2),         0];
             
             Fx = icl_rot.f_last(1);
             Fy = icl_rot.f_last(2);
@@ -137,9 +138,9 @@ classdef controller
             Y_diag_transpose = Y_diag';
 
             % y_diag_cl_integral and y_diag_cl_integral transpose
-            inertia_y_diag_cl_integral = [W(1) - icl_rot.W_last(1), -W(2)*W(3)*dt, W(2)*W(3)*dt;
-                                  W(1)*W(3)*dt, W(2) - icl_rot.W_last(2), -W(1)*W(3)*dt;
-                                 -W(1)*W(2)*dt, W(1)*W(2)*dt, W(3) - icl_rot.W_last(3)];
+            inertia_y_diag_cl_integral = [        W(1) - icl_rot.W_last(1),     -W(2)*W(3)*dt,          W(2)*W(3)*dt;
+                                                   W(1)*W(3)*dt,            W(2) - icl_rot.W_last(2),  -W(1)*W(3)*dt;
+                                                  -W(1)*W(2)*dt,                  W(1)*W(2)*dt,      W(3) - icl_rot.W_last(3)];
             
             force_y_diag_cl_integral = force_Y_diag*dt;
 
