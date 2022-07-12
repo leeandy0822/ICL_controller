@@ -87,7 +87,7 @@ tra(:,1) = traj.traj_generate(payload.t(1));
 h = waitbar(0,'please wait');
 for i= 2:length(payload.t)
     
-    str=['Caculating...',num2str(round(i/length(payload.t)*100,1)),'%'];
+    str=['Calculating...',num2str(round(i/length(payload.t)*100,1)),'%'];
     waitbar(i/length(payload.t),h,str)
     t_now = payload.t(i);
     % desire trajectory
@@ -279,33 +279,33 @@ plot(t, payload.rotation_estimation(3,:),t,ones(1,length(t))*-payload.body2CoG(3
 title("CoG (z)",'FontSize', 20);
 legend('Estimate','Ground Truth','FontSize', 15)
 
-% % resultant force
-% figure(5)
-% tiledlayout(2,1)
-% nexttile
-% plot(t, payload.force(1,:), t , payload.force(2,:), t , payload.force(3,:),LineWidth=2.0);
-% title("Force Input",'FontSize', 20);
-% legend('x','y','z','FontSize', 15)
-% nexttile
-% plot(t, payload.moment(1,:), t , payload.moment(2,:), t , payload.moment(3,:),LineWidth=2.0);
-% title("Moment Input",'FontSize', 20);
-% legend('x','y','z','FontSize', 15)
+% resultant force
+figure(5)
+tiledlayout(2,1)
+nexttile
+plot(t, payload.force(1,:), t , payload.force(2,:), t , payload.force(3,:),LineWidth=2.0);
+title("Force Input",'FontSize', 20);
+legend('x','y','z','FontSize', 15)
+nexttile
+plot(t, payload.moment(1,:), t , payload.moment(2,:), t , payload.moment(3,:),LineWidth=2.0);
+title("Moment Input",'FontSize', 20);
+legend('x','y','z','FontSize', 15)
 
-% % distributed force
-% figure(4)
-% tiledlayout(3,1)
-% nexttile
-% plot(t, payload.u1(1,:), t , payload.u1(2,:), t , payload.u1(3,:),LineWidth=2.0);
-% title("Distributed force - u1",'FontSize', 20);
-% legend('x','y','z','FontSize', 15)
-% nexttile
-% plot(t, payload.u2(1,:), t , payload.u2(2,:), t , payload.u2(3,:),LineWidth=2.0);
-% title("Distributed force - u2",'FontSize', 20);
-% legend('x','y','z','FontSize', 15)
-% nexttile
-% plot(t, payload.u3(1,:), t , payload.u3(2,:), t , payload.u3(3,:),LineWidth=2.0);
-% title("Distributed force - u3",'FontSize', 20);
-% legend('x','y','z','FontSize', 15)
+% distributed force
+figure(4)
+tiledlayout(3,1)
+nexttile
+plot(t, payload.u1(1,:), t , payload.u1(2,:), t , payload.u1(3,:),LineWidth=2.0);
+title("Distributed force - u1",'FontSize', 20);
+legend('x','y','z','FontSize', 15)
+nexttile
+plot(t, payload.u2(1,:), t , payload.u2(2,:), t , payload.u2(3,:),LineWidth=2.0);
+title("Distributed force - u2",'FontSize', 20);
+legend('x','y','z','FontSize', 15)
+nexttile
+plot(t, payload.u3(1,:), t , payload.u3(2,:), t , payload.u3(3,:),LineWidth=2.0);
+title("Distributed force - u3",'FontSize', 20);
+legend('x','y','z','FontSize', 15)
 
 text = sprintf('\nElapsed time : %.2f seconds\n', toc);
 disp(text);
