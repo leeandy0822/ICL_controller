@@ -4,7 +4,7 @@ tic;
 
 %% Simulation time
 dt = 1/400;
-sim_t = 30;
+sim_t = 50;
 payload = payload_dynamics;
 payload.dt = dt;
 payload.sim_t = sim_t;
@@ -87,7 +87,7 @@ tra(:,1) = traj.traj_generate(payload.t(1));
 h = waitbar(0,'please wait');
 for i= 2:length(payload.t)
     
-    str=['Caculating...',num2str(i/length(payload.t)*100),'%'];
+    str=['Caculating...',num2str(round(i/length(payload.t)*100,1)),'%'];
     waitbar(i/length(payload.t),h,str)
     t_now = payload.t(i);
     % desire trajectory
@@ -197,6 +197,35 @@ plot(t,payload.eW(1,:),t,payload.eW(2,:),t,payload.eW(3,:),LineWidth=2.0)
 title("Angular Velocity Errors",'FontSize', 20);
 legend('eo_1','eo_2','eo_3','FontSize', 15)
 
+%% Calculating Error
+% turn mass x CoG -> CoG
+payload.translation_estimation(2:4,:) = payload.translation_estimation(2:4,:) ./ payload.translation_estimation(1,:);
+trans_est = payload.translation_estimation(:,length(t))';
+m = trans_est(1);
+cog_x = trans_est(2);
+cog_y = trans_est(3);
+cog_z = trans_est(4);
+
+rot_est = payload.rotation_estimation(:,length(t))';
+cog_jx = rot_est(1);
+cog_jy = rot_est(2);
+cog_jz = rot_est(3);
+J_x = rot_est(4);
+J_y = rot_est(5);
+J_z = rot_est(6);
+
+
+fprintf("Mass Estimate Error: %.2f Percent\n", calculate_err(m, payload.m))
+fprintf("CoG-x Tra Error: %.2f Percent\n", calculate_err(cog_x, payload.body2CoG(1)))
+fprintf("CoG-y Tra Error: %.2f Percent\n", calculate_err(cog_y, payload.body2CoG(2)))
+fprintf("CoG-z Tra Error: %.2f Percent\n", calculate_err(cog_z, payload.body2CoG(3)))
+fprintf("Inertia XX Error: %.2f Percent\n", calculate_err(J_x,payload.J(1)))
+fprintf("Inertia YY Error: %.2f Percent\n", calculate_err(J_y,payload.J(5)))
+fprintf("Inertia ZZ Error: %.2f Percent\n", calculate_err(J_z,payload.J(9)))
+fprintf("CoG-x Rot Error: %.2f Percent\n", calculate_err(cog_jx,-payload.body2CoG(1)))
+fprintf("CoG-y Rot Error: %.2f Percent\n", calculate_err(cog_jy,-payload.body2CoG(2)))
+fprintf("CoG-z Rot Error: %.2f Percent\n", calculate_err(cog_jz,-payload.body2CoG(3)))
+
 figure(3);
 tiledlayout(4,1)
 nexttile
@@ -205,9 +234,6 @@ theta_m_ground_truth = ones(1, length(payload.t))*payload.m;
 plot(t,payload.translation_estimation(1,:),t,theta_m_ground_truth,LineWidth=2.0)
 title("Mass",'FontSize', 20);
 legend('Estimated Mass','Ground Truth','FontSize', 15)
-
-% turn mass x CoG -> CoG
-payload.translation_estimation(2:4,:) = payload.translation_estimation(2:4,:) ./ payload.translation_estimation(1,:);
 
 nexttile
 plot(t, payload.translation_estimation(2,:),t,ones(1,length(t))*payload.body2CoG(1),LineWidth=2.0)
@@ -221,6 +247,7 @@ nexttile
 plot(t, payload.translation_estimation(4,:),t,ones(1,length(t))*payload.body2CoG(3),LineWidth=2.0)
 title("From Mass CoG (z)",'FontSize', 20);
 legend('Estimate','Ground Truth','FontSize', 15)
+
 
 
 % Plot inertia
@@ -282,3 +309,4 @@ legend('Estimate','Ground Truth','FontSize', 15)
 
 text = sprintf('\nElapsed time : %.2f seconds\n', toc);
 disp(text);
+
