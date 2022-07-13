@@ -3,15 +3,15 @@ addpath('./tools/')
 tic;
 
 %% Simulation time
-dt = 1/400;
-sim_t = 50;
+dt = 1/200;
+sim_t = 30;
 payload = payload_dynamics;
 payload.dt = dt;
 payload.sim_t = sim_t;
 payload.t = 0:dt:sim_t;
 
 %% Physical property
-payload.m = 5;
+payload.m = 4;
 payload.J = [0.020, 0, 0;
                 0, 0.02, 0;
                 0, 0, 0.0400];
@@ -45,7 +45,7 @@ payload.u3 = zeros(3, length(payload.t));
 eul = [pi/7 pi/7 pi/7];
 R0 = eul2rotm(eul);
 payload.R(:,1) = reshape(R0,9,1);
-payload.W(:,1) = [0.1, 0.1, 0.05];
+payload.W(:,1) = [0, 0, 0];
 % initial theta guess
 payload.translation_estimation(:,1) = [3; 0.05 ; 0.05 ; 0.05 ];
 payload.rotation_estimation(:, 1) = [0.05; 0.05; 0.05; 0; 0; 0];
@@ -292,7 +292,7 @@ title("Moment Input",'FontSize', 20);
 legend('x','y','z','FontSize', 15)
 
 % distributed force
-figure(4)
+figure(6)
 tiledlayout(3,1)
 nexttile
 plot(t, payload.u1(1,:), t , payload.u1(2,:), t , payload.u1(3,:),LineWidth=2.0);
