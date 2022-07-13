@@ -15,12 +15,12 @@ classdef payload_dynamics
         height = 0.2;
 
         % grasp matrix
-        p1 = [0.5 ; 0 ; -0.1];
-        p2 = [-0.5 ; 0.4; -0.1];
-        p3 = [-0.5 ; -0.4 ; -0.1];
+        p1 = [0.5 ; 0 ; -0.02];
+        p2 = [-0.5 ; 0.4; -0.02];
+        p3 = [-0.5 ; -0.4 ; -0.02];
 
         % CoG vector 
-        body2CoG =[-0.1; -0.1; 0.05];
+        body2CoG =[-0.08; -0.05; 0.02];
 
         % control grasp matrix
         B 

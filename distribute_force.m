@@ -30,7 +30,8 @@ classdef distribute_force
                 dW = payload.dW(:,iter-1);
                 Fd_new =  u1 +  u2 +  u3 ;
                 alpha_relative = hat_map(dW)*payload.body2CoG + hat_map(W)*hat_map(W)*payload.body2CoG;
-                Fd_new = Fd_new - payload.m*R*alpha_relative;
+                Fd_new = Fd_new + payload.m*R*alpha_relative;
+                payload.m*R*alpha_relative;
                 Md_new = hat_map(payload.p1 + payload.body2CoG)*R'* u1 + hat_map(payload.p2+ payload.body2CoG)*R'* u2 + hat_map(payload.p3+ payload.body2CoG)*R'* u3 ;
 
 

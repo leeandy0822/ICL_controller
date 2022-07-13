@@ -4,7 +4,7 @@ tic;
 
 %% Simulation time
 dt = 1/400;
-sim_t = 60;
+sim_t = 50;
 payload = payload_dynamics;
 payload.dt = dt;
 payload.sim_t = sim_t;
@@ -12,9 +12,9 @@ payload.t = 0:dt:sim_t;
 
 %% Physical property
 payload.m = 5;
-payload.J = [0.0350, 0, 0;
-                0, 0.0315, 0;
-                0, 0, 0.100];
+payload.J = [0.020, 0, 0;
+                0, 0.02, 0;
+                0, 0, 0.0400];
 
 payload.x = zeros(3,length(payload.t));
 payload.v = zeros(3,length(payload.t));
@@ -45,12 +45,12 @@ payload.u3 = zeros(3, length(payload.t));
 eul = [pi/7 pi/7 pi/7];
 R0 = eul2rotm(eul);
 payload.R(:,1) = reshape(R0,9,1);
-payload.W(:,1) = [0.1, 0.05, 0.05];
+payload.W(:,1) = [0.1, 0.1, 0.05];
 % initial theta guess
-payload.translation_estimation(:,1) = [2; 0 ; 0 ; 0 ];
-payload.rotation_estimation(:, 1) = [0; 0; 0; 0; 0; 0];
+payload.translation_estimation(:,1) = [3; 0.05 ; 0.05 ; 0.05 ];
+payload.rotation_estimation(:, 1) = [0.05; 0.05; 0.05; 0; 0; 0];
 
-x0 = [0 ; 30 ; 0];
+x0 = [0 ; 0 ; 0];
 x0_dot = [0 ; 0; 0];
 payload.x(:,1) = x0;
 payload.v(:,1) = x0_dot;
@@ -84,13 +84,11 @@ tra = zeros(9, length(t));
 traj = payload_trajectory;
 tra(:,1) = traj.traj_generate(payload.t(1));
 
-
+h = waitbar(0,'please wait');
 for i= 2:length(payload.t)
     
-    if mod(i,500) ==  0
-        x = round(i/length(payload.t),5)*100;
-        disp(round(x,2));
-    end
+    str=['Calculating...',num2str(round(i/length(payload.t)*100,1)),'%'];
+    waitbar(i/length(payload.t),h,str)
     t_now = payload.t(i);
     % desire trajectory
     tra(:,i) = traj.traj_generate(t_now);
@@ -153,9 +151,9 @@ B = [ 0 1 0 ; 1 0 0 ; 0 0 -1];
 figure(1);
 tra(1:3,:) = B*tra(1:3,:);
 payload.x(1:3,:) = B*payload.x(1:3,:);
-plot3(tra(1,:),tra(2,:),tra(3,:),'LineWidth', 2, 'Color','k')
+plot3(tra(1,:),tra(2,:),tra(3,:),'LineWidth', 1.5, 'Color','r')
 hold on;
-plot3(payload.x(1,:),payload.x(2,:),payload.x(3,:),'LineWidth', 1.5, 'Color','#4DBEEE')
+plot3(payload.x(1,:),payload.x(2,:),payload.x(3,:),'LineWidth', 1.5, 'Color','b')
 hold on;
 title('Trajectory','FontSize', 20);
 hold on;
@@ -163,9 +161,10 @@ hold on;
 for i = 1:1500:length(payload.t)
     matrix = reshape(payload.R(:,i),3,3);
     matrix = B*matrix;
-    quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,1),matrix(2,1),matrix(3,1),'r',"LineWidth",2); 
-    quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,2),matrix(2,2),matrix(3,2),'g',"LineWidth",2); 
-    quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,3),matrix(2,3),matrix(3,3),'b',"LineWidth",2); 
+    norm = 3;
+    quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,1)/norm,matrix(2,1)/norm,matrix(3,1)/norm,'r',"LineWidth",1); 
+    quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,2)/norm,matrix(2,2)/norm,matrix(3,2)/norm,'g',"LineWidth",1); 
+    quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,3)/norm,matrix(2,3)/norm,matrix(3,3)/norm,'b',"LineWidth",1); 
 end
 
 hold on;
@@ -197,30 +196,57 @@ plot(t,payload.eW(1,:),t,payload.eW(2,:),t,payload.eW(3,:),LineWidth=2.0)
 title("Angular Velocity Errors",'FontSize', 20);
 legend('eo_1','eo_2','eo_3','FontSize', 15)
 
-% figure(3);
-% tiledlayout(4,1)
-% nexttile
-% % Plot mass estimation
-% theta_m_ground_truth = ones(1, length(payload.t))*payload.m;
-% plot(t,payload.translation_estimation(1,:),t,theta_m_ground_truth,LineWidth=2.0)
-% title("Theta",'FontSize', 20);
-% legend('Estimated Mass','Ground Truth','FontSize', 15)
-% 
-% % turn mass x CoG -> CoG
-% payload.translation_estimation(2:4,:) = payload.translation_estimation(2:4,:) ./ payload.translation_estimation(1,:);
-% 
-% nexttile
-% plot(t, payload.translation_estimation(2,:),t,ones(1,length(t))*-payload.body2CoG(1),LineWidth=2.0)
-% title("From Mass CoG (x)",'FontSize', 20);
-% legend('Estimate','Ground Truth','FontSize', 15)
-% nexttile
-% plot(t, payload.translation_estimation(3,:),t,ones(1,length(t))*-payload.body2CoG(2),LineWidth=2.0)
-% title("From Mass CoG (y)",'FontSize', 20);
-% legend('Estimate','Ground Truth','FontSize', 15)
-% nexttile
-% plot(t, payload.translation_estimation(4,:),t,ones(1,length(t))*-payload.body2CoG(3),LineWidth=2.0)
-% title("From Mass CoG (z)",'FontSize', 20);
-% legend('Estimate','Ground Truth','FontSize', 15)
+%% Calculating Error
+% turn mass x CoG -> CoG
+payload.translation_estimation(2:4,:) = payload.translation_estimation(2:4,:) ./ payload.translation_estimation(1,:);
+trans_est = payload.translation_estimation(:,length(t))';
+m = trans_est(1);
+cog_x = trans_est(2);
+cog_y = trans_est(3);
+cog_z = trans_est(4);
+
+rot_est = payload.rotation_estimation(:,length(t))';
+cog_jx = rot_est(1);
+cog_jy = rot_est(2);
+cog_jz = rot_est(3);
+J_x = rot_est(4);
+J_y = rot_est(5);
+J_z = rot_est(6);
+
+
+fprintf("Mass Estimate Error: %.2f Percent\n", calculate_err(m, payload.m))
+fprintf("CoG-x Tra Error: %.2f Percent\n", calculate_err(cog_x, payload.body2CoG(1)))
+fprintf("CoG-y Tra Error: %.2f Percent\n", calculate_err(cog_y, payload.body2CoG(2)))
+fprintf("CoG-z Tra Error: %.2f Percent\n", calculate_err(cog_z, payload.body2CoG(3)))
+fprintf("Inertia XX Error: %.2f Percent\n", calculate_err(J_x,payload.J(1)))
+fprintf("Inertia YY Error: %.2f Percent\n", calculate_err(J_y,payload.J(5)))
+fprintf("Inertia ZZ Error: %.2f Percent\n", calculate_err(J_z,payload.J(9)))
+fprintf("CoG-x Rot Error: %.2f Percent\n", calculate_err(cog_jx,-payload.body2CoG(1)))
+fprintf("CoG-y Rot Error: %.2f Percent\n", calculate_err(cog_jy,-payload.body2CoG(2)))
+fprintf("CoG-z Rot Error: %.2f Percent\n", calculate_err(cog_jz,-payload.body2CoG(3)))
+
+figure(3);
+tiledlayout(4,1)
+nexttile
+% Plot mass estimation
+theta_m_ground_truth = ones(1, length(payload.t))*payload.m;
+plot(t,payload.translation_estimation(1,:),t,theta_m_ground_truth,LineWidth=2.0)
+title("Mass",'FontSize', 20);
+legend('Estimated Mass','Ground Truth','FontSize', 15)
+
+nexttile
+plot(t, payload.translation_estimation(2,:),t,ones(1,length(t))*payload.body2CoG(1),LineWidth=2.0)
+title("From Mass CoG (x)",'FontSize', 20);
+legend('Estimate','Ground Truth','FontSize', 15)
+nexttile
+plot(t, payload.translation_estimation(3,:),t,ones(1,length(t))*payload.body2CoG(2),LineWidth=2.0)
+title("From Mass CoG (y)",'FontSize', 20);
+legend('Estimate','Ground Truth','FontSize', 15)
+nexttile
+plot(t, payload.translation_estimation(4,:),t,ones(1,length(t))*payload.body2CoG(3),LineWidth=2.0)
+title("From Mass CoG (z)",'FontSize', 20);
+legend('Estimate','Ground Truth','FontSize', 15)
+
 
 
 % Plot inertia
@@ -252,33 +278,34 @@ plot(t, payload.rotation_estimation(3,:),t,ones(1,length(t))*-payload.body2CoG(3
 title("CoG (z)",'FontSize', 20);
 legend('Estimate','Ground Truth','FontSize', 15)
 
-% % resultant force
-% figure(5)
-% tiledlayout(2,1)
-% nexttile
-% plot(t, payload.force(1,:), t , payload.force(2,:), t , payload.force(3,:),LineWidth=2.0);
-% title("Force Input",'FontSize', 20);
-% legend('x','y','z','FontSize', 15)
-% nexttile
-% plot(t, payload.moment(1,:), t , payload.moment(2,:), t , payload.moment(3,:),LineWidth=2.0);
-% title("Moment Input",'FontSize', 20);
-% legend('x','y','z','FontSize', 15)
+% resultant force
+figure(5)
+tiledlayout(2,1)
+nexttile
+plot(t, payload.force(1,:), t , payload.force(2,:), t , payload.force(3,:),LineWidth=2.0);
+title("Force Input",'FontSize', 20);
+legend('x','y','z','FontSize', 15)
+nexttile
+plot(t, payload.moment(1,:), t , payload.moment(2,:), t , payload.moment(3,:),LineWidth=2.0);
+title("Moment Input",'FontSize', 20);
+legend('x','y','z','FontSize', 15)
 
-% % distributed force
-% figure(4)
-% tiledlayout(3,1)
-% nexttile
-% plot(t, payload.u1(1,:), t , payload.u1(2,:), t , payload.u1(3,:),LineWidth=2.0);
-% title("Distributed force - u1",'FontSize', 20);
-% legend('x','y','z','FontSize', 15)
-% nexttile
-% plot(t, payload.u2(1,:), t , payload.u2(2,:), t , payload.u2(3,:),LineWidth=2.0);
-% title("Distributed force - u2",'FontSize', 20);
-% legend('x','y','z','FontSize', 15)
-% nexttile
-% plot(t, payload.u3(1,:), t , payload.u3(2,:), t , payload.u3(3,:),LineWidth=2.0);
-% title("Distributed force - u3",'FontSize', 20);
-% legend('x','y','z','FontSize', 15)
+% distributed force
+figure(4)
+tiledlayout(3,1)
+nexttile
+plot(t, payload.u1(1,:), t , payload.u1(2,:), t , payload.u1(3,:),LineWidth=2.0);
+title("Distributed force - u1",'FontSize', 20);
+legend('x','y','z','FontSize', 15)
+nexttile
+plot(t, payload.u2(1,:), t , payload.u2(2,:), t , payload.u2(3,:),LineWidth=2.0);
+title("Distributed force - u2",'FontSize', 20);
+legend('x','y','z','FontSize', 15)
+nexttile
+plot(t, payload.u3(1,:), t , payload.u3(2,:), t , payload.u3(3,:),LineWidth=2.0);
+title("Distributed force - u3",'FontSize', 20);
+legend('x','y','z','FontSize', 15)
 
 text = sprintf('\nElapsed time : %.2f seconds\n', toc);
 disp(text);
+
