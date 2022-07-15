@@ -4,7 +4,7 @@ tic;
 
 %% Simulation time
 dt = 1/400;
-sim_t = 30;
+sim_t = 20;
 payload = payload_dynamics;
 payload.dt = dt;
 payload.sim_t = sim_t;
@@ -51,7 +51,7 @@ payload.translation_estimation(:,1) = [3; 0.05 ; 0.05 ; 0.05 ];
 payload.rotation_estimation(:, 1) = [0.01; 0.01; 0.01; 0; 0; 0];
 payload.freq =  zeros(1, length(payload.t));
 
-x0 = [0 ; 7 ; 0];
+x0 = [0 ; 0 ; 0];
 x0_dot = [0 ; 0; 0];
 payload.x(:,1) = x0;
 payload.v(:,1) = x0_dot;
@@ -154,9 +154,9 @@ B = [ 0 1 0 ; 1 0 0 ; 0 0 -1];
 figure(1);
 tra(1:3,:) = B*tra(1:3,:);
 payload.x(1:3,:) = B*payload.x(1:3,:);
-plot3(tra(1,:),tra(2,:),tra(3,:),'LineWidth', 1, 'Color','k')
+plot3(tra(1,:),tra(2,:),tra(3,:),'LineWidth', 1.4, 'Color','k')
 hold on;
-plot3(payload.x(1,:),payload.x(2,:),payload.x(3,:),'LineWidth', 0.5, 'Color','r')
+plot3(payload.x(1,:),payload.x(2,:),payload.x(3,:),'LineWidth', 0.7, 'Color','r')
 hold on;
 title('Trajectory','FontSize', 20);
 hold on;

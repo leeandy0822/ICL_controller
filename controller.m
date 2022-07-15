@@ -2,15 +2,15 @@ classdef controller
 
     properties
 
-        kx = 12;
-        kv = 6;
+        kx = 18;
+        kv = 5;
         gamma_m = diag([0.01,0.0018,0.0022,0.0015]);
-        cx = 7;
+        cx = 5;
         kcl_m = diag([0.0001, 50000 , 50000 ,50000]);
 
 
-        kr = 10*eye(3);
-        ko = 3*eye(3);    
+        kr = 14*eye(3);
+        ko = 4*eye(3);    
         %gamma_j = diag([1,1,1,10.5,9.5,14]);
         %                         CoG              Inertia
         gamma_j = diag([0.0001,0.0001,0.0001, 0.03, 0.015, 0.0055]);
