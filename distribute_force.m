@@ -11,10 +11,14 @@ classdef distribute_force
        B
        p_i
        spherical_constraint
+       freq
+       Z1
+       Z2
+       Z3
     end
     methods
 
-        function [Fd_new, Md_new, u] = cal_u(~, payload, Fd, Md, iter)
+        function [Fd_new, Md_new, u, freq_dis] = cal_u(~, payload, Fd, Md, iter)
 
                 R = reshape(payload.R(:,iter-1),3,3);
                 
@@ -45,23 +49,28 @@ classdef distribute_force
                 obj.u3_bar = obj.u_bar(7:9);
                 
                 %% Because of gimbal constraint, decide gamma input for null(B) 
-                gamma = [-0.5; -0.5; -0.5];  
-                obj.p_i = [0 ; 0 ; -1];
-                obj.spherical_contraint = cos(deg2rad(90))*cos(deg2rad(90))*eye(3) - obj.p_i*obj.p_i'; 
-
-                options = optimoptions(@fminunc,'Display','iter','Algorithm','quasi-newton');
                 
+                gamma = [0; 0; 0];  
+                    
+                obj.p_i = [0 ; 0 ; -1];
+                gimbal_angle = 30;
+                obj.spherical_contraint = cos(deg2rad(gimbal_angle))*cos(deg2rad(gimbal_angle))*eye(3) - obj.p_i*obj.p_i'; 
+                obj.Z1 = obj.Z(1:3,:);
+                obj.Z2 = obj.Z(4:6,:);
+                obj.Z3 = obj.Z(7:9,:);
+                options = optimoptions(@fminunc,'Display','off','Algorithm','quasi-newton');
+                
+                tic;
                 gamma_new = fminunc(@func, gamma, options);
+                toc;
+                freq_dis = 1/toc;
+                
                 % Total null space force
                 nullspace_f = obj.Z*gamma_new;
                 obj.u1 = obj.u1_bar + nullspace_f(1:3);
                 obj.u2 = obj.u2_bar + nullspace_f(4:6);
                 obj.u3 = obj.u3_bar + nullspace_f(7:9);
-
-                Fd_desire = obj.u1 + obj.u2 + obj.u3;
-                Md_desire = hat_map(payload.p1)*R'* obj.u1 + hat_map(payload.p2)*R'* obj.u2 + hat_map(payload.p3)*R'* obj.u3 ;
-
-                
+   
                 % Add the CoG effect
                 W = payload.W(:,iter-1);
                 dW = payload.dW(:,iter-1);
@@ -73,16 +82,12 @@ classdef distribute_force
                 u = [obj.u1; obj.u2; obj.u3];
                 function cost = func(gamma)
             
-                    s = 10;
+                    s = 5;
                     upperbound = 50;
-                    
-                    Z1 = obj.Z(1:3,:);
-                    Z2 = obj.Z(4:6,:);
-                    Z3 = obj.Z(7:9,:);
-        
-                    F1 = obj.u1_bar + Z1*gamma;
-                    F2 = obj.u2_bar + Z2*gamma;
-                    F3 = obj.u3_bar + Z3*gamma;
+                   
+                    F1 = obj.u1_bar + obj.Z1*gamma;
+                    F2 = obj.u2_bar + obj.Z2*gamma;
+                    F3 = obj.u3_bar + obj.Z3*gamma;
 
                     c11 = F1'*(obj.spherical_contraint)*F1;
                     c21 = F1'*F1 - upperbound^2;

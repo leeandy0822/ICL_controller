@@ -4,7 +4,8 @@ classdef payload_dynamics
         sim_t = 30;
         t
         iter
-
+        freq
+        
         % parameters
         m
         J
@@ -15,12 +16,13 @@ classdef payload_dynamics
         height = 0.2;
 
         % grasp matrix
-        p1 = [0.5 ; 0 ; -0.02];
-        p2 = [-0.5 ; 0.4; -0.02];
-        p3 = [-0.5 ; -0.4 ; -0.02];
+        
+        p1 = [ 0 ; 2 ; 0]*0.2;
+        p2 = [-1*sqrt(3)  ; -1 ; 0]*0.2;
+        p3 = [ 1*sqrt(3) ; -1 ; 0]*0.2;
 
         % CoG vector 
-        body2CoG =[-0.08; -0.05; 0.02];
+        body2CoG =[-0.07; -0.05; 0.02];
 
         % control grasp matrix
         B 

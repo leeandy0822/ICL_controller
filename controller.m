@@ -2,20 +2,20 @@ classdef controller
 
     properties
 
-        kx = 40;
-        kv = 8;
+        kx = 12;
+        kv = 6;
         gamma_m = diag([0.01,0.0018,0.0022,0.0015]);
-        cx = 20;
+        cx = 7;
         kcl_m = diag([0.0001, 50000 , 50000 ,50000]);
 
 
-        kr = 20*eye(3);
-        ko = 7*eye(3);    
+        kr = 10*eye(3);
+        ko = 3*eye(3);    
         %gamma_j = diag([1,1,1,10.5,9.5,14]);
         %                         CoG              Inertia
         gamma_j = diag([0.0001,0.0001,0.0001, 0.03, 0.015, 0.0055]);
-        cr = 20;
-        kcl_j = diag([  150, 150, 300 ,  3900, 700, 39000]);
+        cr = 10;
+        kcl_j = diag([  150, 200, 300 ,  3900, 700, 39000]);
 
         e3 = [0; 0; 1];
         last_f = [0; 0; 0];
