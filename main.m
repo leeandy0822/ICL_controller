@@ -4,12 +4,12 @@ tic;
 
 %% Simulation time
 dt = 1/400;
-sim_t = 20;
+sim_t = 10;
 payload = payload_dynamics;
 payload.dt = dt;
 payload.sim_t = sim_t;
 payload.t = 0:dt:sim_t;
-
+payload.traj_mode = "hover";
 %% Physical property
 payload.m = 5;
 payload.J = [0.030, 0, 0;
@@ -51,7 +51,13 @@ payload.translation_estimation(:,1) = [3; 0.05 ; 0.05 ; 0.05 ];
 payload.rotation_estimation(:, 1) = [0.01; 0.01; 0.01; 0; 0; 0];
 payload.freq =  zeros(1, length(payload.t));
 
-x0 = [0 ; 0 ; 0];
+if payload.traj_mode=="eight"
+    x0 = [0; 7; 0];
+else
+    x0 = [0; 0; 0];
+end
+
+
 x0_dot = [0 ; 0; 0];
 payload.x(:,1) = x0;
 payload.v(:,1) = x0_dot;
@@ -83,7 +89,7 @@ icl_rot.f_last = zeros(3, 1);
 %% trajectory
 tra = zeros(9, length(t));
 traj = payload_trajectory;
-tra(:,1) = traj.traj_generate(payload.t(1));
+tra(:,1) = traj.traj_generate(payload.t(1),payload.traj_mode);
 
 h = waitbar(0,'please wait');
 for i= 2:length(payload.t)
@@ -92,7 +98,7 @@ for i= 2:length(payload.t)
     waitbar(i/length(payload.t),h,str)
     t_now = payload.t(i);
     % desire trajectory
-    tra(:,i) = traj.traj_generate(t_now);
+    tra(:,i) = traj.traj_generate(t_now,payload.traj_mode);
     Xd = tra(1:9, i);
     
     % force controller
@@ -156,7 +162,7 @@ tra(1:3,:) = B*tra(1:3,:);
 payload.x(1:3,:) = B*payload.x(1:3,:);
 plot3(tra(1,:),tra(2,:),tra(3,:),'LineWidth', 1.4, 'Color','k')
 hold on;
-plot3(payload.x(1,:),payload.x(2,:),payload.x(3,:),'LineWidth', 0.7, 'Color','r')
+plot3(payload.x(1,:),payload.x(2,:),payload.x(3,:),'LineWidth', 1, 'Color','r')
 hold on;
 title('Trajectory','FontSize', 20);
 hold on;

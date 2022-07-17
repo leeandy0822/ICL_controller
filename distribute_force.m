@@ -53,7 +53,7 @@ classdef distribute_force
                 gamma = [0; 0; 0];  
                     
                 obj.p_i = [0 ; 0 ; -1];
-                gimbal_angle = 30;
+                gimbal_angle = 45;
                 obj.spherical_contraint = cos(deg2rad(gimbal_angle))*cos(deg2rad(gimbal_angle))*eye(3) - obj.p_i*obj.p_i'; 
                 obj.Z1 = obj.Z(1:3,:);
                 obj.Z2 = obj.Z(4:6,:);

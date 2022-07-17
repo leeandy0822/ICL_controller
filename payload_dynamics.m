@@ -1,5 +1,7 @@
 classdef payload_dynamics
     properties
+
+        traj_mode
         dt = 0.01;
         sim_t = 30;
         t
@@ -22,7 +24,7 @@ classdef payload_dynamics
         p3 = [ 1*sqrt(3) ; -1 ; 0]*0.15;
 
         % CoG vector 
-        body2CoG =[-0.08; -0.06; 0.01];
+        body2CoG =[-0.08; -0.08; 0.00];
 
         % control grasp matrix
         B 

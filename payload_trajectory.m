@@ -1,21 +1,27 @@
 classdef payload_trajectory
     methods
-        function out = traj_generate(~, t)
+        function out = traj_generate(~, t,mode)
 
-%             % eight
-%             x = [3*sin(0.2*pi*t) ; 7*cos(0.1*pi*t); 0];
-%             v = [3*0.2*pi*cos(0.2*pi*t) ; -7*0.1*pi*sin(0.1*pi*t) ; 0];
-%             a = [-3*0.2*0.2*pi*pi*sin(0.2*pi*t) ; -7*0.1*0.1*pi*pi*cos(0.1*pi*t) ; 0];
-%             
+            % eight
+            if mode=="eight"
+                x = [3*sin(0.2*pi*t) ; 7*cos(0.1*pi*t); 0];
+                v = [3*0.2*pi*cos(0.2*pi*t) ; -7*0.1*pi*sin(0.1*pi*t) ; 0];
+                a = [-3*0.2*0.2*pi*pi*sin(0.2*pi*t) ; -7*0.1*0.1*pi*pi*cos(0.1*pi*t) ; 0];
+            else
+                x = [0 ; 0 ; -0.02*t];
+                v = [0; 0; -0.02];
+                a = [0 ; 0 ;0 ];
+            end
+        
 %             % circle
 %             x = [ 2*sin(2*t) ;  2*cos(2*t);   -0.3 - 0.2*t];
 %             v = [ 4*cos(2*t) ; -4*sin(2*t) ;  -0.2];
 %             a = [-8*sin(2*t) ; -8*cos(2*t) ; 0];
 % 
-            % hover
-            x = [0 ; 0 ; -0.01*t];
-            v = [0; 0; -0.01];
-            a = [0 ; 0 ;0 ];
+%             % hover
+%             x = [0 ; 0 ; -0.01*t];
+%             v = [0; 0; -0.01];
+%             a = [0 ; 0 ;0 ];
 
             % xd, vd, ad
             out = zeros(9, 1);
