@@ -25,6 +25,7 @@ payload.dW = zeros(3, length(payload.t));
 payload.ex = zeros(3, length(payload.t));
 payload.ev = zeros(3, length(payload.t));
 payload.force = zeros(3,length(payload.t));
+payload.energy = zeros(3,length(payload.t));
 payload.moment = zeros(3,length(payload.t));
 
 % translation: m m*CoG  rotation: CoG J3x1 (todo: 6x1)
@@ -39,6 +40,18 @@ payload.B_real = [eye(3) eye(3) eye(3) ; payload.B_real];
 payload.u1 = zeros(3, length(payload.t));
 payload.u2 = zeros(3, length(payload.t));
 payload.u3 = zeros(3, length(payload.t));
+
+p1 = [ 0 ; 2 ; 0]*0.15;
+p2 = [-1*sqrt(3)  ; -1 ; 0]*0.15;
+p3 = [ 1*sqrt(3) ; -1 ; 0]*0.15;
+
+%% Optimal Grasp Position
+ 
+payload.body2CoG =[0.08; 0.08; 0.00];
+payload.p1 = [-0.16; 0.3; 0];
+payload.p2 = [-0.23; -0.2; 0];
+payload.p3 = [0.15; -0.34; 0];
+
 
 
 %% initial condition
@@ -115,8 +128,13 @@ for i= 2:length(payload.t)
 
     payload.freq(:,i-1) = freq_dis;
     payload.u1(:,i-1) = u(1:3);
+    payload.energy(1,i-1) = payload.u1(1,i-1)^1.5 + payload.u1(2,i-1)^1.5 + payload.u1(3,i-1)^1.5;
+
     payload.u2(:,i-1) = u(4:6);
+    payload.energy(2,i-1) = payload.u2(1,i-1)^1.5 + payload.u2(2,i-1)^1.5 + payload.u2(3,i-1)^1.5;
+
     payload.u3(:,i-1) = u(7:9);
+    payload.energy(3,i-1) = payload.u3(1,i-1)^1.5 + payload.u3(2,i-1)^1.5 + payload.u3(3,i-1)^1.5;
 
     payload.force(:,i-1) = Fd;
     payload.moment(:,i-1) = Md;
@@ -257,9 +275,10 @@ title("CoG (z)",'FontSize', 20);
 legend('Estimate','Ground Truth','FontSize', 15)
 
 figure(4)
+tiledlayout(2,1)
+nexttile
 plot(t, payload.freq,LineWidth=2.0);
 title("Control Frequency",'FontSize', 20);
-legend('x','y','z','FontSize', 15)
 
 
 % 
