@@ -1,4 +1,7 @@
 classdef payload_trajectory
+    properties
+        traj
+    end
     methods
         function out = traj_generate(~, t,mode)
 
