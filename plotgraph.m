@@ -77,9 +77,9 @@ function plotgraph(tra, payload)
     fprintf("Inertia XX Error: %.2f Percent\n", calculate_err(J_x,payload.J(1)))
     fprintf("Inertia YY Error: %.2f Percent\n", calculate_err(J_y,payload.J(5)))
     fprintf("Inertia ZZ Error: %.2f Percent\n", calculate_err(J_z,payload.J(9)))
-    fprintf("CoG-x Rot Error: %.2f Percent\n", calculate_err(cog_jx,-payload.body2CoG(1)))
-    fprintf("CoG-y Rot Error: %.2f Percent\n", calculate_err(cog_jy,-payload.body2CoG(2)))
-    fprintf("CoG-z Rot Error: %.2f Percent\n", calculate_err(cog_jz,-payload.body2CoG(3)))
+    fprintf("CoG-x Rot Error: %.2f Percent\n", calculate_err(cog_jx,payload.body2CoG(1)))
+    fprintf("CoG-y Rot Error: %.2f Percent\n", calculate_err(cog_jy,payload.body2CoG(2)))
+    fprintf("CoG-z Rot Error: %.2f Percent\n", calculate_err(cog_jz,payload.body2CoG(3)))
     
     
     figure(3);
@@ -91,15 +91,15 @@ function plotgraph(tra, payload)
     title("Mass",'FontSize', 20);
     legend('Estimated Mass','Ground Truth','FontSize', 15)
     nexttile
-    plot(t, payload.rotation_estimation(1,:),t,ones(1,length(t))*-payload.body2CoG(1),LineWidth=2.0)
+    plot(t, payload.rotation_estimation(1,:),t,ones(1,length(t))*payload.body2CoG(1),LineWidth=2.0)
     title("CoG (x)",'FontSize', 20);
     legend('Estimate','Ground Truth','FontSize', 15)
     nexttile
-    plot(t, payload.rotation_estimation(2,:),t,ones(1,length(t))*-payload.body2CoG(2),LineWidth=2.0)
+    plot(t, payload.rotation_estimation(2,:),t,ones(1,length(t))*payload.body2CoG(2),LineWidth=2.0)
     title("CoG (y)",'FontSize', 20);
     legend('Estimate','Ground Truth','FontSize', 15)
     nexttile
-    plot(t, payload.rotation_estimation(3,:),t,ones(1,length(t))*-payload.body2CoG(3),LineWidth=2.0)
+    plot(t, payload.rotation_estimation(3,:),t,ones(1,length(t))*payload.body2CoG(3),LineWidth=2.0)
     title("CoG (z)",'FontSize', 20);
     legend('Estimate','Ground Truth','FontSize', 15)
     

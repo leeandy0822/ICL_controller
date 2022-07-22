@@ -15,7 +15,7 @@ L = 0.8;
 g = 9.8;
 mass = 5;
 weight = mass*g;
-CoM = [-0.08,-0.08,0];  
+CoM = [0.08,0.08,0];  
 
 %% Solve Optimization
 A = [];

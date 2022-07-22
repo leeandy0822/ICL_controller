@@ -7,12 +7,12 @@ classdef payload_trajectory
 
             % eight
             if mode=="eight"
-                x = [3*sin(0.2*pi*t) ; 7*cos(0.1*pi*t); 0];
-                v = [3*0.2*pi*cos(0.2*pi*t) ; -7*0.1*pi*sin(0.1*pi*t) ; 0];
-                a = [-3*0.2*0.2*pi*pi*sin(0.2*pi*t) ; -7*0.1*0.1*pi*pi*cos(0.1*pi*t) ; 0];
+                x = [3*sin(0.08*pi*t) ; 7*cos(0.04*pi*t)-7; 0];
+                v = [3*0.08*pi*cos(0.08*pi*t) ; -7*0.04*pi*sin(0.04*pi*t) ; 0];
+                a = [-3*0.08*0.08*pi*pi*sin(0.08*pi*t) ; -7*0.04*0.04*pi*pi*cos(0.04*pi*t) ; 0];
             else
-                x = [0 ; 0 ; -0.02*t];
-                v = [0; 0; -0.02];
+                x = [0 ; 0 ; -0.1*t];
+                v = [0; 0; -0.1];
                 a = [0 ; 0 ;0 ];
             end
         
