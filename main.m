@@ -13,7 +13,7 @@ traj_mode = "eight";
 % ICL ,  Adaptive
 ctrl_mode = "icl";
 %  Even Formation: 0, Optimal Formation: 1
-optim_mode = 0;
+optim_mode = 1;
 % with CoG and mass knowledge: 1, else 0
 emk_mode = 1;
 

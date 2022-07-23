@@ -28,7 +28,6 @@ function [payload, icl_trans, icl_rot, ctrl, traj_handle]= initailize(mode,emk_m
     
     %% Grasp position 
     
-    payload.B = [eye(3) eye(3) eye(3); hat_map(payload.p1) hat_map(payload.p2) hat_map(payload.p3)];
     payload.u1 = zeros(3, length(payload.t));
     payload.u2 = zeros(3, length(payload.t));
     payload.u3 = zeros(3, length(payload.t));
@@ -41,19 +40,20 @@ function [payload, icl_trans, icl_rot, ctrl, traj_handle]= initailize(mode,emk_m
         payload.p1 = [0.16; 0.3; 0];
         payload.p2 = [-0.29; -0.1; 0];
         payload.p3 = [0.37; 0.04; 0];
-        payload.translation_estimation(:,1) = [payload.m; 0 ; 0 ; 0 ];
-        % add this will make system unstable
-        payload.rotation_estimation(:, 1) = [0; 0; 0; 0; 0; 0];
+        % Groundtruth
+        payload.translation_estimation(:,1) = [payload.m; payload.m*0.08 ; payload.m*0.08 ; 0 ];
+        payload.rotation_estimation(:, 1) = [0.08; 0.08; 0; 0; 0; 0];
     else
         if emk_mode == 1
-            payload.translation_estimation(:,1) = [payload.m; 0.12 ; 0.12 ; 0.12 ];
-            payload.rotation_estimation(:, 1) = [0.06; 0.06; 0; 0; 0; 0];
+            payload.translation_estimation(:,1) = [payload.m; payload.m*0.08 ; payload.m*0.08 ; 0 ];
+            payload.rotation_estimation(:, 1) = [0.08; 0.08; 0; 0; 0; 0];
         else
             payload.translation_estimation(:,1) = [1; 0.05 ; 0.05 ; 0.05 ];
             payload.rotation_estimation(:, 1) = [0; 0; 0; 0; 0; 0];
         end
 
     end
+    payload.B = [eye(3) eye(3) eye(3); hat_map(payload.p1) hat_map(payload.p2) hat_map(payload.p3)];
 
     x0 = [0; 0; 0];
     x0_dot = [0 ; 0; 0];
