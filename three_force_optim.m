@@ -25,7 +25,6 @@ b = [];
 % initialize the motor eq
 motor_eq = zeros(3,9);
 for i = 1:1:9
-
     if mod(i,3) == 1
         motor_eq(1,i) = 1;
     elseif mod(i,3) == 2
@@ -42,8 +41,8 @@ beq = [0 0 weight];
 f_lb = zeros(9,1);
 f_ub = 2*9.8*ones(9,1);
 
-lb = [ f_lb    ;   -40   ;   -40  ;  -40  ];
-ub = [ f_ub    ;    40   ;    40   ;   40  ];
+lb = [ f_lb    ;   -0.5   ;   -0.5  ;  -0.5  ];
+ub = [ f_ub    ;    0.5   ;    0.5   ;   0.5  ];
 
 
 ic_motor_x = zeros(1,9);
@@ -126,15 +125,22 @@ function [c,ceq] = force_balance(x)
 end
 
 function fun = myfunc(x)
-
+    
+    global CoM;
     P = 10;
+    [p1] = edge1(x(10)) - CoM;
+    [p2] = edge2(x(11)) - CoM;
+    [p3] = edge3(x(12)) - CoM;
+    B_m = [hat_map(p1) hat_map(p2) hat_map(p3)];
+    controlability = det(B_m*B_m')
+    k_con = 10;
     F1_norm = norm(x(1:3));
     F2_norm = norm(x(4:6));
     F3_norm = norm(x(7:9));
 
     energy_comsumption = P*(F1_norm^1.5 + F2_norm^1.5 + F3_norm^1.5);
 
-    fun = energy_comsumption;
+    fun = 10*energy_comsumption + 1/controlability;
 
 end
 

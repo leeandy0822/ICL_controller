@@ -4,7 +4,7 @@ tic;
 
 % Control frequency and simlation time 
 dt = 1/400;
-sim_t = 40;
+sim_t = 10;
 
 %% Mode selection
 

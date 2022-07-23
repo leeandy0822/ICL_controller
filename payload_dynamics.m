@@ -14,9 +14,9 @@ classdef payload_dynamics
         g = 9.81;
 
         % grasp matrix
-        p1 = [ 0 ; 2 ; 0]*0.15;
-        p2 = [-1*sqrt(3)  ; -1 ; 0]*0.15;
-        p3 = [ 1*sqrt(3) ; -1 ; 0]*0.15;
+        p1
+        p2
+        p3
             
         % CoG vector 
         body2CoG =[0.08; 0.08; 0.00];

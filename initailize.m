@@ -37,13 +37,21 @@ function [payload, icl_trans, icl_rot, ctrl, traj_handle]= initailize(mode,emk_m
 
     if optim_mode == 1
         payload.body2CoG =[0.08; 0.08; 0.00];
-        payload.p1 = [0.16; 0.3; 0];
-        payload.p2 = [-0.29; -0.1; 0];
-        payload.p3 = [0.37; 0.04; 0];
+        % only energy optimal
+%         payload.p1 = [0.16; 0.3; 0];
+%         payload.p2 = [-0.29; -0.1; 0];
+%         payload.p3 = [0.37; 0.04; 0];
+        payload.p1 = [-0.23; 0.3; 0];
+        payload.p2 = [-0.1; -0.43; 0];
+        payload.p3 = [0.51; 0.28; 0];
         % Groundtruth
         payload.translation_estimation(:,1) = [payload.m; payload.m*0.08 ; payload.m*0.08 ; 0 ];
         payload.rotation_estimation(:, 1) = [0.08; 0.08; 0; 0; 0; 0];
     else
+        payload.p1 = [ 0 ; 2 ; 0]*0.15;
+        payload.p2 = [-1*sqrt(3)  ; -1 ; 0]*0.15;
+        payload.p3 = [ 1*sqrt(3) ; -1 ; 0]*0.15;
+        % if know the CoG and mass
         if emk_mode == 1
             payload.translation_estimation(:,1) = [payload.m; payload.m*0.08 ; payload.m*0.08 ; 0 ];
             payload.rotation_estimation(:, 1) = [0.08; 0.08; 0; 0; 0; 0];
