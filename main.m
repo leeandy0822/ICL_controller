@@ -4,7 +4,7 @@ tic;
 
 % Control frequency and simlation time 
 dt = 1/400;
-sim_t = 15;
+sim_t = 40;
 
 %% Mode selection
 
@@ -14,7 +14,7 @@ traj_mode = "eight";
 ctrl_mode = "icl";
 %  Even Formation: 0, Optimal Formation: 1
 optim_mode = 0;
-% with CoG and mass knowledge
+% with CoG and mass knowledge: 1, else 0
 emk_mode = 1;
 
 %% Initailze the controller, dynamics and trajectory

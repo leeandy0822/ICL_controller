@@ -11,8 +11,8 @@ classdef payload_trajectory
                 v = [3*0.08*pi*cos(0.08*pi*t) ; -7*0.04*pi*sin(0.04*pi*t) ; 0];
                 a = [-3*0.08*0.08*pi*pi*sin(0.08*pi*t) ; -7*0.04*0.04*pi*pi*cos(0.04*pi*t) ; 0];
             else
-                x = [0 ; 0 ; -0.1*t];
-                v = [0; 0; -0.1];
+                x = [0 ; 0 ; -0.05*t];
+                v = [0; 0; -0.05];
                 a = [0 ; 0 ;0 ];
             end
         

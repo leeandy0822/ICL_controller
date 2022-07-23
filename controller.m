@@ -23,20 +23,20 @@ classdef controller < handle
     methods
         function gain_setup(obj,optim_mode, emk_mode)
             if (optim_mode == 1)
-                obj.kx = 50;
+                obj.kx = 60;
                 obj.kv = 20;
-                obj.kr = 6*eye(3);
-                obj.ko = 2*eye(3); 
+                obj.kr = 7*eye(3);
+                obj.ko = 3*eye(3); 
             elseif (optim_mode == 0)
                 obj.kx = 20;
                 obj.kv = 8;
                 obj.kr = 9*eye(3);
                 obj.ko = 3*eye(3); 
                 if (emk_mode ==1 )
-                    obj.kx = 20;
+                    obj.kx = 30;
                     obj.kv = 8;
-                    obj.kr = 3*eye(3);
-                    obj.ko = 1*eye(3); 
+                    obj.kr = 7*eye(3);
+                    obj.ko = 3*eye(3); 
                 end
             end
         end

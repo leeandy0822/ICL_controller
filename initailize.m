@@ -47,7 +47,7 @@ function [payload, icl_trans, icl_rot, ctrl, traj_handle]= initailize(mode,emk_m
     else
         if emk_mode == 1
             payload.translation_estimation(:,1) = [payload.m; 0.12 ; 0.12 ; 0.12 ];
-            payload.rotation_estimation(:, 1) = [0.05; 0.05; 0.05; 0; 0; 0];
+            payload.rotation_estimation(:, 1) = [0.06; 0.06; 0; 0; 0; 0];
         else
             payload.translation_estimation(:,1) = [1; 0.05 ; 0.05 ; 0.05 ];
             payload.rotation_estimation(:, 1) = [0; 0; 0; 0; 0; 0];
