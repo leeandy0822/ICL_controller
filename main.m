@@ -5,9 +5,7 @@ tic;
 % Control frequency and simlation time 
 dt = 1/400;
 sim_t = 10;
-
 %% Mode selection
-
 % Eight, Hover
 traj_mode = "eight";
 % ICL ,  Adaptive
@@ -31,7 +29,6 @@ for i= 2:length(payload.t)
     % desire trajectory
     traj_handle.traj(:,i) = traj_handle.traj_generate(t_now,payload.traj_mode);
     Xd = traj_handle.traj(1:9, i);
-    
     %% Controller
     [Fd, force_error, translation_est, icl_trans] = ctrl.force_ctrl(i,payload , Xd,  icl_rot,icl_trans,dt);
     [Md, moment_error, rotation_est, icl_rot, Rd] = ctrl.moment_ctrl(i, payload, Xd, icl_rot, icl_trans,dt);
@@ -39,7 +36,6 @@ for i= 2:length(payload.t)
     % distribute force and get th
     dis = distribute_force;
     [Fd, Md, u, freq_dis] = dis.cal_u(payload,Fd,Md,i); 
-
     %% Calculate next step dynamics
     X0 = [vec_enu_to_ned(payload.x(:,i-1)); vec_enu_to_ned(payload.v(:,i-1));
         reshape(reshape(payload.R(:, i-1), 3, 3), 9, 1); payload.W(:, i-1)];
@@ -47,7 +43,6 @@ for i= 2:length(payload.t)
     control = [Fd ; Md];
     error = [force_error moment_error];
     [T, X_new] = ode45(@(t, x) payload.dynamics(t, x, control), [0, dt], X0, control);
-
     %% record
     payload.x(:,i) = vec_ned_to_enu(X_new(end,1:3));
     payload.v(:,i) = vec_ned_to_enu(X_new(end,4:6));
