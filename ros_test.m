@@ -5,18 +5,18 @@ clear all, close all, clc;
 
 % --- now launch the gazebo files ---
 
-% get topic from payload and uavs
+% initialize the subscriber
 payload_pose = rossubscriber("/sensor_pack/groundtruth/pose","DataFormat","struct");
 uav1_pose = rossubscriber("/firefly1/ground_truth/pose","DataFormat","struct");
 uav2_pose = rossubscriber("/firefly2/ground_truth/pose","DataFormat","struct");
 uav3_pose = rossubscriber("/firefly3/ground_truth/pose","DataFormat","struct");
 uav4_pose = rossubscriber("/firefly4/ground_truth/pose","DataFormat","struct");
 
+% initialize the publisher
 [pub1, msg1] = rospublisher("/firefly1/command/roll_pitch_yawrate_thrust","mav_msgs/RollPitchYawrateThrust");
-
-
-thrust = rosmessage('geometry_msgs/Vector3');
-
+[pub2, msg2] = rospublisher("/firefly2/command/roll_pitch_yawrate_thrust","mav_msgs/RollPitchYawrateThrust");
+[pub3, msg3] = rospublisher("/firefly3/command/roll_pitch_yawrate_thrust","mav_msgs/RollPitchYawrateThrust");
+[pub4, msg4] = rospublisher("/firefly4/command/roll_pitch_yawrate_thrust","mav_msgs/RollPitchYawrateThrust");
 
 pause(1);
 
@@ -26,6 +26,7 @@ uav2 = rigidbody_dynamics;
 uav3 = rigidbody_dynamics;
 uav4 = rigidbody_dynamics;
 
+u = [0 0 14];
 % Get the groundtruth of the payload position and orientation
 while true
 
@@ -64,9 +65,8 @@ while true
     uav1.pos = [uav1.pos_x uav1.pos_y uav1.pos_z];
     uav1.R = quat2rotm(uav1.q);
     uav1.eul = quat2eul(uav1.q);
-    u1 = [ 5 0 22];
-
-    [R1,P1,T1] = force_to_uav(u1,uav1,payload);
+    
+    [R1,P1,T1] = force_to_uav(u,uav1,payload);
     msg1.Roll = R1;
     msg1.Pitch = P1;
     msg1.Thrust = T1;
@@ -86,6 +86,12 @@ while true
     uav2.R = quat2rotm(uav2.q);
     uav2.eul = quat2eul(uav2.q);
 
+    [R2,P2,T2] = force_to_uav(u,uav2,payload);
+    msg2.Roll = R2;
+    msg2.Pitch = P2;
+    msg2.Thrust = T2;
+    send(pub2,msg2);
+
     %% Get UAV3 payload position and orientation
     uav3.pos_x = pose_uav3_data.Position.X;
     uav3.pos_y = pose_uav3_data.Position.Y;
@@ -100,6 +106,11 @@ while true
     uav3.R = quat2rotm(uav3.q);
     uav3.eul = quat2eul(uav3.q);
 
+    [R3,P3,T3] = force_to_uav(u,uav3,payload);
+    msg3.Roll = R3;
+    msg3.Pitch = P3;
+    msg3.Thrust = T3;
+    send(pub3,msg3);
 
     %% Get UAV4 payload position and orientation
     uav4.pos_x = pose_uav4_data.Position.X;
@@ -115,6 +126,11 @@ while true
     uav4.R = quat2rotm(uav4.q);
     uav4.eul = quat2eul(uav4.q);
 
+    [R4,P4,T4] = force_to_uav(u,uav4,payload);
+    msg4.Roll = R4;
+    msg4.Pitch = P4;
+    msg4.Thrust = T4;
+    send(pub4,msg4);
 end
 
 function [roll,pitch,thrust] = force_to_uav(force,uav,payload)
