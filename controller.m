@@ -1,29 +1,52 @@
-classdef controller
+classdef controller < handle
 
     properties
 
-        kx = 18;
-        kv = 7;
+        kx = 24;
+        kv = 9;
         gamma_m = diag([0.01,0.0018,0.0022,0.0015]);
         cx = 6;
-        kcl_m = diag([0.001, 50000 , 50000 ,50000]);
-
-
+        kcl_m = diag([0.00001, 50000 , 50000 ,50000]);
         kr = 8*eye(3);
-        ko = 4*eye(3);    
-        %gamma_j = diag([1,1,1,10.5,9.5,14]);
+        ko = 3*eye(3);    
+
         %                         CoG              Inertia
         gamma_j = diag([0.001,0.001,0.0001, 0.03, 0.015, 0.0055]);
         cr = 7;
-        kcl_j = diag([  500, 500, 300 ,  3900, 700, 39000]);
+        kcl_j = diag([  400, 400, 300 ,  3900, 700, 500]);
 
         e3 = [0; 0; 1];
         last_f = [0; 0; 0];
 
     end
 
+    methods
+        function gain_setup(obj,optim_mode, emk_mode)
+            if (optim_mode == 1)
+            %only energy optimization
+%                 obj.kx = 60;
+%                 obj.kv = 6.8;
+%                 obj.kr = 7*eye(3);
+%                 obj.ko = 3*eye(3); 
+               
+                obj.kx = 120;
+                obj.kv = 12;
+                obj.kr = 9*eye(3);
+                obj.ko = 3*eye(3); 
+            elseif (optim_mode == 0)
+                obj.kx = 20;
+                obj.kv = 8;
+                obj.kr = 9*eye(3);
+                obj.ko = 3*eye(3); 
+                if (emk_mode ==1 )
+                    obj.kx = 20;
+                    obj.kv = 2;
+                    obj.kr = 5*eye(3);
+                    obj.ko = 2*eye(3); 
+                end
+            end
+        end
 
-    methods 
         function [Fd, error, theta_m_hat, icl_trans] = force_ctrl(obj, iter, payload, Xd, icl_rot, icl_trans, dt)
            
             x_enu = payload.x(:,iter-1);

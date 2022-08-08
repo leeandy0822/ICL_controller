@@ -13,32 +13,21 @@ classdef payload_dynamics
         J
         g = 9.81;
 
-        length = 1.0
-        width = 0.8;
-        height = 0.2;
-
         % grasp matrix
-        
-        p1 = [ 0 ; 2 ; 0]*0.15;
-        p2 = [-1*sqrt(3)  ; -1 ; 0]*0.15;
-        p3 = [ 1*sqrt(3) ; -1 ; 0]*0.15;
+        p1
+        p2
+        p3
             
-%         p1 = [0.16; 0.3; 0];
-%         p2 = [-0.29; -0.1; 0];
-%         p3 = [0.37; 0.04; 0];
         % CoG vector 
         body2CoG =[0.08; 0.08; 0.00];
 
         % control grasp matrix
         B 
-        % real control grasp matrix by CoG drift
-        B_real
 
         % unit vector
         e1 = [1; 0; 0];
         e2 = [0; 1; 0];
         e3 = [0; 0; 1];
-        
 
         % states
         x 
@@ -48,13 +37,6 @@ classdef payload_dynamics
         W
         dW
 
-        q1
-        q2
-        q3
-
-        a1
-        a2
-        a3
         % errors
         ex 
         ev
@@ -71,9 +53,6 @@ classdef payload_dynamics
         u1
         u2
         u3
-
-        % for optimization
-        energy 
     end
 
     methods
