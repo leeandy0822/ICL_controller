@@ -12,7 +12,8 @@ uav4 = gazebo_dynamics;
 % --- now launch the gazebo files ---
 
 %% initialize the subscriber
-payload.t = rostime("now");
+current_time = rostime("now");
+payload.t = current_time.Sec + current_time.Nsec/1000000000;
 payload.sub = rossubscriber("/sensor_pack/groundtruth/pose","DataFormat","struct");
 uav1.sub = rossubscriber("/firefly1/ground_truth/pose","DataFormat","struct");
 uav2.sub = rossubscriber("/firefly2/ground_truth/pose","DataFormat","struct");
@@ -29,8 +30,8 @@ pause(0.5);
 
 [uav1, uav2, uav3, uav4, payload] = getPose(uav1,uav2,uav3,uav4,payload); 
 
-u1 = [-4 0 20];
-u2 = [4 0 20];
+u1 = [4 0 20];
+u2 = [-4 0 20];
 while true
 force_to_uav(u1,uav1,payload);
 force_to_uav(u2,uav2,payload);
