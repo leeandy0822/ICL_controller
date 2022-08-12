@@ -1,0 +1,41 @@
+function [data, info] = filteredSensorData
+%FilteredSensorData gives an empty data for mav_msgs/FilteredSensorData
+% Copyright 2019-2020 The MathWorks, Inc.
+%#codegen
+data = struct();
+data.MessageType = 'mav_msgs/FilteredSensorData';
+[data.Header, info.Header] = ros.internal.ros.messages.std_msgs.header;
+info.Header.MLdataType = 'struct';
+[data.Accelerometer, info.Accelerometer] = ros.internal.ros.messages.geometry_msgs.vector3;
+info.Accelerometer.MLdataType = 'struct';
+[data.Gyroscope, info.Gyroscope] = ros.internal.ros.messages.geometry_msgs.vector3;
+info.Gyroscope.MLdataType = 'struct';
+[data.Magnetometer, info.Magnetometer] = ros.internal.ros.messages.geometry_msgs.vector3;
+info.Magnetometer.MLdataType = 'struct';
+[data.Barometer, info.Barometer] = ros.internal.ros.messages.ros.default_type('double',1);
+info.MessageType = 'mav_msgs/FilteredSensorData';
+info.constant = 0;
+info.default = 0;
+info.maxstrlen = NaN;
+info.MaxLen = 1;
+info.MinLen = 1;
+info.MatPath = cell(1,19);
+info.MatPath{1} = 'header';
+info.MatPath{2} = 'header.seq';
+info.MatPath{3} = 'header.stamp';
+info.MatPath{4} = 'header.stamp.sec';
+info.MatPath{5} = 'header.stamp.nsec';
+info.MatPath{6} = 'header.frame_id';
+info.MatPath{7} = 'accelerometer';
+info.MatPath{8} = 'accelerometer.x';
+info.MatPath{9} = 'accelerometer.y';
+info.MatPath{10} = 'accelerometer.z';
+info.MatPath{11} = 'gyroscope';
+info.MatPath{12} = 'gyroscope.x';
+info.MatPath{13} = 'gyroscope.y';
+info.MatPath{14} = 'gyroscope.z';
+info.MatPath{15} = 'magnetometer';
+info.MatPath{16} = 'magnetometer.x';
+info.MatPath{17} = 'magnetometer.y';
+info.MatPath{18} = 'magnetometer.z';
+info.MatPath{19} = 'barometer';
