@@ -5,6 +5,7 @@ classdef payload_dynamics
         dt = 0.01;
         sim_t = 30;
         t
+        cur_t % for gazebo
         iter
         freq
         
@@ -53,6 +54,25 @@ classdef payload_dynamics
         u1
         u2
         u3
+
+        %% For Gazebo simulation
+        % position
+        pos_x
+        pos_y
+        pos_z
+        pos
+        
+        % orientation
+        q_x
+        q_y
+        q_z
+        q_w
+        q
+        eul
+
+        % ros publisher
+        msg
+        pub
     end
 
     methods

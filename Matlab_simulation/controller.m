@@ -33,17 +33,25 @@ classdef controller < handle
                 obj.kv = 12;
                 obj.kr = 9*eye(3);
                 obj.ko = 3*eye(3); 
+
             elseif (optim_mode == 0)
                 obj.kx = 20;
                 obj.kv = 8;
                 obj.kr = 9*eye(3);
                 obj.ko = 3*eye(3); 
+
                 if (emk_mode ==1 )
                     obj.kx = 20;
                     obj.kv = 2;
                     obj.kr = 5*eye(3);
                     obj.ko = 2*eye(3); 
                 end
+            else 
+                % gazebo mode
+                obj.kx = 20;
+                obj.kv = 2;
+                obj.kr = 5*eye(3);
+                obj.ko = 2*eye(3);
             end
         end
 
