@@ -1,6 +1,7 @@
 clear all, close all, clc;
 
 addpath('Matlab_simulation/')
+addpath('./tools/')
 %  rosinit('127.0.0.1')
 %% Mode selection
 % Eight, Hover
@@ -8,7 +9,7 @@ traj_mode = "eight";
 % Groundtruth Mode
 groundtruth_mode = 1;
 
-sim_t = 5;
+sim_t = 10;
 [payload, icl_trans, icl_rot, ctrl, traj_handle] = gazebo_init(traj_mode,groundtruth_mode, sim_t);
 
 
@@ -26,15 +27,21 @@ system_pose = rossubscriber("/pub_system_pose","DataFormat","struct");
 
 initial_time = (rostime("now").Sec + rostime("now").Nsec/1000000000);
 payload.cur_t = 0;
+[uav1, uav2, uav3, uav4, payload] = getPose(uav1,uav2,uav3,uav4,payload,system_pose); 
+dis_handle = resultant_to_uav;
+Fd = [0 ; 0 ; 10];
+Md = [0 ; 5 ; 0 ];
+
 
 while payload.cur_t < sim_t
     % Get time
+    
     payload.cur_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
     payload.cur_t
     [uav1, uav2, uav3, uav4, payload] = getPose(uav1,uav2,uav3,uav4,payload,system_pose); 
-    % force_to_uav(u1,uav1,payload);
-    % force_to_uav(u2,uav2,payload);
-    % force_to_uav(u3,uav3,payload);
-    % force_to_uav(u4,uav4,payload);
-
+    u = dis_handle.cal_u(payload, Fd, Md);
+    force_to_uav(u(1:3)',uav1,payload);
+    force_to_uav(u(4:6)',uav2,payload);
+    force_to_uav(u(7:9)',uav3,payload);
+    force_to_uav(u(10:12)',uav4,payload);
 end
