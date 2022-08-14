@@ -1,16 +1,9 @@
-classdef gazebo_dynamics
+classdef gazebo_uav
     properties
         % position
-        pos_x
-        pos_y
-        pos_z
-        pos
+        x
         
         % orientation
-        q_x
-        q_y
-        q_z
-        q_w
         q
         eul
         R

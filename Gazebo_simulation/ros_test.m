@@ -1,22 +1,24 @@
 clear all, close all, clc;
 
-addpath('Matlab_simulation/')
-addpath('./tools/')
+addpath('../tools/')
 %  rosinit('127.0.0.1')
-%% Mode selection
-% Eight, Hover
-traj_mode = "eight";
-% Groundtruth Mode
-groundtruth_mode = 1;
 
-sim_t = 10;
-[payload, icl_trans, icl_rot, ctrl, traj_handle] = gazebo_init(traj_mode,groundtruth_mode, sim_t);
+%% Initialize 
+sim_t = 30;
+traj_mode = "hover";
 
+[payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t);
+uav1 = gazebo_uav;
+uav2 = gazebo_uav;
+uav3 = gazebo_uav;
+uav4 = gazebo_uav;
 
-uav1 = gazebo_dynamics;
-uav2 = gazebo_dynamics;
-uav3 = gazebo_dynamics;
-uav4 = gazebo_dynamics;
+% initialize controller
+ctrl = gazebo_controller;
+% initialize distributed handle
+dis_handle = gazebo_distributed;
+% initialize trajectory
+traj_handle = gazebo_trajectory;
 
 %% initialize ros function
 system_pose = rossubscriber("/pub_system_pose","DataFormat","struct");
@@ -27,21 +29,30 @@ system_pose = rossubscriber("/pub_system_pose","DataFormat","struct");
 
 initial_time = (rostime("now").Sec + rostime("now").Nsec/1000000000);
 payload.cur_t = 0;
-[uav1, uav2, uav3, uav4, payload] = getPose(uav1,uav2,uav3,uav4,payload,system_pose); 
-dis_handle = resultant_to_uav;
 Fd = [0 ; 0 ; 10];
-Md = [0 ; 5 ; 0 ];
+Md = [0 ; 0 ; 0];
 
-
+iter = 0 ; 
+%% Loop for simulation
 while payload.cur_t < sim_t
+
+    [uav1, uav2, uav3, uav4, payload] = getPose(uav1,uav2,uav3,uav4,payload,system_pose); 
+
     % Get time
-    
     payload.cur_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
     payload.cur_t
-    [uav1, uav2, uav3, uav4, payload] = getPose(uav1,uav2,uav3,uav4,payload,system_pose); 
+
+    Xd = traj_handle.traj_generate(payload.cur_t,payload.traj_mode);
+
+    % Controller
+    [Fd, force_error, translation_est, icl_trans] = ctrl.force_ctrl(iter,payload , Xd,  icl_rot,icl_trans);
+    [Md, moment_error, rotation_est, icl_rot, Rd] = ctrl.moment_ctrl(iter, payload, Xd, icl_rot, icl_trans);
+
+    % distributed force
     u = dis_handle.cal_u(payload, Fd, Md);
     force_to_uav(u(1:3)',uav1,payload);
     force_to_uav(u(4:6)',uav2,payload);
     force_to_uav(u(7:9)',uav3,payload);
     force_to_uav(u(10:12)',uav4,payload);
+    iter = iter + 1;
 end

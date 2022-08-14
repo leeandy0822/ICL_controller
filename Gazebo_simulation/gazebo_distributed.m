@@ -1,4 +1,4 @@
-classdef resultant_to_uav
+classdef gazebo_distributed
     
     properties
        u1_bar
