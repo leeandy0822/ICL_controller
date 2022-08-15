@@ -2,8 +2,8 @@ classdef gazebo_controller
 
     properties
 
-        kx = 15;
-        kv = 6;
+        kx = 18;
+        kv = 7;
         gamma_m = diag([0.005,0.0018,0.0022,0.0015]);
         cx = 4; 
         kcl_m = diag([0.01, 5000 , 5000 ,5000]);

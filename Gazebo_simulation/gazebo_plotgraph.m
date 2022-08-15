@@ -1,4 +1,4 @@
-function gazebo_plotgraph(iter, payload)
+function gazebo_plotgraph(payload)
     
     t = 0:0.025:(length(payload.x)-1)*0.025;
    

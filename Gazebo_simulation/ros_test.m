@@ -43,7 +43,12 @@ while payload.cur_t < sim_t
     [uav1, uav2, uav3, uav4, payload] = getPose(uav1,uav2,uav3,uav4,payload,system_pose,iter); 
     % Get time
     payload.cur_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
-    payload.cur_t
+    if(mod(iter,10) == 0)
+        fprintf("Sim_time: %f\n", payload.cur_t)
+        fprintf("Mass Estimation: %f \n",payload.translation_estimation(1,iter-1))
+        fprintf("CoG_X Estimation: %f \n",payload.rotation_estimation(1,iter-1))
+        fprintf("CoG_Y Estimation: %f \n",payload.rotation_estimation(2,iter-1))
+    end
     Xd = traj_handle.traj_generate(payload.cur_t,payload.traj_mode);
     % Controller
     [Fd, force_error, translation_est, icl_trans] = ctrl.force_ctrl(iter,payload , Xd,  icl_rot,icl_trans, dt);
@@ -74,4 +79,13 @@ while payload.cur_t < sim_t
         dt = toc;
     end
 end
-gazebo_plotgraph(traj_handle.traj, payload);
+gazebo_plotgraph(payload);
+
+u1 = 0 ; 
+u2 = 0 ; 
+u3 = 0 ; 
+u4 = 0 ; 
+force_to_uav(u1,uav1,payload,iter);
+force_to_uav(u2,uav2,payload,iter);
+force_to_uav(u3,uav3,payload,iter);
+force_to_uav(u4,uav4,payload,iter);
