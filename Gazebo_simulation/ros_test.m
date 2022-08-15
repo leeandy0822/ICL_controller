@@ -4,7 +4,7 @@ addpath('../tools/')
 %  rosinit('127.0.0.1')
 
 %% Initialize 
-sim_t = 60;
+sim_t = 40;
 traj_mode = "hover";
 
 [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t);

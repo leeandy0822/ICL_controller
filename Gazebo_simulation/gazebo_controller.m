@@ -2,18 +2,18 @@ classdef gazebo_controller
 
     properties
 
-        kx = 18;
-        kv = 7;
+        kx = 15;
+        kv = 6;
         gamma_m = diag([0.005,0.0018,0.0022,0.0015]);
         cx = 4; 
         kcl_m = diag([0.01, 5000 , 5000 ,5000]);
         
-        kr = 9*eye(3);
+        kr = 8*eye(3);
         ko = 3*eye(3);    
         cr = 3;
         %                         CoG              Inertia
-        gamma_j = diag([0.005,0.005,0.0001, 0.03, 0.015, 0.0055]);
-        kcl_j = diag([  40, 40, 30 ,  390, 700, 500]);
+        gamma_j = diag([0.003,0.003,0.0001, 0.003, 0.0015, 0.00055]);
+        kcl_j = diag([  20, 20, 20 ,  390, 700, 500]);
 
         e3 = [0; 0; 1];
         last_f = [0; 0; 0];

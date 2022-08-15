@@ -10,7 +10,7 @@ function [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t)
                      0,    0,   0.05];
 
     % Gazebo simulation time
-    payload.total_step = sim_t / 0.025;
+    payload.total_step = sim_t / 0.04;
 
     payload.x = zeros(3,payload.total_step);
     payload.v = zeros(3,payload.total_step);
@@ -37,7 +37,7 @@ function [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t)
     payload.u3 = zeros(3, payload.total_step);
     payload.u4 = zeros(3, payload.total_step);
     payload.translation_estimation(:,1) = [payload.m; 0 ; 0 ; 0 ];
-    payload.rotation_estimation(:, 1) = [0.03; 0.03; 0; 0; 0; 0];
+    payload.rotation_estimation(:, 1) = [0.02; 0.02; 0; 0; 0; 0];
 
     %% ICL initialize
 
