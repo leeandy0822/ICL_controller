@@ -48,7 +48,7 @@ while payload.cur_t < sim_t
     % Controller
     [Fd, force_error, translation_est, icl_trans] = ctrl.force_ctrl(iter,payload , Xd,  icl_rot,icl_trans, dt);
     [Md, moment_error, rotation_est, icl_rot, Rd] = ctrl.moment_ctrl(iter, payload, Xd, icl_rot, icl_trans, dt);
-    Md
+    
     % distributed force
     u = dis_handle.cal_u(payload, Fd, Md,iter);
 
@@ -74,3 +74,4 @@ while payload.cur_t < sim_t
         dt = toc;
     end
 end
+gazebo_plotgraph(traj_handle.traj, payload);
