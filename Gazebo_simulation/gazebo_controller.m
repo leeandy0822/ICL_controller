@@ -1,18 +1,18 @@
-classdef gazebo_controller < handle
+classdef gazebo_controller
 
     properties
 
-        kx = 24;
-        kv = 9;
+        kx = 12;
+        kv = 8;
         gamma_m = diag([0.01,0.0018,0.0022,0.0015]);
-        cx = 6;
-        kcl_m = diag([0.00001, 50000 , 50000 ,50000]);
-        kr = 8*eye(3);
+        cx = 5; 
+        kcl_m = diag([0.0001, 50000 , 50000 ,50000]);
+        
+        kr = 6*eye(3);
         ko = 3*eye(3);    
-
+        cr = 5;
         %                         CoG              Inertia
         gamma_j = diag([0.001,0.001,0.0001, 0.03, 0.015, 0.0055]);
-        cr = 7;
         kcl_j = diag([  400, 400, 300 ,  3900, 700, 500]);
 
         e3 = [0; 0; 1];
@@ -22,10 +22,16 @@ classdef gazebo_controller < handle
 
     methods
 
-        function [Fd, error, theta_m_hat, icl_trans] = force_ctrl(obj, payload, Xd, icl_rot, icl_trans, dt)
+        function [Fd, error, theta_m_hat, icl_trans] = force_ctrl(obj, iter, payload, Xd, icl_rot, icl_trans, dt)
            
-            x_enu = payload.x;
-            x_dot_enu = payload.v;
+            x_enu = payload.x(:,iter-1);
+
+            if iter > 2
+                payload.v(:,iter-1) = (payload.x(:,iter-1) - payload.x(:,iter-2))/dt;
+                x_dot_enu = payload.v(:,iter-1);
+            else 
+                x_dot_enu = payload.v(:,iter-1) ;
+            end
 
             xd_enu = Xd(1:3);
             xd_dot_enu = Xd(4:6);
@@ -34,17 +40,22 @@ classdef gazebo_controller < handle
             % convert position and velocity from enu to ned
             x = vec_enu_to_ned(x_enu);
             x_dot = vec_enu_to_ned(x_dot_enu);
+
             xd = vec_enu_to_ned(xd_enu);
             xd_dot = vec_enu_to_ned(xd_dot_enu);
             xd_double_dot = vec_enu_to_ned(xd_double_dot_enu);
-            
-
-            theta_m_hat = payload.translation_estimation;
+              
+            theta_m_hat = payload.translation_estimation(:,iter-1);
 
             % payload.gression Matrix
-            R = payload.R;
-            W = payload.W;
-            W_dot = (W - icl_rot.W_last);
+            R = reshape(payload.R(:,iter-1), 3,3);
+            W = payload.W(: , iter-1);
+
+            if iter > 2
+                W_dot = (payload.W(:,iter-1) - payload.W(:,iter-2))/dt;
+            else 
+                W_dot = payload.W(:,iter-1) ;
+            end
 
             a = -R*(hat_map(W_dot) + hat_map(W) * hat_map(W));
             b = -xd_double_dot + payload.g*obj.e3;
@@ -79,11 +90,13 @@ classdef gazebo_controller < handle
             theta_m_hat = theta_m_hat + (theta_m_hat_dot_adaptive+theta_m_hat_dot_icl)*dt;
             
             % Control Input
-            %Fd = -obj.kx*ex - obj.kv*ev  + Ym*theta_m_hat;
             
             F_ff = Ym*theta_m_hat;
+            F_back = -obj.kx*ex - obj.kv*ev;
+            F_back  = vec_ned_to_enu(F_back);
             % Geometric controller
-            Fd = obj.kx*ex + obj.kv*ev + F_ff;
+            Fd = F_back + F_ff ;
+            %% To do , this should put outside
             icl_trans.current_force = Fd;            
             
             error(1:3) = ex;
@@ -92,11 +105,7 @@ classdef gazebo_controller < handle
 
 
         function [Md, error, J_est, icl_rot, Rd] = moment_ctrl(obj, iter, payload, Xd, icl_rot,icl_trans, dt)
-
-            xd_dot_enu = Xd(4:6);
             
-            % convert position and velocity from enu to ned
-            xd_dot = xd_dot_enu;
 
             % states 
             R = reshape(payload.R(:,iter-1), 3,3);
@@ -173,7 +182,6 @@ classdef gazebo_controller < handle
             Md = -obj.kr*eR - obj.ko*eW + M_ff;
 
             %Md = -obj.kr*eR - obj.ko*eW - M_ff ;
-
             error(1:3) = eR;
             error(4:6) = eW;
 

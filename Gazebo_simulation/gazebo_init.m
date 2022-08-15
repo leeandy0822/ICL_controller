@@ -4,37 +4,41 @@ function [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t)
     payload.traj_mode = traj_mode;
 
     %% Physical property
-    payload.m = 2;
-    payload.J = [0.030, 0, 0;
-                    0, 0.03, 0;
-                    0, 0, 0.0500];
+    payload.m = 5;
+    payload.J = [0.030,    0,   0;
+                     0, 0.03,   0;
+                     0,    0,   0.05];
 
     % Gazebo simulation time
     payload.total_step = sim_t / 0.025;
 
-    payload.x = zeros(3,length(payload.total_step));
-    payload.v = zeros(3,length(payload.total_step));
-    payload.R = zeros(9, length(payload.total_step));
-    payload.Rd = zeros(9, length(payload.total_step));
-    payload.W = zeros(3, length(payload.total_step));
-    payload.dW = zeros(3, length(payload.total_step));
-    payload.ex = zeros(3, length(payload.total_step));
-    payload.ev = zeros(3, length(payload.total_step));
-    payload.force = zeros(3,length(payload.total_step));
-    payload.moment = zeros(3,length(payload.total_step));
+    payload.x = zeros(3,payload.total_step);
+    payload.v = zeros(3,payload.total_step);
+    payload.R = zeros(9, payload.total_step);
+    
+    payload.W = zeros(3, payload.total_step);
+    payload.dW = zeros(3, payload.total_step);
+
+    payload.ex = zeros(3, payload.total_step);
+    payload.ev = zeros(3, payload.total_step);
+    payload.eR = zeros(3, payload.total_step);
+    payload.eW = zeros(3, payload.total_step);
+
+    payload.force = zeros(3,payload.total_step);
+    payload.moment = zeros(3,payload.total_step);
     
     % translation: m m*CoG  rotation: CoG J3x1 (todo: 6x1)
-    payload.translation_estimation = zeros(4, length(payload.total_step));
-    payload.rotation_estimation = zeros(6, length(payload.total_step));
+    payload.translation_estimation = zeros(4, payload.total_step);
+    payload.rotation_estimation = zeros(6, payload.total_step);
     
     %% Grasp position 
-    payload.u1 = zeros(3, length(payload.total_step));
-    payload.u2 = zeros(3, length(payload.total_step));
-    payload.u3 = zeros(3, length(payload.total_step));
+    payload.u1 = zeros(3, payload.total_step);
+    payload.u2 = zeros(3, payload.total_step);
+    payload.u3 = zeros(3, payload.total_step);
+    payload.u4 = zeros(3, payload.total_step);
     payload.translation_estimation(:,1) = [payload.m; payload.m*0.08 ; payload.m*0.08 ; 0 ];
     payload.rotation_estimation(:, 1) = [0.08; 0.08; 0; 0; 0; 0];
 
-    
     %% ICL initialize
 
     % Translation ICL initialize

@@ -4,6 +4,7 @@ classdef gazebo_payload
         traj_mode
         total_step
         cur_t % for gazebo
+        last_t
         
         % parameters
         m
@@ -53,6 +54,7 @@ classdef gazebo_payload
         u1
         u2
         u3
+        u4
 
         % ros publisher
         msg

@@ -4,16 +4,16 @@ tic;
 
 % Control frequency and simlation time 
 dt = 1/400;
-sim_t = 10;
+sim_t = 5;
 %% Mode selection
 % Eight, Hover
-traj_mode = "eight";
+traj_mode = "hover";
 % ICL ,  Adaptive
 ctrl_mode = "icl";
 %  Even Formation: 0, Optimal Formation: 1
 optim_mode = 1;
 % with CoG and mass knowledge: 1, else 0
-emk_mode = 1;
+emk_mode = 0;
 
 %% Initailze the controller, dynamics and trajectory
 [payload, icl_trans, icl_rot, ctrl, traj_handle] = initailize(traj_mode,emk_mode, optim_mode,dt,sim_t);

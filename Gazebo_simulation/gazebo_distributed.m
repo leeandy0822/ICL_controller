@@ -18,9 +18,9 @@ classdef gazebo_distributed
     end
     methods
 
-        function [u] = cal_u(~, payload, Fd, Md)
+        function [u] = cal_u(~, payload, Fd, Md,iter)
 
-                R = payload.R;
+                R = reshape(payload.R(:,iter-1),[3,3]);
                 
                 %% upper bound
                 Fd_direction = Fd/norm(Fd);
@@ -33,11 +33,11 @@ classdef gazebo_distributed
                 payload_M = Md;
 
                 % Get grasp matrix and nullspace of it
-                obj.B = payload.B;
                 p1 = [ -1.1     0     0 ];
                 p2 = [  1.1     0     0 ];
                 p3 = [   0     0.85   0 ];
                 p4 = [   0    -0.85   0 ];
+                
                 obj.B = [       eye(3)   eye(3)              eye(3)       eye(3); 
                          hat_map(p1)     hat_map(p2)       hat_map(p3)  hat_map(p4)];
 
@@ -68,9 +68,7 @@ classdef gazebo_distributed
                 obj.Z4 = obj.Z(10:12,:);
                 options = optimoptions(@fminunc,'Display','off','Algorithm','quasi-newton');
                 
-                tic;
                 gamma_new = fminunc(@func, gamma, options);
-                freq_dis = 1/toc;
 
                 % Total null space force
                 nullspace_f = obj.Z*gamma_new;

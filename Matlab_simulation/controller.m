@@ -29,10 +29,10 @@ classdef controller < handle
 %                 obj.kr = 7*eye(3);
 %                 obj.ko = 3*eye(3); 
                
-                obj.kx = 120;
+                obj.kx = 30;
                 obj.kv = 12;
-                obj.kr = 9*eye(3);
-                obj.ko = 3*eye(3); 
+                obj.kr = 5*eye(3);
+                obj.ko = 2*eye(3); 
 
             elseif (optim_mode == 0)
                 obj.kx = 20;
