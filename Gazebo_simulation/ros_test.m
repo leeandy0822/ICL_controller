@@ -79,9 +79,7 @@ while payload.cur_t < sim_t
         dt = toc;
     end
 end
-gazebo_plotgraph(payload);
-
-u1 = 0 ; 
+gazebo_plotgraph(payload);u1 = 0 ; 
 u2 = 0 ; 
 u3 = 0 ; 
 u4 = 0 ; 
@@ -89,3 +87,6 @@ force_to_uav(u1,uav1,payload,iter);
 force_to_uav(u2,uav2,payload,iter);
 force_to_uav(u3,uav3,payload,iter);
 force_to_uav(u4,uav4,payload,iter);
+
+[uav1, uav2, uav3, uav4, payload] = getPose(uav1,uav2,uav3,uav4,payload,system_pose,iter); 
+

@@ -28,9 +28,9 @@ u1 = 0 ;
 u2 = 0 ; 
 u3 = 0 ; 
 u4 = 0 ; 
-force_to_uav(u1,uav1,payload,iter);
-force_to_uav(u2,uav2,payload,iter);
-force_to_uav(u3,uav3,payload,iter);
-force_to_uav(u4,uav4,payload,iter);
+force_to_uav(u1,uav1,payload,2);
+force_to_uav(u2,uav2,payload,2);
+force_to_uav(u3,uav3,payload,2);
+force_to_uav(u4,uav4,payload,2);
 
 
