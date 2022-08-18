@@ -19,14 +19,8 @@ classdef gazebo_distributed
     methods
 
         function [u] = cal_u(~, payload, Fd, Md,iter)
-
+                obj.p_i = [0 ; 0 ; 1];
                 R = reshape(payload.R(:,iter-1),[3,3]);
-                
-                %% upper bound
-                Fd_direction = Fd/norm(Fd);
-                Fd_up = 2.5*4*9.8;
-                Fd_real = min(Fd_up, norm(Fd));
-                Fd = Fd_real*Fd_direction;
 
                 % Control is defined in world frame, so turn it into body frame
                 payload_F = R'*Fd;
@@ -51,15 +45,14 @@ classdef gazebo_distributed
                            zeros(3) zeros(3) zeros(3)    R];
                 
                 obj.u_bar = toworld*analytical_sol*[payload_F ; payload_M];                
-                obj.u1_bar = obj.u_bar(1:3);
-                obj.u2_bar = obj.u_bar(4:6); 
-                obj.u3_bar = obj.u_bar(7:9);
-                obj.u4_bar = obj.u_bar(10:12);
-                
+                obj.u1_bar = safe_direction(obj.u_bar(1:3));
+                obj.u2_bar = safe_direction(obj.u_bar(4:6)); 
+                obj.u3_bar = safe_direction(obj.u_bar(7:9));
+                obj.u4_bar = safe_direction(obj.u_bar(10:12));
+
                 %% Because of gimbal constraint, decide gamma input for null(B) 
                 
                 gamma = [0; 0; 0; 0 ; 0 ; 0];  
-                obj.p_i = [0 ; 0 ; -1];
                 gimbal_angle = 45;
                 obj.spherical_contraint = cos(deg2rad(gimbal_angle))*cos(deg2rad(gimbal_angle))*eye(3) - obj.p_i*obj.p_i'; 
                 obj.Z1 = obj.Z(1:3,:);
@@ -81,7 +74,7 @@ classdef gazebo_distributed
                 function cost = func(gamma)
             
                     s = 5;
-                    upperbound = 30;
+                    upperbound = 2.3*9.8;
                    
                     F1 = obj.u1_bar + obj.Z1*gamma;
                     F2 = obj.u2_bar + obj.Z2*gamma;
