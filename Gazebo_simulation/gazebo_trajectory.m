@@ -11,15 +11,15 @@ classdef gazebo_trajectory
                 v = [3*0.12*pi*cos(0.12*pi*t) ; -7*0.06*pi*sin(0.06*pi*t) ; 0];
                 a = [-3*0.12*0.12*pi*pi*sin(0.12*pi*t) ; -7*0.06*0.06*pi*pi*cos(0.06*pi*t) ; 0];
             else
-                x = [0 ; 0 ; 2];
+                x = [0 ; 0 ; 1.5];
                 v = [0 ; 0; 0];
                 a = [0 ; 0 ;0 ];
 
-                if t > 30
-                    t = t - 30;
-                    x = [2*sin(0.02*pi*t) ; 4*cos(0.02*pi*t)-4; 2];
-                    v = [2*0.02*pi*cos(0.02*pi*t) ; -4*0.02*pi*sin(0.02*pi*t) ; 0];
-                    a = [-2*0.02*0.02*pi*pi*sin(0.02*pi*t) ; -4*0.02*0.02*pi*pi*cos(0.02*pi*t) ; 0];
+                if t > 40
+                    t = t - 40;
+                    x = [2*sin(0.04*pi*t) ; 2*cos(0.04*pi*t)-2; 1.5];
+                    v = [2*0.04*pi*cos(0.04*pi*t) ; -2*0.04*pi*sin(0.04*pi*t) ; 0];
+                    a = [-2*0.04*0.04*pi*pi*sin(0.04*pi*t) ; -2*0.04*0.04*pi*pi*cos(0.04*pi*t) ; 0];
 
                 end
 

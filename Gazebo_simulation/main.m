@@ -4,7 +4,7 @@ addpath('../tools/')
 %  rosinit('127.0.0.1')
 
 %% Initialize 
-sim_t = 180;
+sim_t = 95;
 traj_mode = "hover";
 
 [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t);
@@ -43,12 +43,7 @@ while payload.cur_t < sim_t
     [uav1, uav2, uav3, uav4, payload] = getPose(uav1,uav2,uav3,uav4,payload,system_pose,iter); 
     % Get time
     payload.cur_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
-    if(mod(iter,10) == 0)
-        fprintf("Sim_time: %f\n", payload.cur_t)
-        fprintf("Mass Estimation: %f \n",payload.translation_estimation(1,iter-1))
-        fprintf("CoG_X Estimation: %f \n",payload.rotation_estimation(1,iter-1))
-        fprintf("CoG_Y Estimation: %f \n",payload.rotation_estimation(2,iter-1))
-    end
+
     Xd = traj_handle.traj_generate(payload.cur_t,payload.traj_mode);
     % Controller
     [Fd, force_error, translation_est, icl_trans] = ctrl.force_ctrl(iter,payload , Xd,  icl_rot,icl_trans, dt);
@@ -58,10 +53,13 @@ while payload.cur_t < sim_t
     u = dis_handle.cal_u(payload, Fd, Md,iter);
 
     error = [force_error moment_error];
+
     force_to_uav(u(1:3)',uav1,payload,iter);
     force_to_uav(u(4:6)',uav2,payload,iter);
     force_to_uav(u(7:9)',uav3,payload,iter);
     force_to_uav(u(10:12)',uav4,payload,iter);
+
+    payload.xd(:,iter) = Xd;
     payload.ex(:,iter) = error(1:3);
     payload.ev(:,iter) = error(4:6);
     payload.eR(:,iter) = error(7:9);
@@ -79,7 +77,8 @@ while payload.cur_t < sim_t
         dt = toc;
     end
 end
-gazebo_plotgraph(payload);u1 = 0 ; 
+gazebo_plotgraph(payload);
+u1 = 0 ; 
 u2 = 0 ; 
 u3 = 0 ; 
 u4 = 0 ; 

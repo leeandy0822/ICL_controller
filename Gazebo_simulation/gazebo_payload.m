@@ -30,6 +30,7 @@ classdef gazebo_payload
 
         % states
         x 
+        xd
         v
         R
         q

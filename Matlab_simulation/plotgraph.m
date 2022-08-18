@@ -1,9 +1,10 @@
-function plotgraph(tra, payload)
+function plotgraph(payload)
 
     B = [ 0 1 0 ; 1 0 0 ; 0 0 -1];
     t = payload.t;
     % plot
     figure(1);
+    tra = payload.xd;
     tra(1:3,:) = B*tra(1:3,:);
     payload.x(1:3,:) = B*payload.x(1:3,:);
     plot3(tra(1,:),tra(2,:),tra(3,:),'LineWidth', 1.4, 'Color','k')
