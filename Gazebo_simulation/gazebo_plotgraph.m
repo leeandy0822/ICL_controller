@@ -1,6 +1,6 @@
 function gazebo_plotgraph(payload)
     
-    t = 0:0.025:(length(payload.ex)-1)*0.025;
+    t = 0:0.027:(length(payload.ex)-1)*0.027;
     % plot
     figure(1);
     tra(1:3,:) = payload.xd(1:3,:);
@@ -14,7 +14,7 @@ function gazebo_plotgraph(payload)
     
     for i = 1:100:length(payload.ex)
         matrix = reshape(payload.R(:,i),3,3);
-        norm = 3;
+        norm = 8;
         quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,1)/norm,matrix(2,1)/norm,matrix(3,1)/norm,'r',"LineWidth",1); 
         quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,2)/norm,matrix(2,2)/norm,matrix(3,2)/norm,'g',"LineWidth",1); 
         quiver3(payload.x(1,i),payload.x(2,i),payload.x(3,i),matrix(1,3)/norm,matrix(2,3)/norm,matrix(3,3)/norm,'b',"LineWidth",1); 
@@ -27,7 +27,7 @@ function gazebo_plotgraph(payload)
 
 
     figure(2);
-    tiledlayout(2,2)
+    tiledlayout(4,1)
     nexttile
     % Plot position tracking error
     plot(t,payload.ex(1,:),t,payload.ex(2,:),t,payload.ex(3,:),LineWidth=2.0)
@@ -56,7 +56,7 @@ function gazebo_plotgraph(payload)
     tiledlayout(4,1)
     nexttile
     % Plot necessary
-    mass = 7.34;
+    mass = 7.78;
     theta_m_ground_truth = ones(1, length(t))*mass;
     plot(t,payload.translation_estimation(1,:),t,theta_m_ground_truth,LineWidth=2.0)
     title("Mass",'FontSize', 20);

@@ -19,7 +19,7 @@ function F_new = safe_direction(F)
     %% upper bound
     F_new_dir = F_new/norm(F_new);
     F_new_mag = norm(F_new);
-    F_upperbound = 2.2*9.8;
+    F_upperbound = 2.9*9.8;
     F_new_mag = min(F_upperbound, norm(F_new_mag));
     F_new = F_new_dir*F_new_mag;
 

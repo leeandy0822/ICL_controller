@@ -5,7 +5,7 @@ addpath('../tools/')
 
 %% Initialize 
 
-sim_t = 30;
+sim_t = 50;
 traj_mode = "hover";
 [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t);
 uav1 = gazebo_uav;

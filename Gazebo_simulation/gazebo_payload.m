@@ -5,6 +5,7 @@ classdef gazebo_payload
         total_step
         cur_t % for gazebo
         last_t
+        t % for plot
         
         % parameters
         m

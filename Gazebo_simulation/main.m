@@ -4,7 +4,7 @@ addpath('../tools/')
 %  rosinit('127.0.0.1')
 
 %% Initialize 
-sim_t = 95;
+sim_t = 100;
 traj_mode = "hover";
 
 [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t);
@@ -32,10 +32,19 @@ payload.cur_t = 0;
 
 iter = 1; 
 [uav1, uav2, uav3, uav4, payload] = getPose(uav1,uav2,uav3,uav4,payload,system_pose,iter); 
+% initialize the grasp matrix
+p1 = uav1.x - payload.x(:,iter);
+p2 = uav2.x - payload.x(:,iter);
+p3 = uav3.x - payload.x(:,iter);
+p4 = uav4.x - payload.x(:,iter);
+payload.B = [       eye(3)   eye(3)              eye(3)       eye(3); 
+         hat_map(p1)     hat_map(p2)       hat_map(p3)  hat_map(p4)];
+
 iter = iter+1;
 dt = 0.02;
-t = 0 ; 
+payload.t(:,1) = 0;
 payload.last_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
+icl_rot.f_last = [0 ; 0 ; 0];
 
 %% Loop for simulation
 while payload.cur_t < sim_t
@@ -48,9 +57,11 @@ while payload.cur_t < sim_t
     % Controller
     [Fd, force_error, translation_est, icl_trans] = ctrl.force_ctrl(iter,payload , Xd,  icl_rot,icl_trans, dt);
     [Md, moment_error, rotation_est, icl_rot, Rd] = ctrl.moment_ctrl(iter, payload, Xd, icl_rot, icl_trans, dt);
-    
+
     % distributed force
     u = dis_handle.cal_u(payload, Fd, Md,iter);
+    Fd_real = u(1:3) + u(4:6) + u(7:9) + u(10:12);
+    icl_rot.f_last = Fd_real;  
 
     error = [force_error moment_error];
 
@@ -58,6 +69,11 @@ while payload.cur_t < sim_t
     force_to_uav(u(4:6)',uav2,payload,iter);
     force_to_uav(u(7:9)',uav3,payload,iter);
     force_to_uav(u(10:12)',uav4,payload,iter);
+
+    payload.u1(:,iter) = u(1:3);
+    payload.u2(:,iter) = u(4:6);
+    payload.u3(:,iter) = u(7:9); 
+    payload.u4(:,iter) = u(10:12); 
 
     payload.xd(:,iter) = Xd;
     payload.ex(:,iter) = error(1:3);
@@ -67,13 +83,12 @@ while payload.cur_t < sim_t
 
     payload.translation_estimation(:,iter) = translation_est;
     payload.rotation_estimation(:,iter) = rotation_est;
-    payload.u1(:,iter-1) = u(1:3);
-    payload.u2(:,iter-1) = u(4:6);
-    payload.u3(:,iter-1) = u(7:9); 
-    payload.u4(:,iter-1) = u(10:12); 
+
     iter = iter + 1;
 
-    if (iter > 10)
+    payload.t(:,iter) = toc;
+
+    if (iter > 5)
         dt = toc;
     end
 end
@@ -86,6 +101,4 @@ force_to_uav(u1,uav1,payload,iter);
 force_to_uav(u2,uav2,payload,iter);
 force_to_uav(u3,uav3,payload,iter);
 force_to_uav(u4,uav4,payload,iter);
-
-[uav1, uav2, uav3, uav4, payload] = getPose(uav1,uav2,uav3,uav4,payload,system_pose,iter); 
 

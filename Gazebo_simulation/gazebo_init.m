@@ -4,7 +4,7 @@ function [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t)
     payload.traj_mode = traj_mode;
 
     %% Physical property
-    payload.m = 6;
+    payload.m = 6.5;
     payload.J = [0.030,    0,   0;
                      0, 0.03,   0;
                      0,    0,   0.05];
@@ -36,8 +36,8 @@ function [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t)
     payload.u2 = zeros(3, payload.total_step);
     payload.u3 = zeros(3, payload.total_step);
     payload.u4 = zeros(3, payload.total_step);
-    payload.translation_estimation(:,1) = [5; 0 ; 0 ; 0 ];
-    payload.rotation_estimation(:, 1) = [0.02; 0.02; 0; 0; 0; 0];
+    payload.translation_estimation(:,1) = [payload.m; 0 ; 0 ; 0 ];
+    payload.rotation_estimation(:, 1) = [0; 0; 0; 0; 0; 0];
 
     %% ICL initialize
 

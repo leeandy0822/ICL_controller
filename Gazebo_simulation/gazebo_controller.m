@@ -3,17 +3,18 @@ classdef gazebo_controller
     properties
 
         kx = 15;
-        kv = 6;
+        kv = 8;
         gamma_m = diag([0.005,0.0018,0.0022,0.0015]);
         cx = 4; 
-        kcl_m = diag([0.01, 5000 , 5000 ,5000]);
+        kcl_m = diag([0.003, 500 , 500 ,500]);
         
-        kr = 8*eye(3);
-        ko = 3*eye(3);    
+        kr = 10*eye(3);
+        ko = 6*eye(3);    
         cr = 3;
         %                         CoG              Inertia
-        gamma_j = diag([0.003,0.003,0.0001, 0.001, 0.001, 0.002]);
-        kcl_j = diag([  40, 40, 20 ,  700, 700, 800]);
+        gamma_j = diag([0.0009,0.0009,0.0009, 0.0002, 0.0002, 0.0002]);
+        kcl_j = diag([  0.15, 0.15, 0.15,  70, 70, 80]);
+
 
         e3 = [0; 0; 1];
         last_f = [0; 0; 0];
@@ -96,8 +97,6 @@ classdef gazebo_controller
             F_back  = vec_ned_to_enu(F_back);
             % Geometric controller
             Fd = F_back + F_ff ;
-            %% To do , this should put outside
-            icl_trans.current_force = Fd;            
             
             error(1:3) = ex;
             error(4:6) = ev;
@@ -186,7 +185,6 @@ classdef gazebo_controller
             error(4:6) = eW;
 
             icl_rot.W_last = W;
-            icl_rot.f_last = icl_trans.current_force;
         
         end
 
