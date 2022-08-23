@@ -1,21 +1,17 @@
 clc;
 close all
-
-options = optimoptions('fmincon','Display','iter','Algorithm','sqp');
+addpath("../tools/")
+options = optimoptions('fmincon','Display','off','Algorithm','sqp');
 
 
 %% Initialize parameters
 
 global CoM weight ;
-global W L;
-
-W = 0.2;
-L = 0.8;
 
 g = 9.8;
-mass = 5;
+mass = 8;
 weight = mass*g;
-CoM = [0.08,0.08,0];  
+CoM = [0.15,-0.1,0];  
 
 %% Solve Optimization
 A = [];
@@ -23,89 +19,78 @@ b = [];
 
 
 % initialize the motor eq
-motor_eq = zeros(3,9);
-for i = 1:1:9
-    if mod(i,3) == 1
-        motor_eq(1,i) = 1;
-    elseif mod(i,3) == 2
-        motor_eq(2,i) = 1;
-    else
-        motor_eq(3,i) = 1;
-    end
-
-end
-
-Aeq = [motor_eq zeros(3,3)];
+Aeq = [eye(3) eye(3) eye(3) eye(3) zeros(3, 4)];
 beq = [0 0 weight];
 
-f_lb = zeros(9,1);
-f_ub = 2*9.8*ones(9,1);
+f_lb = zeros(12,1);
+f_ub = 2*9.8*ones(12,1);
 
-lb = [ f_lb    ;   -0.5   ;   -0.5  ;  -0.5  ];
-ub = [ f_ub    ;    0.5   ;    0.5   ;   0.5  ];
+lb = [ f_lb    ;   -0.4   ;   -0.4  ;  -0.4  ; -0.4];
+ub = [ f_ub    ;    0.4   ;    0.4   ;   0.4  ; 0.4];
 
-
-ic_motor_x = zeros(1,9);
-for i = 3:3:9
-    ic_motor_x(i) = weight/3;
+ic_motor_x = zeros(1,12);
+for i = 3:3:12
+    ic_motor_x(i) = weight/4;
 end
-x0 = [ ic_motor_x, 0   0   0  ];
+x0 = [ ic_motor_x zeros(1, 4)  ];
 
 
 tic
 [x, fval] = fmincon(@myfunc,x0,A,b,Aeq,beq,lb,ub,@force_balance,options);
 toc
 
-fprintf("========= Optimization Allocation =========")
 
 
 
-r = [edge1(x(10))' edge2(x(11))' edge3(x(12))'];
-fprintf("\n---------------------------------------")
+r = [edge1(x(13))' edge2(x(14))' edge3(x(15))' edge4(x(16))'];
+fprintf("\n======= Optimization Allocation =======\n")
 
-for i = 1:1:3
-    fprintf("\nForce%d: ",i);
+for i = 1:1:4
+    fprintf("\nForce%d:\n ",i);
     index1 = 3*i-2;
     index2 = 3*i;
     r(:,i) = r(:,i);
-    fprintf(" %4.2f",x(index1 : index2))
-    fprintf("\n\nPosition%d: \n",i);
+    fprintf("  %4.2f   ",x(index1 : index2))
+    fprintf("\n---------------------------------------")
+    fprintf("\nPosition%d: \n",i);
     fprintf("   x:  %4.2f", r(1,i))
     fprintf("   y:  %4.2f", r(2,i))
     fprintf("   z:  %4.2f", r(3,i))
-    fprintf("\n---------------------------------------")
+    fprintf("\n=======================================")
 end
+fprintf("\n")
 
-fprintf("\n\n========= ========================= =========\n")
-
-% Top
+% left
 function c = edge1(input)
-    x = input;
-    y = 0.3;
+    x = -0.85;
+    y = input;
     z = 0;
     c = [x , y, z];
 end
 
 % right
 function c = edge2(input)
-    x0 = -1*sqrt(3)*0.15;
-    y0 = -1*0.15;
-    x = x0 + input*(1/2);
-    y = y0 - input*(sqrt(3)/2);
+    x = 0.85;
+    y = input;
     z = 0;
     c = [x, y, z];
 end
 
-% Left
+% top
 function c = edge3(input)
-    x0 = 1*sqrt(3)*0.15;
-    y0 = -1*0.15;
-    x = x0 + input*(1/2);
-    y = y0 + input*(sqrt(3)/2);
+    x = input;
+    y = 0.85;
     z = 0;
     c = [x, y, z];
 end
 
+% bottom
+function c = edge4(input)
+    x = input;
+    y = -0.85;
+    z = 0;
+    c = [x, y, z];
+end
 
 function [c,ceq] = force_balance(x)
 
@@ -115,32 +100,37 @@ function [c,ceq] = force_balance(x)
     f1 = x(1:3)';
     f2 = x(4:6)';
     f3 = x(7:9)';
+    f4 = x(10:12)';
     
-    [x1] = edge1(x(10)) - CoM;
-    [x2] = edge2(x(11)) - CoM;
-    [x3] = edge3(x(12)) - CoM;
-    
-    ceq = hat_map(x1)*f1 + hat_map(x2)*f2 + hat_map(x3)*f3 ;
+    [x1] = edge1(x(13)) - CoM;
+    [x2] = edge2(x(14)) - CoM;
+    [x3] = edge3(x(15)) - CoM;
+    [x4] = edge4(x(16)) - CoM;
+
+    ceq = hat_map(x1)*f1 + hat_map(x2)*f2 + hat_map(x3)*f3 + hat_map(x4)*f4 ;
 
 end
 
 function fun = myfunc(x)
     
     global CoM;
-    P = 10;
-    [p1] = edge1(x(10)) - CoM;
-    [p2] = edge2(x(11)) - CoM;
-    [p3] = edge3(x(12)) - CoM;
-    B_m = [hat_map(p1) hat_map(p2) hat_map(p3)];
+    P = 5;
+
+    [p1] = edge1(x(13)) - CoM;
+    [p2] = edge2(x(14)) - CoM;
+    [p3] = edge3(x(15)) - CoM;
+    [p4] = edge4(x(16)) - CoM;
+
+    B_m = [hat_map(p1) hat_map(p2) hat_map(p3) hat_map(p4)];
     controlability = det(B_m*B_m')
-    k_con = 10;
     F1_norm = norm(x(1:3));
     F2_norm = norm(x(4:6));
     F3_norm = norm(x(7:9));
+    F4_norm = norm(x(10:12));
 
-    energy_comsumption = P*(F1_norm^1.5 + F2_norm^1.5 + F3_norm^1.5);
+    energy_comsumption = (F1_norm^1.5 + F2_norm^1.5 + F3_norm^1.5 + F4_norm^1.5)/4;
 
-    fun = 10*energy_comsumption + 1/controlability;
+    fun = P*energy_comsumption + 1/controlability;
 
 end
 
