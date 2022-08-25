@@ -8,12 +8,12 @@ classdef gazebo_controller
         cx = 3; 
         kcl_m = diag([0.005, 0.5 , 0.5 ,0.5]);
         
-        kr = 15*eye(3);
+        kr = 13*eye(3);
         ko = 9*eye(3);    
         cr = 3;
         %                         CoG              Inertia
-        gamma_j = diag([0.0005,0.0005,0.0005, 0.002, 0.002, 0.004]);
-        kcl_j = diag([  0.1, 0.1, 0.1,  0.7, 0.7, 0.5]);
+        gamma_j = diag([0.002,0.002,0.002, 0.002, 0.002, 0.004]);
+        kcl_j = diag([  0.01, 0.01, 0.01,  0.7, 0.7, 0.5]);
 
 
         e3 = [0; 0; 1];
@@ -103,7 +103,7 @@ classdef gazebo_controller
         end
 
 
-        function [Md, error, J_est, icl_rot, Rd] = moment_ctrl(obj, iter, payload, Xd, icl_rot,icl_trans, dt)
+        function [Md, error, J_est, icl_rot, Rd] = moment_ctrl(obj, iter, payload, Xd, icl_rot,icl_trans, dt,f_dir)
             
 
             % states 
@@ -112,7 +112,11 @@ classdef gazebo_controller
 
             % Desire 
             b1c = [1 ; 0 ;  0];
-            Rd = [b1c hat_map(obj.e3)*b1c obj.e3];
+            eul = Xd(10:12)';
+            Rd = eul2rotm(eul);
+
+            Rd = [b1c  vec_cross(f_dir, b1c)  f_dir];
+%             Rd = [b1c hat_map(obj.e3)*b1c obj.e3];
             Wd = [0; 0; 0];
             
             % eR and eW

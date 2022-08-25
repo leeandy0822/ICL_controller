@@ -39,8 +39,12 @@ p1 = uav1.x - payload.x(:,iter);
 p2 = uav2.x - payload.x(:,iter);
 p3 = uav3.x - payload.x(:,iter);
 p4 = uav4.x - payload.x(:,iter);
-payload.B = [       eye(3)   eye(3)              eye(3)       eye(3); 
-         hat_map(p1)     hat_map(p2)       hat_map(p3)  hat_map(p4)];
+p1(3) =  p1(3) - 0.02;
+p2(3) =  p2(3) - 0.02;
+p3(3) =  p3(3) - 0.02;
+p4(3) =  p4(3) - 0.02;
+payload.B = [       eye(3)   eye(3)        eye(3)       eye(3); 
+                 hat_map(p1)  hat_map(p2)   hat_map(p3)  hat_map(p4)];
 
 iter = iter+1;
 dt = 0.02;
@@ -51,6 +55,7 @@ icl_rot.f_last = [0 ; 0 ; 0];
 %% Loop for simulation
 while payload.cur_t < sim_t
     tic
+
     [uav1, uav2, uav3, uav4, payload] = getPose(uav1,uav2,uav3,uav4,payload,system_pose,iter); 
     % Get time
     payload.cur_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
@@ -58,7 +63,8 @@ while payload.cur_t < sim_t
     Xd = traj_handle.traj_generate(payload.cur_t,payload.traj_mode);
     % Controller
     [Fd, force_error, translation_est, icl_trans] = ctrl.force_ctrl(iter,payload , Xd,  icl_rot,icl_trans, dt);
-    [Md, moment_error, rotation_est, icl_rot, Rd] = ctrl.moment_ctrl(iter, payload, Xd, icl_rot, icl_trans, dt);
+    f_dir = Fd/norm(Fd);
+    [Md, moment_error, rotation_est, icl_rot, Rd] = ctrl.moment_ctrl(iter, payload, Xd, icl_rot, icl_trans, dt,f_dir);
 
     % distributed force
     u = dis_handle.cal_u(payload, Fd, Md,iter);

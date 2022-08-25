@@ -71,7 +71,7 @@ classdef gazebo_distributed
                 function cost = func(gamma)
             
                     s = 5;
-                    upperbound = 3*9.8;
+                    upperbound = 3.2*9.8;
                    
                     F1 = obj.u1_bar + obj.Z1*gamma;
                     F2 = obj.u2_bar + obj.Z2*gamma;
