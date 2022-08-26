@@ -6,7 +6,7 @@ rosshutdown
 rosinit
 fprintf("done");
 %% Initialize 
-sim_t = 100;
+sim_t = 150;
 traj_mode = "hover";
 
 [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t);
@@ -100,6 +100,9 @@ while payload.cur_t < sim_t
         dt = toc;
     end
 end
+payload.translation_estimation(:,iter-1)
+payload.rotation_estimation(:,iter-1)
+
 gazebo_plotgraph(payload);
 % u1 = 0 ; 
 % u2 = 0 ; 

@@ -6,13 +6,13 @@ options = optimoptions('fmincon','Display','off','Algorithm','sqp');
 
 %% Initialize parameters
 
-global CoM weight mass;
+global CoM weight mass new_CoM;
 
 g = 9.8;
-mass = 8.2;
+mass = 7.7;
 weight = mass*g;
-CoM = [0.082,0.00,0];  
-
+CoM = [0.025,0.00,0];  
+new_CoM = [0.025,0.00,0];
 %% Solve Optimization
 A = [];
 b = [];
@@ -25,8 +25,8 @@ beq = [0 0 weight];
 f_lb = zeros(12,1);
 f_ub = 3*9.8*ones(12,1);
 
-lb = [ f_lb    ;   -0.3   ;   -0.3  ;  -0.6  ; -0.6];
-ub = [ f_ub    ;    0.3   ;    0.3   ;   0.6  ; 0.6];
+lb = [ f_lb    ;   -0.4  ;   -0.4  ;  -0.7  ; -0.7];
+ub = [ f_ub    ;    0.4   ;    0.4   ;   0.7  ; 0.7];
 
 ic_motor_x = zeros(1,12);
 for i = 3:3:12
@@ -102,7 +102,7 @@ function [c,ceq] = force_balance(x)
     f3 = x(7:9)';
     f4 = x(10:12)';
     uav_mass = 1.57;
-    mass = 8; 
+    mass = 7.78; 
     % the position of uavs will affect CoG of system
     x1_drift = edge1(x(13)) - edge1(0);
     x2_drift = edge2(x(14)) - edge2(0);
@@ -121,7 +121,7 @@ end
 
 function fun = myfunc(x)
     
-    global CoM mass;
+    global CoM mass new_CoM;
 
     % the position of uavs will affect CoG of system
     x1_drift = edge1(x(13)) - edge1(0);
@@ -148,7 +148,7 @@ function fun = myfunc(x)
 
     energy_comsumption = (F1_norm^1.5 + F2_norm^1.5 + F3_norm^1.5 + F4_norm^1.5)/4;
 
-    fun = energy_comsumption + 20*1/controlability;
+    fun = 5*energy_comsumption + 1/controlability + 200*(CoM - new_CoM)*(CoM - new_CoM)';
 
 end
 

@@ -2,7 +2,8 @@ clear all, close all, clc;
 
 addpath('../tools/')
 %  rosinit('127.0.0.1')
-
+rosshutdown
+rosinit
 %% Initialize 
 
 sim_t = 60;
