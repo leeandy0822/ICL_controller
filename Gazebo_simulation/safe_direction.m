@@ -5,7 +5,7 @@ function F_new = safe_direction(F)
     center = [0 ; 0 ; 1];
     angle_rad = acos(dot(F_dir, center)/(norm(F_dir)*norm(center)));
     angle_deg = rad2deg(angle_rad);
-    if(angle_deg > 45 || angle_deg < -45)
+    if(angle_deg > 80 || angle_deg < -80)
         % interploation of F direction
         minus = abs(angle_deg) - 44.9;
         t = minus/abs(angle_deg);

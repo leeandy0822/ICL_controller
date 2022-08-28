@@ -7,6 +7,10 @@ classdef gazebo_uav
         q
         eul
         R
+        m
+
+        % acceleration
+        a 
 
         % ros subscriber
         sub

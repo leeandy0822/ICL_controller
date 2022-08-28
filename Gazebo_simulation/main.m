@@ -6,7 +6,7 @@ rosshutdown
 rosinit
 fprintf("done");
 %% Initialize 
-sim_t = 150;
+sim_t = 120;
 traj_mode = "hover";
 
 [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t);
@@ -72,11 +72,12 @@ while payload.cur_t < sim_t
     icl_rot.f_last = Fd_real;  
 
     error = [force_error moment_error];
-
-    force_to_uav(u(1:3)',uav1,payload,iter);
-    force_to_uav(u(4:6)',uav2,payload,iter);
-    force_to_uav(u(7:9)',uav3,payload,iter);
-    force_to_uav(u(10:12)',uav4,payload,iter);
+    
+    option = "regular";
+    force_to_uav(u(1:3)',uav1,payload,iter,option);
+    force_to_uav(u(4:6)',uav2,payload,iter,option);
+    force_to_uav(u(7:9)',uav3,payload,iter,option);
+    force_to_uav(u(10:12)',uav4,payload,iter,option);
 
     payload.u1(:,iter) = u(1:3);
     payload.u2(:,iter) = u(4:6);

@@ -42,6 +42,8 @@ classdef gazebo_distributed
                            zeros(3) zeros(3) zeros(3)    R];
                 
                 obj.u_bar = toworld*analytical_sol*[payload_F ; payload_M];                
+                
+                
                 obj.u1_bar = safe_direction(obj.u_bar(1:3));
                 obj.u2_bar = safe_direction(obj.u_bar(4:6)); 
                 obj.u3_bar = safe_direction(obj.u_bar(7:9));
@@ -50,7 +52,7 @@ classdef gazebo_distributed
                 %% Because of gimbal constraint, decide gamma input for null(B) 
                 
                 gamma = [0; 0; 0; 0 ; 0 ; 0];  
-                gimbal_angle = 45;
+                gimbal_angle = 80;
                 obj.spherical_contraint = cos(deg2rad(gimbal_angle))*cos(deg2rad(gimbal_angle))*eye(3) - obj.p_i*obj.p_i'; 
                 obj.Z1 = obj.Z(1:3,:);
                 obj.Z2 = obj.Z(4:6,:);
@@ -62,7 +64,7 @@ classdef gazebo_distributed
 
                 % Total null space force
                 nullspace_f = obj.Z*gamma_new;
-                obj.u1 = obj.u1_bar + nullspace_f(1:3);
+                obj.u1 = obj.u1_bar + nullspace_f(1:3) ;
                 obj.u2 = obj.u2_bar + nullspace_f(4:6);
                 obj.u3 = obj.u3_bar + nullspace_f(7:9);
                 obj.u4 = obj.u4_bar + nullspace_f(10:12);

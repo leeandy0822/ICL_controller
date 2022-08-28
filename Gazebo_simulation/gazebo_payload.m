@@ -25,7 +25,7 @@ classdef gazebo_payload
         B 
 
         % unit vector
-        e1 = [1; 0; 0];
+        e1 = [1; 0; 0];s
         e2 = [0; 1; 0];
         e3 = [0; 0; 1];
 
@@ -33,6 +33,7 @@ classdef gazebo_payload
         x 
         xd
         v
+        a
         R
         q
         eul

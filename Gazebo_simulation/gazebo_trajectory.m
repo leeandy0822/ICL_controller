@@ -17,15 +17,15 @@ classdef gazebo_trajectory
                 a = [0 ; 0 ;0 ];
                 eul = [0 ; 0 ; 0];
 
-                if t > 70 
-                    t = t - 70;
-%                     x = [rad*sin(freq*t) ; rad*cos(freq*t)-rad; height];
-%                     v = [rad*freq*cos(freq*t) ; -rad*freq*sin(freq*t) ; 0];
-%                     a = [-rad*freq*freq*sin(freq*t) ; -rad*freq*freq*cos(freq*t) ; 0];
+                if t > 60 
+                    t = t - 60;
+%                     x = [0.5 + 0.1*t ; 0.1*t ; height];
+%                     v = [0.1         ; 0.1   ; 0];
+%                     a = [0           ; 0     ; 0];
                     x = [2*sin(0.01*pi*t)+0.5 ; 2*cos(0.01*pi*t)-2; height];
                     v = [2*0.01*pi*cos(0.01*pi*t) ; -2*0.01*pi*sin(0.01*pi*t) ; 0];
                     a = [-2*0.01*0.01*pi*pi*sin(0.01*pi*t) ; -2*0.01*0.01*pi*pi*cos(0.01*pi*t) ;0];
-%                     eul = [0; 1*sin(0.05*t/pi)/pi; 0];
+                    eul = [0; 1*sin(0.05*t/pi)/pi; 0];
                 end
             end
         

@@ -1,12 +1,24 @@
-function force_to_uav(u,uav,payload,iter)
+function force_to_uav(u,uav,payload,iter,option)
     thrust = rosmessage('geometry_msgs/Vector3');
     yaw_R = rotz(rad2deg(uav.eul(1)));
     payload_R = reshape(payload.R(:,iter-1),[3,3]);
-    force_temp = 1/norm(u)*yaw_R'*payload_R*u';
 
-    uav.msg.Roll = -asin(force_temp(2));
-    uav.msg.Pitch = atan(force_temp(1)/force_temp(3));
-    thrust.Z = norm(u);
+    relative_acc = [payload.a.X ; payload.a.Y ; payload.a.Z] - [uav.a.X ; uav.a.Y ; uav.a.Z];
+    gravity = [0 ; 0 ; 9.8];
+    uav_mass = 1.59;
+
+    payload_force = yaw_R'*payload_R*u';
+    relative_force = uav.R'*uav_mass*(gravity + relative_acc);
+    if option == "stop"
+        relative_force = [0 ; 0 ; 0];
+    end
+    final_force = payload_force + relative_force;
+    final_force_dir = final_force / norm(final_force);
+
+
+    uav.msg.Roll = -asin(final_force_dir(2));
+    uav.msg.Pitch = atan(final_force_dir(1)/final_force_dir(3));
+    thrust.Z = norm(final_force);
     uav.msg.Thrust = thrust;
     send(uav.pub, uav.msg);
 
