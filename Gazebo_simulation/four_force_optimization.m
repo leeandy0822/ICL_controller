@@ -9,9 +9,9 @@ options = optimoptions('fmincon','Display','off','Algorithm','sqp');
 global CoM weight mass;
 
 g = 9.8;
-mass = 1.52;
+mass = 1.02;
 weight = mass*g;
-CoM = [0.11,0.04,0];  
+CoM = [0.05,0.00,0];  
 %% Solve Optimization
 A = [];
 b = [];
@@ -140,7 +140,7 @@ function fun = myfunc(x)
 
     energy_comsumption = (F1_norm^1.5 + F2_norm^1.5 + F3_norm^1.5 + F4_norm^1.5)/4;
 
-    fun = 5*energy_comsumption + 5*1/controlability;
+    fun = 5*energy_comsumption + 1/controlability;
 
 end
 

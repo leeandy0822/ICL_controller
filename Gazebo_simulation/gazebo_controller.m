@@ -2,18 +2,18 @@ classdef gazebo_controller
 
     properties
 
-        kx = diag([90, 90, 12]);
-        kv = diag([50, 50, 6]);
-        gamma_m = diag([0.007,0.1,0.1,0.1]);
-        cx = 3; 
-        kcl_m = diag([0.000001, 0.00005 , 0.00005 ,0.00005]);
+        kx = diag([24 24, 11]);
+        kv = diag([15, 15, 7]);
+        gamma_m = diag([0.004,0.01,0.01,0.01]);
+        cx = 2; 
+        kcl_m = diag([0, 0 , 0 ,0]);
         
-        kr = 24*eye(3);
-        ko = 18*eye(3);    
+        kr = 18*eye(3);
+        ko = 8*eye(3);    
         cr = 3;
         %                         CoG              Inertia
-        gamma_j = diag([0.2,0.2,0.2, 0.01, 0.01, 0.01]);
-        kcl_j = diag([  0.000001, 0.000001, 0.000001,  0.000007, 0.000007, 0.00005]);
+        gamma_j = diag([0.02,0.02,0.02, 2, 2, 2]);
+        kcl_j = diag([  0, 0, 0,  0, 0, 0]);
 
 
         e3 = [0; 0; 1];
@@ -113,10 +113,11 @@ classdef gazebo_controller
             % Desire 
             b1c = [1 ; 0 ;  0];
             eul = Xd(10:12)';
-            Rd = eul2rotm(eul);
 
             Rd = [b1c  vec_cross(f_dir, b1c)  f_dir];
             Rd = eye(3);
+            Rd = eul2rotm(eul);
+
 %             Rd = [b1c hat_map(obj.e3)*b1c obj.e3];
             Wd = [0; 0; 0];
             

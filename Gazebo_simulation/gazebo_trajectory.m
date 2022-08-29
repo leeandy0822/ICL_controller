@@ -5,26 +5,30 @@ classdef gazebo_trajectory
     methods
         function out = traj_generate(~, t,mode)
 
-            height = 0.4;
+            height = 1;
             % eight
             if mode=="eight"
                 x = [3*sin(0.12*pi*t) ; 7*cos(0.06*pi*t)-4; 0];
                 v = [3*0.12*pi*cos(0.12*pi*t) ; -7*0.06*pi*sin(0.06*pi*t) ; 0];
                 a = [-3*0.12*0.12*pi*pi*sin(0.12*pi*t) ; -7*0.06*0.06*pi*pi*cos(0.06*pi*t) ; 0];
             else
-                x = [0.5 ; 0 ; height];
-                v = [0 ; 0; 0];
+                x = [0.5 ; 0 ; 0.02*t];
+                v = [0 ; 0; 0.02];
                 a = [0 ; 0 ;0 ];
-                eul = [0 ; 0 ; 0];
-
-                if t > 100 
-                    t = t - 100;
-                    x = [0.5 ; 0 ; height + 0.01*t];
-                    v = [0        ; 0   ; 0.01];
+%                 eul = [0.1*sin(0.1*t) ; 0.1*sin(0.1*t) ; 0 ];
+                eul = [0 ; 0 ; 0 ];
+            
+                if t > 50 
+%                     eul = [0 ; 0 ; 0];
+                    t = t - 50;
+                    x = [0.5+ 0.02*t ; 0 ; height];
+                    v = [0.02        ; 0   ; 0];
                     a = [0           ; 0     ; 0];
-%                     x = [2*sin(0.005*pi*t)+0.5 ; 2*cos(0.005*pi*t)-2; height];
-%                     v = [2*0.005*pi*cos(0.005*pi*t) ; -2*0.005*pi*sin(0.005*pi*t) ; 0];
-%                     a = [-2*0.005*0.005*pi*pi*sin(0.005*pi*t) ; -2*0.005*0.005*pi*pi*cos(0.005*pi*t) ;0];
+%                     freq = 0.02;
+%                     radius = 1;
+%                     x = [radius*sin(freq*pi*t)+0.5 ; radius*cos(freq*pi*t)-radius; height];
+%                     v = [radius*freq*pi*cos(freq*pi*t) ; -radius*freq*pi*sin(freq*pi*t) ; 0];
+%                     a = [-radius*freq*freq*pi*pi*sin(freq*pi*t) ; -radius*freq*freq*pi*pi*cos(freq*pi*t) ;0];
                 end
             end
         
