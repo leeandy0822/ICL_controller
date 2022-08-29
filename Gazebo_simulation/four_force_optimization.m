@@ -6,13 +6,12 @@ options = optimoptions('fmincon','Display','off','Algorithm','sqp');
 
 %% Initialize parameters
 
-global CoM weight mass new_CoM;
+global CoM weight mass;
 
 g = 9.8;
-mass = 7.7;
+mass = 1.52;
 weight = mass*g;
-CoM = [0.025,0.00,0];  
-new_CoM = [0.025,0.00,0];
+CoM = [0.11,0.04,0];  
 %% Solve Optimization
 A = [];
 b = [];
@@ -61,7 +60,7 @@ fprintf("\n")
 
 % left
 function c = edge1(input)
-    x = -0.8;
+    x = -0.7;
     y = input;
     z = 0;
     c = [x , y, z];
@@ -69,7 +68,7 @@ end
 
 % right
 function c = edge2(input)
-    x = 0.8;
+    x = 0.7;
     y = input;
     z = 0;
     c = [x, y, z];
@@ -78,7 +77,7 @@ end
 % top
 function c = edge3(input)
     x = input;
-    y = 0.8;
+    y = 0.7;
     z = 0;
     c = [x, y, z];
 end
@@ -86,7 +85,7 @@ end
 % bottom
 function c = edge4(input)
     x = input;
-    y = -0.8;
+    y = -0.7;
     z = 0;
     c = [x, y, z];
 end
@@ -101,19 +100,13 @@ function [c,ceq] = force_balance(x)
     f2 = x(4:6)';
     f3 = x(7:9)';
     f4 = x(10:12)';
-    uav_mass = 1.57;
     mass = 7.78; 
     % the position of uavs will affect CoG of system
-    x1_drift = edge1(x(13)) - edge1(0);
-    x2_drift = edge2(x(14)) - edge2(0);
-    x3_drift = edge3(x(15)) - edge3(0);
-    x4_drift = edge4(x(16)) - edge4(0);
 
-    new_CoM = CoM + (x1_drift+x2_drift+x3_drift+x4_drift)*uav_mass/mass ;
-    [x1] = edge1(x(13)) - new_CoM;
-    [x2] = edge2(x(14)) - new_CoM;
-    [x3] = edge3(x(15)) - new_CoM;
-    [x4] = edge4(x(16)) - new_CoM;
+    [x1] = edge1(x(13)) - CoM;
+    [x2] = edge2(x(14)) - CoM;
+    [x3] = edge3(x(15)) - CoM;
+    [x4] = edge4(x(16)) - CoM;
 
     ceq = hat_map(x1)*f1 + hat_map(x2)*f2 + hat_map(x3)*f3 + hat_map(x4)*f4 ;
 
@@ -121,7 +114,7 @@ end
 
 function fun = myfunc(x)
     
-    global CoM mass new_CoM;
+    global CoM mass;
 
     % the position of uavs will affect CoG of system
     x1_drift = edge1(x(13)) - edge1(0);
@@ -131,12 +124,11 @@ function fun = myfunc(x)
 
     uav_mass = 1.57;
     mass = 7.7;
-    new_CoM = CoM + (x1_drift+x2_drift+x3_drift+x4_drift)*uav_mass/mass ;
 
-    [p1] = edge1(x(13)) - new_CoM;
-    [p2] = edge2(x(14)) - new_CoM;
-    [p3] = edge3(x(15)) - new_CoM;
-    [p4] = edge4(x(16)) - new_CoM;
+    [p1] = edge1(x(13)) - CoM;
+    [p2] = edge2(x(14)) - CoM;
+    [p3] = edge3(x(15)) - CoM;
+    [p4] = edge4(x(16)) - CoM;
 
     B_m = [hat_map(p1) hat_map(p2) hat_map(p3) hat_map(p4)];
 
@@ -148,7 +140,7 @@ function fun = myfunc(x)
 
     energy_comsumption = (F1_norm^1.5 + F2_norm^1.5 + F3_norm^1.5 + F4_norm^1.5)/4;
 
-    fun = 5*energy_comsumption + 1/controlability + 200*(CoM - new_CoM)*(CoM - new_CoM)';
+    fun = 5*energy_comsumption + 5*1/controlability;
 
 end
 

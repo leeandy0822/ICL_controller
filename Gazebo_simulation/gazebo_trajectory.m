@@ -5,7 +5,7 @@ classdef gazebo_trajectory
     methods
         function out = traj_generate(~, t,mode)
 
-            height = 0.5;
+            height = 0.4;
             % eight
             if mode=="eight"
                 x = [3*sin(0.12*pi*t) ; 7*cos(0.06*pi*t)-4; 0];
@@ -17,15 +17,14 @@ classdef gazebo_trajectory
                 a = [0 ; 0 ;0 ];
                 eul = [0 ; 0 ; 0];
 
-                if t > 60 
-                    t = t - 60;
-%                     x = [0.5 + 0.1*t ; 0.1*t ; height];
-%                     v = [0.1         ; 0.1   ; 0];
-%                     a = [0           ; 0     ; 0];
-                    x = [2*sin(0.01*pi*t)+0.5 ; 2*cos(0.01*pi*t)-2; height];
-                    v = [2*0.01*pi*cos(0.01*pi*t) ; -2*0.01*pi*sin(0.01*pi*t) ; 0];
-                    a = [-2*0.01*0.01*pi*pi*sin(0.01*pi*t) ; -2*0.01*0.01*pi*pi*cos(0.01*pi*t) ;0];
-                    eul = [0; 1*sin(0.05*t/pi)/pi; 0];
+                if t > 100 
+                    t = t - 100;
+                    x = [0.5 ; 0 ; height + 0.01*t];
+                    v = [0        ; 0   ; 0.01];
+                    a = [0           ; 0     ; 0];
+%                     x = [2*sin(0.005*pi*t)+0.5 ; 2*cos(0.005*pi*t)-2; height];
+%                     v = [2*0.005*pi*cos(0.005*pi*t) ; -2*0.005*pi*sin(0.005*pi*t) ; 0];
+%                     a = [-2*0.005*0.005*pi*pi*sin(0.005*pi*t) ; -2*0.005*0.005*pi*pi*cos(0.005*pi*t) ;0];
                 end
             end
         
