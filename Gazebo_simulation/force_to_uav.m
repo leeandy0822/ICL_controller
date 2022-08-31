@@ -5,7 +5,7 @@ function force_to_uav(u,uav,payload,iter,option)
 
     relative_acc = [payload.a.X ; payload.a.Y ; 0] - [uav.a.X ; uav.a.Y ;0];
     gravity = [0 ; 0 ; 9.8];
-    uav_mass = 1.57;
+    uav_mass = 1.6;
 
     payload_force = yaw_R'*payload_R*u';
     relative_force = uav.R'*uav_mass*(gravity + relative_acc);

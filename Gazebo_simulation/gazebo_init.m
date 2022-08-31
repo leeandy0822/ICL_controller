@@ -4,7 +4,7 @@ function [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t)
     payload.traj_mode = traj_mode;
 
     %% Physical property
-    payload.m = 0.7;
+    payload.m = 0.9;
     payload.J = [0.030,    0,   0;
                      0, 0.03,   0;
                      0,    0,   0.05];

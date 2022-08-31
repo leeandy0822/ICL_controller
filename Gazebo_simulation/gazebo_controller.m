@@ -2,18 +2,18 @@ classdef gazebo_controller
 
     properties
 
-        kx = diag([24 24, 11]);
-        kv = diag([15, 15, 7]);
-        gamma_m = diag([0.004,0.01,0.01,0.01]);
+        kx = diag([24 24, 12]);
+        kv = diag([18, 18, 8]);
+        gamma_m = diag([0.003,0.005,0.005,0.005]);
         cx = 2; 
-        kcl_m = diag([0, 0 , 0 ,0]);
+        kcl_m = diag([0.0001, 0 , 0 ,0]);
         
-        kr = 18*eye(3);
+        kr = 14*eye(3);
         ko = 8*eye(3);    
         cr = 3;
         %                         CoG              Inertia
-        gamma_j = diag([0.02,0.02,0.02, 2, 2, 2]);
-        kcl_j = diag([  0, 0, 0,  0, 0, 0]);
+        gamma_j = diag([0.01,0.01,0.01, 0.15, 0.15, 0.15]);
+        kcl_j = diag([  0.00001, 0.00001, 0.00001,  0, 0, 0]);
 
 
         e3 = [0; 0; 1];
@@ -58,8 +58,8 @@ classdef gazebo_controller
                 W_dot = payload.W(:,iter-1) ;
             end
 
-            a = -R*(hat_map(W_dot) + hat_map(W) * hat_map(W));
-            b = -xd_double_dot + payload.g*obj.e3;
+            a = -R*(hat_map(W_dot) + 2*hat_map(W) * hat_map(W));
+            b = -xd_double_dot + payload.g*obj.e3 - R*hat_map(W)*x_dot;
 
             % adaptive term 
             Ym = [b a];
@@ -93,7 +93,7 @@ classdef gazebo_controller
             % Control Input
             
             F_ff = Ym*theta_m_hat;
-            F_back = -obj.kx*ex - obj.kv*ev;
+            F_back = - obj.kx*ex - obj.kv*ev;
             F_back  = vec_ned_to_enu(F_back);
             % Geometric controller
             Fd = F_back + F_ff ;
