@@ -6,7 +6,7 @@ rosshutdown
 rosinit
 fprintf("done");
 %% Initialize 
-sim_t = 80;
+sim_t = 90;
 traj_mode = "hover";
 
 [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t);
@@ -61,6 +61,8 @@ while payload.cur_t < sim_t
     % Get time
     payload.cur_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
 
+
+    
     Xd = traj_handle.traj_generate(payload.cur_t,payload.traj_mode);
     % Controller
     [Fd, force_error, translation_est, icl_trans] = ctrl.force_ctrl(iter,payload , Xd,  icl_rot,icl_trans, dt);
@@ -69,10 +71,7 @@ while payload.cur_t < sim_t
 
     % distributed force
     u = dis_handle.cal_u(payload, Fd, Md,iter);
-
-
     error = [force_error moment_error];
-    
     
     option = "regular";
     u1 = u(1:3)';
@@ -80,18 +79,13 @@ while payload.cur_t < sim_t
     u3 = u(7:9)';
     u4 = u(10:12)';
 
-    %% Neighbor compensate
-    % 1 -> 3, 4
-    % 2 -> 3, 4
-    % 3 -> 1, 2
-    % 4 -> 1, 2
-
     %% Distributed force to ros
     distributor = gazebo_distributor;
     distributor.distributed(u, uav1, uav2, uav3, uav4, payload, iter, option);
-    
+   
     Fd_real = u(1:3) + u(4:6) + u(7:9) + u(10:12);
     icl_rot.f_last = Fd_real;  
+    
 
     %% Record
     payload.u1(:,iter) = u(1:3);
@@ -111,8 +105,8 @@ while payload.cur_t < sim_t
     iter = iter + 1;
 
     payload.t(:,iter) = toc;
-    if toc < 0.07
-        pause(0.07 - toc);
+    if toc < 0.08
+        pause(0.08 - toc);
     end
     if (iter > 5)
         dt = toc;

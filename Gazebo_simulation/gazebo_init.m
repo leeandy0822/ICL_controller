@@ -10,7 +10,7 @@ function [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t)
                      0,    0,   0.05];
 
     % Gazebo simulation time
-    payload.total_step = sim_t / 0.04;
+    payload.total_step = sim_t / 0.08;
 
     payload.x = zeros(3,payload.total_step);
     payload.v = zeros(3,payload.total_step);
