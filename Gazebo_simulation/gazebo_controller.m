@@ -4,7 +4,7 @@ classdef gazebo_controller
 
         kx = diag([10 10 12]);
         kv = diag([9, 9, 9]);
-        gamma_m = diag([0.003,0.03,0.03,0.03]);
+        gamma_m = diag([0.005,0.001,0.001,0.001]);
         cx = 3; 
         kcl_m = diag([0.000001, 0 , 0 ,0]);
         
@@ -26,13 +26,7 @@ classdef gazebo_controller
         function [Fd, error, theta_m_hat, icl_trans] = force_ctrl(obj, iter, payload, Xd, icl_rot, icl_trans, dt)
            
             x_enu = payload.x(:,iter-1);
-
-            if iter > 2
-                payload.v(:,iter-1) = (payload.x(:,iter-1) - payload.x(:,iter-2))/dt;
-                x_dot_enu = payload.v(:,iter-1);
-            else 
-                x_dot_enu = payload.v(:,iter-1) ;
-            end
+            x_dot_enu = payload.v(:,iter-1) ;
 
             xd_enu = Xd(1:3);
             xd_dot_enu = Xd(4:6);
@@ -58,17 +52,20 @@ classdef gazebo_controller
                 W_dot = payload.W(:,iter-1) ;
             end
 
-            a = -R*(hat_map(W_dot) + 2*hat_map(W) * hat_map(W));
-            b = -xd_double_dot + payload.g*obj.e3 - R*hat_map(W)*x_dot;
+%             a = -R*(hat_map(W_dot) + 2*hat_map(W) * hat_map(W));
+            a = -R*(hat_map(W_dot) + hat_map(W));
+
+%             b = -xd_double_dot + payload.g*obj.e3 - R*hat_map(W)*x_dot;
+            b = -xd_double_dot + payload.g*obj.e3;
 
             % adaptive term 
             Ym = [b a];
 
             % integral term 
             icl_a = a*dt;
-            c = -x_dot + payload.g*obj.e3*dt;
+            icl_b = -x_dot + payload.g*obj.e3*dt;
 
-            Ym_cl = [c  icl_a];
+            Ym_cl = [icl_b  icl_a];
             
             % Error
             ex = x - xd;

@@ -4,13 +4,13 @@ function [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t)
     payload.traj_mode = traj_mode;
 
     %% Physical property
-    payload.m = 0.1;
+    payload.m = 0.6;
     payload.J = [0.030,    0,   0;
                      0, 0.03,   0;
                      0,    0,   0.05];
 
     % Gazebo simulation time
-    payload.total_step = sim_t / 0.08;
+    payload.total_step = floor(sim_t / 0.03);
 
     payload.x = zeros(3,payload.total_step);
     payload.v = zeros(3,payload.total_step);

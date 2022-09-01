@@ -4,7 +4,7 @@ function [uav1,uav2,uav3,uav4,payload] = getPose(uav1,uav2,uav3,uav4,payload,sys
     System_pose = receive(system_pose,2);
     pose_payload_data = System_pose.Payload;
     pose_payload_acc = System_pose.PayloadAcc;
-
+    pose_payload_vel = System_pose.PayloadVel;
     pose_uav1_data = System_pose.Uav1;
     pose_uav1_a = System_pose.Uav1Acc;
 
@@ -22,10 +22,10 @@ function [uav1,uav2,uav3,uav4,payload] = getPose(uav1,uav2,uav3,uav4,payload,sys
     payload.x(:,i) = [ pose_payload_data.Position.X; pose_payload_data.Position.Y;pose_payload_data.Position.Z];
     q =  [pose_payload_data.Orientation.W pose_payload_data.Orientation.X pose_payload_data.Orientation.Y pose_payload_data.Orientation.Z];
     temp_R = quat2rotm(q);
-    payload.a= pose_payload_acc;
+    payload.a = pose_payload_acc;
+    payload.v(:,i) = [pose_payload_vel.X ;pose_payload_vel.Y ;pose_payload_vel.Z];
     payload.R(:,i) = reshape(temp_R,[9,1]);
     payload.W(:,i) = [System_pose.PayloadW.X ; System_pose.PayloadW.Y; System_pose.PayloadW.Z];
-    
     %% Get UAV1 payload position and orientation
     uav1.x = [pose_uav1_data.Position.X;pose_uav1_data.Position.Y; pose_uav1_data.Position.Z];    
     uav1.q = [pose_uav1_data.Orientation.W pose_uav1_data.Orientation.X pose_uav1_data.Orientation.Y pose_uav1_data.Orientation.Z];

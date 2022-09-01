@@ -6,7 +6,7 @@ rosshutdown
 rosinit
 fprintf("done");
 %% Initialize 
-sim_t = 90;
+sim_t = 80;
 traj_mode = "hover";
 
 [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t);
@@ -105,9 +105,9 @@ while payload.cur_t < sim_t
     iter = iter + 1;
 
     payload.t(:,iter) = toc;
-    if toc < 0.08
-        pause(0.08 - toc);
-    end
+%     if toc < 0.08
+%         pause(0.08 - toc);
+%     end
     if (iter > 5)
         dt = toc;
     end
