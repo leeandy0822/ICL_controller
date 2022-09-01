@@ -12,7 +12,7 @@ classdef gazebo_controller
         ko = 10*eye(3);    
         cr = 3;
         %                         CoG              Inertia
-        gamma_j = diag([0.02,0.02,0.02, 0.25, 0.25, 0.25]);
+        gamma_j = diag([0.02,0.02,0.02, 0.3, 0.3, 0.4]);
         kcl_j = diag([  0.000001, 0.000001, 0.000001,  0, 0, 0]);
 
 
