@@ -126,6 +126,23 @@ function gazebo_plotgraph(payload)
     title("Distributed force - u3",'FontSize', 20);
     legend('x','y','z','FontSize', 15)
 
+    figure(7);
+    tiledlayout(3,1)
+    nexttile
+    % Plot position tracking error
+    plot(t,payload.x(1,:),t,payload.xd(1,:),LineWidth=2.0)
+    title("Postion Tracking x",'FontSize', 20);
+    legend('x','xd','FontSize', 15)
+    nexttile
+    plot(t,payload.x(2,:),t,payload.xd(2,:),LineWidth=2.0)
+    title("Postion Tracking y",'FontSize', 20);
+    legend('y','yd','FontSize', 15)
+    nexttile
+    % Plot rotation tracking error
+    plot(t,payload.x(3,:),t,payload.xd(3,:),LineWidth=2.0)
+    title("Postion Tracking z",'FontSize', 20);
+    legend('z','zd','FontSize', 15)
+
     % % resultant force
     % figure(5)
     % tiledlayout(2,1)

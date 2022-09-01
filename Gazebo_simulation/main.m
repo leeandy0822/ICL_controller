@@ -52,18 +52,22 @@ dt = 0.02;
 payload.t(:,1) = 0;
 payload.last_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
 icl_rot.f_last = [0 ; 0 ; 0];
-
+time_rec = payload.cur_t;
 %% Loop for simulation
 while payload.cur_t < sim_t
+    
     tic
-
+    
     [uav1, uav2, uav3, uav4, payload] = getPose(uav1,uav2,uav3,uav4,payload,system_pose,iter); 
     % Get time
     payload.cur_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
 
-
-    
     Xd = traj_handle.traj_generate(payload.cur_t,payload.traj_mode);
+    % if time reverse, use the time factor ratio * 0.04 to keep going. 
+    % unknown problem cause by ros ???
+    if payload.cur_t < time_rec
+        Xd = traj_handle.traj_generate(time_rec + 0.02, payload.traj_mode);
+    end
     % Controller
     [Fd, force_error, translation_est, icl_trans] = ctrl.force_ctrl(iter,payload , Xd,  icl_rot,icl_trans, dt);
     f_dir = Fd/norm(Fd);
@@ -111,6 +115,7 @@ while payload.cur_t < sim_t
     if (iter > 5)
         dt = toc;
     end
+    time_rec = payload.cur_t;
 end
 payload.translation_estimation(:,iter-1)
 payload.rotation_estimation(:,iter-1)

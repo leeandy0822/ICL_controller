@@ -2,9 +2,9 @@ classdef gazebo_controller
 
     properties
 
-        kx = diag([10 10 12]);
+        kx = diag([12 12 12]);
         kv = diag([9, 9, 9]);
-        gamma_m = diag([0.005,0.001,0.001,0.001]);
+        gamma_m = diag([0.004,0.001,0.001,0.001]);
         cx = 3; 
         kcl_m = diag([0.000001, 0 , 0 ,0]);
         
@@ -95,8 +95,8 @@ classdef gazebo_controller
             % Geometric controller
             Fd = F_back + F_ff ;
             
-            error(1:3) = ex;
-            error(4:6) = ev;
+            error(1:3) = vec_ned_to_enu(ex);
+            error(4:6) = vec_ned_to_enu(ev);
         end
 
 
