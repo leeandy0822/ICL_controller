@@ -6,7 +6,7 @@ rosshutdown
 rosinit
 fprintf("done");
 %% Initialize 
-sim_t = 120;
+sim_t = 150;
 traj_mode = "hover";
 
 [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t);
@@ -69,17 +69,31 @@ while payload.cur_t < sim_t
 
     % distributed force
     u = dis_handle.cal_u(payload, Fd, Md,iter);
-    Fd_real = u(1:3) + u(4:6) + u(7:9) + u(10:12);
-    icl_rot.f_last = Fd_real;  
+
 
     error = [force_error moment_error];
     
+    
     option = "regular";
-    force_to_uav(u(1:3)',uav1,payload,iter,option);
-    force_to_uav(u(4:6)',uav2,payload,iter,option);
-    force_to_uav(u(7:9)',uav3,payload,iter,option);
-    force_to_uav(u(10:12)',uav4,payload,iter,option);
+    u1 = u(1:3)';
+    u2 = u(4:6)';
+    u3 = u(7:9)';
+    u4 = u(10:12)';
 
+    %% Neighbor compensate
+    % 1 -> 3, 4
+    % 2 -> 3, 4
+    % 3 -> 1, 2
+    % 4 -> 1, 2
+
+    %% Distributed force to ros
+    distributor = gazebo_distributor;
+    distributor.distributed(u, uav1, uav2, uav3, uav4, payload, iter, option);
+    
+    Fd_real = u(1:3) + u(4:6) + u(7:9) + u(10:12);
+    icl_rot.f_last = Fd_real;  
+
+    %% Record
     payload.u1(:,iter) = u(1:3);
     payload.u2(:,iter) = u(4:6);
     payload.u3(:,iter) = u(7:9); 

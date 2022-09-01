@@ -21,9 +21,9 @@ classdef gazebo_trajectory
                 if t > 50 
 %                     eul = [0 ; 0 ; 0];
                     t = t - 50;
-                    x = [0.5 + 0.0005*t*t ; 0 ; height];
-                    v = [0.001*t       ; 0   ; 0];
-                    a = [0.001          ; 0     ; 0];
+                    x = [0.5 + 0.2*t ; 0 ; height];
+                    v = [0.2       ; 0   ; 0];
+                    a = [0          ; 0     ; 0];
 %                     freq = 0.02;
 %                     radius = 1;
 %                     x = [radius*sin(freq*pi*t)+0.5 ; radius*cos(freq*pi*t)-radius; height];

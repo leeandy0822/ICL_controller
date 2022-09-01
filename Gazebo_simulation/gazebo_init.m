@@ -4,7 +4,7 @@ function [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t)
     payload.traj_mode = traj_mode;
 
     %% Physical property
-    payload.m = 0.9;
+    payload.m = 0.1;
     payload.J = [0.030,    0,   0;
                      0, 0.03,   0;
                      0,    0,   0.05];
@@ -43,7 +43,7 @@ function [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t)
 
     % Translation ICL initialize
     icl_trans = integral_concurrent_learning;
-    icl_trans.N_diag = 10;
+    icl_trans.N_diag = 20;
     icl_trans.mat_diag_matrix = zeros(4, icl_trans.N_diag);
     icl_trans.mat_diag_sum = zeros(4, 1);
     icl_trans.index_diag = 0;
@@ -51,7 +51,7 @@ function [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t)
     
     % Rotation ICL initialize
     icl_rot = integral_concurrent_learning;
-    icl_rot.N_diag = 10;
+    icl_rot.N_diag = 20;
     icl_rot.mat_diag_matrix = zeros(6, icl_rot.N_diag);
     icl_rot.mat_diag_sum = zeros(6, 1);
     icl_rot.index_diag = 0;

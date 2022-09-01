@@ -10,6 +10,7 @@ sim_t = 60;
 traj_mode = "hover";
 [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t);
 uav1 = gazebo_uav;
+%% 
 uav2 = gazebo_uav;
 uav3 = gazebo_uav;
 uav4 = gazebo_uav;
