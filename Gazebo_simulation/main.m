@@ -57,7 +57,7 @@ time_rec = payload.cur_t;
 while payload.cur_t < sim_t
     
     tic
-    
+
     [uav1, uav2, uav3, uav4, payload] = getPose(uav1,uav2,uav3,uav4,payload,system_pose,iter); 
     % Get time
     payload.cur_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
