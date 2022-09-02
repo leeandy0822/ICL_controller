@@ -1,6 +1,7 @@
 function [uav1,uav2,uav3,uav4,payload] = getPose(uav1,uav2,uav3,uav4,payload,system_pose,i)
 
     % subscribers get data
+    
     System_pose = receive(system_pose,2);
     pose_payload_data = System_pose.Payload;
     pose_payload_acc = System_pose.PayloadAcc;

@@ -36,6 +36,10 @@ classdef gazebo_controller
             x = vec_enu_to_ned(x_enu);
             x_dot = vec_enu_to_ned(x_dot_enu);
 
+            % add noise
+            amplitude = 0.01;
+            x_dot = x_dot + amplitude*rand(1);
+
             xd = vec_enu_to_ned(xd_enu);
             xd_dot = vec_enu_to_ned(xd_dot_enu);
             xd_double_dot = vec_enu_to_ned(xd_double_dot_enu);
