@@ -34,15 +34,13 @@ payload.cur_t = 0;
 
 iter = 1; 
 [uav1, uav2, uav3, uav4, payload] = getPose(uav1,uav2,uav3,uav4,payload,system_pose,iter); 
+
 % initialize the grasp matrix
 p1 = uav1.x - payload.x(:,iter);
 p2 = uav2.x - payload.x(:,iter);
 p3 = uav3.x - payload.x(:,iter);
 p4 = uav4.x - payload.x(:,iter);
-p1(3) = p1(3) - 0.02;
-p2(3) = p2(3) - 0.02;
-p3(3) = p3(3) - 0.02;
-p4(3) = p4(3) - 0.02;
+
 
 payload.B = [       eye(3)   eye(3)        eye(3)       eye(3); 
                  hat_map(p1)  hat_map(p2)   hat_map(p3)  hat_map(p4)];

@@ -56,11 +56,11 @@ classdef gazebo_controller
                 W_dot = payload.W(:,iter-1) ;
             end
 
-%             a = -R*(hat_map(W_dot) + 2*hat_map(W) * hat_map(W));
-            a = -R*(hat_map(W_dot) + hat_map(W));
+            a = -R*(hat_map(W_dot) + 2*hat_map(W) * hat_map(W));
+%             a = -R*(hat_map(W_dot) + hat_map(W));
 
-%             b = -xd_double_dot + payload.g*obj.e3 - R*hat_map(W)*x_dot;
-            b = -xd_double_dot + payload.g*obj.e3;
+            b = -xd_double_dot + payload.g*obj.e3 - R*hat_map(W)*x_dot;
+%             b = -xd_double_dot + payload.g*obj.e3;
 
             % adaptive term 
             Ym = [b a];
