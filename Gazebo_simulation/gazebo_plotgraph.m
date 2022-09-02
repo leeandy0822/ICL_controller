@@ -56,21 +56,24 @@ function gazebo_plotgraph(payload)
     tiledlayout(4,1)
     nexttile
     % Plot necessary
-    mass = 7.78;
+    mass = 1.5;
+    cog_x = 0.16;
+    cog_y = 0;
+    cog_z = 0.0025;
     theta_m_ground_truth = ones(1, length(t))*mass;
     plot(t,payload.translation_estimation(1,:),t,theta_m_ground_truth,LineWidth=2.0)
     title("Mass",'FontSize', 20);
     legend('Estimated Mass','Ground Truth','FontSize', 15)
     nexttile
-    plot(t, payload.rotation_estimation(1,:),t,zeros(1,length(t)),LineWidth=2.0)
+    plot(t, payload.rotation_estimation(1,:),t,ones(1,length(t))*cog_x,LineWidth=2.0)
     title("CoG (x)",'FontSize', 20);
     legend('Estimate','Ground Truth','FontSize', 15)
     nexttile
-    plot(t, payload.rotation_estimation(2,:),t,zeros(1,length(t)),LineWidth=2.0)
+    plot(t, payload.rotation_estimation(2,:),t,ones(1,length(t))*cog_y,LineWidth=2.0)
     title("CoG (y)",'FontSize', 20);
     legend('Estimate','Ground Truth','FontSize', 15)
     nexttile
-    plot(t, payload.rotation_estimation(3,:),t,zeros(1,length(t)),LineWidth=2.0)
+    plot(t, payload.rotation_estimation(3,:),t,ones(1,length(t))*cog_z,LineWidth=2.0)
     title("CoG (z)",'FontSize', 20);
     legend('Estimate','Ground Truth','FontSize', 15)
     
