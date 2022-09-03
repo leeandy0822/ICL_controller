@@ -27,6 +27,7 @@ classdef gazebo_controller
            
             x_enu = payload.x(:,iter-1);
             x_dot_enu = payload.v(:,iter-1) ;
+            x_double_dot = [payload.a.X ; payload.a.Y; payload.a.Z];
 
             xd_enu = Xd(1:3);
             xd_dot_enu = Xd(4:6);
@@ -66,7 +67,9 @@ classdef gazebo_controller
             % concurrent learning term 
             % Because we can only measure the acceleration 
             % a is useless
-            Ym_cl = [b  a];
+
+            c = -x_double_dot + payload.g*obj.e3;
+            Ym_cl = [c  a];
             
             % Error
             ex = x - xd;
