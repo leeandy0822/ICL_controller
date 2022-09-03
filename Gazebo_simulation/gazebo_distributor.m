@@ -2,7 +2,7 @@ classdef gazebo_distributor
 
     properties
 
-        k = 0;
+        k = 0.1;
 
     end
 

@@ -6,7 +6,7 @@ classdef gazebo_controller
         kv = diag([10, 10, 10]);
         gamma_m = diag([0.004,0.002,0.002,0.002]);
         cx = 3; 
-        kcl_m = diag([0.000001, 0 , 0 ,0]);
+        kcl_m = diag([0.00001, 0 , 0 ,0]);
         
         kr = 14*eye(3);
         ko = 10*eye(3);    
@@ -65,19 +65,17 @@ classdef gazebo_controller
 
             % concurrent learning term 
             % Because we can only measure the acceleration 
-            icl_a = a*dt;
-            cl_b = -xd_double_dot + payload.g*obj.e3;
-
-            Ym_cl = [cl_b  icl_a];
+            % a is useless
+            Ym_cl = [b  a];
             
             % Error
             ex = x - xd;
             ev = x_dot - xd_dot;
             
-            F_bar = icl_trans.current_force*dt;
-            
+            F = icl_trans.current_force;
+
             % prepare the past data
-            mat_diag_now = Ym_cl'*(F_bar - Ym_cl*theta_m_hat);
+            mat_diag_now = Ym_cl' * ( F - Ym_cl*theta_m_hat);
             
             % summation of the past data
             icl_trans.mat_diag_matrix(:, icl_trans.index_diag+1) = mat_diag_now;
