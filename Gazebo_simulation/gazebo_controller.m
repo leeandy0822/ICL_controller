@@ -56,20 +56,19 @@ classdef gazebo_controller
                 W_dot = payload.W(:,iter-1) ;
             end
 
-            a = -R*(hat_map(W_dot) + 2*hat_map(W) * hat_map(W));
-%             a = -R*(hat_map(W_dot) + hat_map(W));
+            a = -R*(hat_map(W_dot) + hat_map(W) * hat_map(W));
 
-            b = -xd_double_dot + payload.g*obj.e3 - R*hat_map(W)*x_dot;
-%             b = -xd_double_dot + payload.g*obj.e3;
+            b = -xd_double_dot + payload.g*obj.e3;
 
             % adaptive term 
             Ym = [b a];
 
-            % integral term 
+            % concurrent learning term 
+            % Because we can only measure the acceleration 
             icl_a = a*dt;
-            icl_b = -x_dot + payload.g*obj.e3*dt;
+            cl_b = -xd_double_dot + payload.g*obj.e3;
 
-            Ym_cl = [icl_b  icl_a];
+            Ym_cl = [cl_b  icl_a];
             
             % Error
             ex = x - xd;
@@ -88,8 +87,8 @@ classdef gazebo_controller
             
             % update law
             theta_m_hat_dot_adaptive  = obj.gamma_m * Ym' * (ev + obj.cx*ex);
-            theta_m_hat_dot_icl =  obj.kcl_m * obj.gamma_m * icl_term;
-            theta_m_hat = theta_m_hat + (theta_m_hat_dot_adaptive+theta_m_hat_dot_icl)*dt;
+            theta_m_hat_dot_cl =  obj.kcl_m * obj.gamma_m * icl_term;
+            theta_m_hat = theta_m_hat + (theta_m_hat_dot_adaptive+theta_m_hat_dot_cl)*dt;
             
             % Control Input
             
