@@ -49,27 +49,31 @@ classdef gazebo_distributed
                 obj.u3_bar = safe_direction(obj.u_bar(7:9));
                 obj.u4_bar = safe_direction(obj.u_bar(10:12));
 
-                %% Because of gimbal constraint, decide gamma input for null(B) 
-                
-                gamma = [0; 0; 0; 0 ; 0 ; 0];  
-                gimbal_angle = 80;
-                obj.spherical_contraint = cos(deg2rad(gimbal_angle))*cos(deg2rad(gimbal_angle))*eye(3) - obj.p_i*obj.p_i'; 
-                obj.Z1 = obj.Z(1:3,:);
-                obj.Z2 = obj.Z(4:6,:);
-                obj.Z3 = obj.Z(7:9,:);
-                obj.Z4 = obj.Z(10:12,:);
-                options = optimoptions(@fminunc,'Display','off','Algorithm','quasi-newton');
-                
-                gamma_new = fminunc(@func, gamma, options);
+%                 %% Because of gimbal constraint, decide gamma input for null(B) 
+%                 
+%                 gamma = [0; 0; 0; 0 ; 0 ; 0];  
+%                 gimbal_angle = 80;
+%                 obj.spherical_contraint = cos(deg2rad(gimbal_angle))*cos(deg2rad(gimbal_angle))*eye(3) - obj.p_i*obj.p_i'; 
+%                 obj.Z1 = obj.Z(1:3,:);
+%                 obj.Z2 = obj.Z(4:6,:);
+%                 obj.Z3 = obj.Z(7:9,:);
+%                 obj.Z4 = obj.Z(10:12,:);
+% 
+%                 options = optimoptions(@fminunc,'Display','off','Algorithm','quasi-newton');
+%                 gamma_new = fminunc(@func, gamma, options);
+% 
+%                 % Total null space force
+%                 nullspace_f = obj.Z*gamma_new;
+%                 obj.u1 = obj.u1_bar + nullspace_f(1:3) ;
+%                 obj.u2 = obj.u2_bar + nullspace_f(4:6);
+%                 obj.u3 = obj.u3_bar + nullspace_f(7:9);
+%                 obj.u4 = obj.u4_bar + nullspace_f(10:12);
+%    
+%                 u = [obj.u1; obj.u2; obj.u3; obj.u4];
+                u = [obj.u1_bar; obj.u2_bar; obj.u3_bar; obj.u4_bar];
 
-                % Total null space force
-                nullspace_f = obj.Z*gamma_new;
-                obj.u1 = obj.u1_bar + nullspace_f(1:3) ;
-                obj.u2 = obj.u2_bar + nullspace_f(4:6);
-                obj.u3 = obj.u3_bar + nullspace_f(7:9);
-                obj.u4 = obj.u4_bar + nullspace_f(10:12);
-   
-                u = [obj.u1; obj.u2; obj.u3; obj.u4];
+
+
                 function cost = func(gamma)
             
                     s = 5;
