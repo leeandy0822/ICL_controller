@@ -17,7 +17,7 @@ record_u = zeros(length(t),1);
 
 
 k1 = 6;
-a = 8;
+a = 2;
 x = 0;
 u = 0;
 theta_hat_1 = 5;

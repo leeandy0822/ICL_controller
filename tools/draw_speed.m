@@ -1,13 +1,20 @@
 clear all, close all, clc;
 
-t = 1:0.01:60;
+t = 1:0.01:120;
+c = ones(length(t),1);
 
-x = [5*sin(t); 2*cos(t); 0.3*sin(t)];
-v = [5*cos(t) ; -2*sin(t) ; 0.3*cos(t)];
-a = [-5*sin(t) ; -2*cos(t) ; -0.3*sin(t)];
+x = [5*sin(t); 2*cos(t); 2*c'];
+v = [5*cos(t) ; -2*sin(t) ; 0*c'];
+a = [-5*sin(t) ; -2*cos(t) ; 0*c'];
 
 
+x = [ 3*sin(t) ;  3*cos(t);   2*c'];
+v = [ 0.1*3*cos(0.1*t) ; -3*0.1*sin(0.1*t) ;  0*c'];
+a = [-3*0.1*0.1*sin(0.1*t) ; -3*0.1*0.1*cos(0.1*t) ;0*c'];
 
+x = [2*sin(0.04*pi*t) ; 2*cos(0.04*pi*t)-2; 2*c'];
+v = [2*0.04*pi*cos(0.04*pi*t) ; -2*0.04*pi*sin(0.04*pi*t) ; 0*c'];
+a = [-2*0.04*0.04*pi*pi*sin(0.04*pi*t) ; -2*0.04*0.04*pi*pi*cos(0.04*pi*t) ;0*c'];
 
 figure(1);
 plot3(x(1,:),x(2,:),x(3,:))
