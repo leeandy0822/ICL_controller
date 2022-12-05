@@ -22,9 +22,9 @@ classdef gazebo_distributed
                 obj.p_i = [0 ; 0 ; 1];
                 R = reshape(payload.R(:,iter-1),[3,3]);
 
-                % Control is defined in world frame, so turn it into body frame
-                payload_F = R'*Fd;
-                payload_M = Md;
+                % Turn torque into world frame
+                payload_F = Fd;
+                payload_M = R*Md;
 
                 % Get grasp matrix and nullspace of it
 %                 p1 = [ -0.85     0     0 ];
@@ -41,7 +41,7 @@ classdef gazebo_distributed
                            zeros(3) zeros(3)    R     zeros(3); 
                            zeros(3) zeros(3) zeros(3)    R];
                 
-                obj.u_bar = toworld*analytical_sol*[payload_F ; payload_M];                
+                obj.u_bar = analytical_sol*[payload_F ; payload_M];                
                 
                 
                 obj.u1_bar = safe_direction(obj.u_bar(1:3));

@@ -69,7 +69,7 @@ classdef gazebo_distributor
             gravity = [0 ; 0 ; 9.8];
             uav_mass = 1.57;
         
-            payload_force = yaw_R'*payload_R*u';
+            payload_force = yaw_R'*u';
             relative_force = uav.R'*uav_mass*(gravity + relative_acc);
             if option == "stop"
                 relative_force = [0 ; 0 ; 0];
