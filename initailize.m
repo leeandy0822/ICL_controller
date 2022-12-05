@@ -24,8 +24,8 @@ function [payload, icl_trans, icl_rot, ctrl]= initailize(mode,optim_mode, dt,sim
     payload.moment = zeros(3,length(payload.t));
     
     % translation: m m*CoG  rotation: CoG J3x1 (todo: 6x1)
-    payload.translation_estimation = zeros(4, length(payload.t));
-    payload.rotation_estimation = zeros(6, length(payload.t));
+    payload.translation_estimation = zeros(1, length(payload.t));
+    payload.rotation_estimation = zeros(5, length(payload.t));
     
     %% Grasp position 
     
@@ -51,8 +51,8 @@ function [payload, icl_trans, icl_rot, ctrl]= initailize(mode,optim_mode, dt,sim
     payload.R(:,1) = reshape(R0,9,1);
     payload.W(:,1) = [0, 0, 0];
     % initial theta guess
-    payload.translation_estimation(:,1) = [3; 0.05 ; 0.05 ; 0.05 ];
-    payload.rotation_estimation(:, 1) = [0.01; 0.01; 0.01; 0; 0; 0];
+    payload.translation_estimation(:,1) = 3;
+    payload.rotation_estimation(:, 1) = [0.01; 0.01; 0; 0; 0];
     payload.freq =  zeros(1, length(payload.t));
     
     if payload.traj_mode=="eight"
@@ -70,22 +70,22 @@ function [payload, icl_trans, icl_rot, ctrl]= initailize(mode,optim_mode, dt,sim
     %% ICL initialize
     % initialize integral concurrent learning
     icl_trans = integral_concurrent_learning;
-    icl_trans.N_diag = 20;
-    icl_trans.mat_diag_matrix = zeros(4, icl_trans.N_diag);
-    icl_trans.mat_diag_sum = zeros(4, 1);
+    icl_trans.N_diag = 5;
+    icl_trans.mat_diag_matrix = zeros(1, icl_trans.N_diag);
+    icl_trans.mat_diag_sum = zeros(1, 1);
     icl_trans.index_diag = 0;
-    icl_trans.current_force = zeros(3, 1);
+    icl_trans.current_force = 0;
     
     
     % initialize integral concurrent learning
     icl_rot = integral_concurrent_learning;
     icl_rot.N_diag = 5;
-    icl_rot.mat_diag_matrix = zeros(6, icl_rot.N_diag);
-    icl_rot.mat_diag_sum = zeros(6, 1);
+    icl_rot.mat_diag_matrix = zeros(5, icl_rot.N_diag);
+    icl_rot.mat_diag_sum = zeros(5, 1);
     icl_rot.index_diag = 0;
     icl_rot.current_moment = zeros(3,1);
     icl_rot.W_last = zeros(3, 1);
-    icl_rot.f_last = zeros(3, 1);
+    icl_rot.f_last = 0;
 
 
     %% initialize controller

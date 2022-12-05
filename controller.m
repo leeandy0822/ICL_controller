@@ -2,20 +2,20 @@ classdef controller
 
     properties
 
-        kx = 18;
-        kv = 7;
-        gamma_m = diag([0.01,0.0018,0.0022,0.0015]);
-        cx = 6;
-        kcl_m = diag([0.001, 50000 , 50000 ,50000]);
+        kx = 6;
+        kv = 2;
+        gamma_m = 0.02;
+        cx = 3;
+        kcl_m = 0.002;
 
 
         kr = 8*eye(3);
         ko = 4*eye(3);    
         %gamma_j = diag([1,1,1,10.5,9.5,14]);
         %                         CoG              Inertia
-        gamma_j = diag([0.001,0.001,0.0001, 0.03, 0.015, 0.0055]);
+        gamma_j = diag([0.001,0.001, 0.03, 0.015, 0.0055]);
         cr = 7;
-        kcl_j = diag([  500, 500, 300 ,  3900, 700, 39000]);
+        kcl_j = diag([  500, 500,  390, 700, 3900]);
 
         e3 = [0; 0; 1];
         last_f = [0; 0; 0];
@@ -51,23 +51,18 @@ classdef controller
 
             payload.dW(: , iter-1) = W_dot;
 
-            a = -R*(hat_map(W_dot) + hat_map(W) * hat_map(W));
-            b = -xd_double_dot + payload.g*obj.e3;
 
             % adaptive term 
-            Ym = [b a];
+            Ym = -xd_double_dot + payload.g*obj.e3;
 
-            % integral term 
-            icl_a = a*dt;
-            c = -x_dot + payload.g*obj.e3*dt;
-
-            Ym_cl = [c  icl_a];
+            % CL term 
+            Ym_cl = -xd_double_dot + payload.g*obj.e3;
             
             % Error
             ex = x - xd;
             ev = x_dot - xd_dot;
             
-            F_bar = icl_trans.current_force*dt;
+            F_bar = icl_trans.current_force;
             
             % prepare the past data
             mat_diag_now = Ym_cl'*(F_bar - Ym_cl*theta_m_hat);
@@ -89,27 +84,20 @@ classdef controller
             F_ff = Ym*theta_m_hat;
             % Geometric controller
             Fd = obj.kx*ex + obj.kv*ev + F_ff;
-            icl_trans.current_force = Fd;            
+    
             
             error(1:3) = ex;
             error(4:6) = ev;
         end
 
 
-        function [Md, error, J_est, icl_rot, Rd] = moment_ctrl(obj, iter, payload, Xd, icl_rot,icl_trans, dt)
-
-            xd_dot_enu = Xd(4:6);
-            
-            % convert position and velocity from enu to ned
-            xd_dot = xd_dot_enu;
-
+        function [Md, error, J_est, icl_rot] = moment_ctrl(obj, iter, payload, Xd, icl_rot,icl_trans,Rd, dt)
+         
             % states 
             R = reshape(payload.R(:,iter-1), 3,3);
             W = payload.W(: , iter-1);
 
             % Desire 
-            b1c = [1 ; 0 ;  0];
-            Rd = [b1c hat_map(obj.e3)*b1c obj.e3];
             Wd = [0; 0; 0];
             
             % eR and eW
@@ -124,12 +112,11 @@ classdef controller
                                 W(1)*W(3), 0, -W(1)*W(3);
                                 -W(1)*W(2), W(1)*W(2), 0];
             
-            Fx = icl_rot.f_last(1);
-            Fy = icl_rot.f_last(2);
-            Fz = icl_rot.f_last(3);
-            force_Y_diag = [   0    Fz  -Fy;
-                               -Fz   0   Fx;
-                               Fy    -Fx  0];
+            Fz = icl_rot.f_last;
+
+            force_Y_diag = [   0    Fz  ;
+                               -Fz   0  ;
+                                0    0  ];
 
             Y_diag = [force_Y_diag inertia_Y_diag];
             Y_diag_transpose = Y_diag';

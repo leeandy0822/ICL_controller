@@ -53,33 +53,24 @@ function plotgraph(tra, payload)
     
     %% Calculating Error
     % turn mass x CoG -> CoG
-    payload.translation_estimation(2:4,:) = payload.translation_estimation(2:4,:) ./ payload.translation_estimation(1,:);
     trans_est = payload.translation_estimation(:,length(t))';
     m = trans_est(1);
 
-    cog_x = trans_est(2);
-    cog_y = trans_est(3);
-    cog_z = trans_est(4);
-    
+   
     rot_est = payload.rotation_estimation(:,length(t))';
     cog_jx = rot_est(1);
     cog_jy = rot_est(2);
-    cog_jz = rot_est(3);
-    J_x = rot_est(4);
-    J_y = rot_est(5);
-    J_z = rot_est(6);
+    J_x = rot_est(3);
+    J_y = rot_est(4);
+    J_z = rot_est(5);
     
     
     fprintf("Mass Estimate Error: %.2f Percent\n", calculate_err(m, payload.m))
-    fprintf("CoG-x Tra Error: %.2f Percent\n", calculate_err(cog_x, payload.body2CoG(1)))
-    fprintf("CoG-y Tra Error: %.2f Percent\n", calculate_err(cog_y, payload.body2CoG(2)))
-    fprintf("CoG-z Tra Error: %.2f Percent\n", calculate_err(cog_z, payload.body2CoG(3)))
     fprintf("Inertia XX Error: %.2f Percent\n", calculate_err(J_x,payload.J(1)))
     fprintf("Inertia YY Error: %.2f Percent\n", calculate_err(J_y,payload.J(5)))
     fprintf("Inertia ZZ Error: %.2f Percent\n", calculate_err(J_z,payload.J(9)))
     fprintf("CoG-x Rot Error: %.2f Percent\n", calculate_err(cog_jx,-payload.body2CoG(1)))
     fprintf("CoG-y Rot Error: %.2f Percent\n", calculate_err(cog_jy,-payload.body2CoG(2)))
-    fprintf("CoG-z Rot Error: %.2f Percent\n", calculate_err(cog_jz,-payload.body2CoG(3)))
     
     
     figure(3);
@@ -125,47 +116,4 @@ function plotgraph(tra, payload)
     title("Distributed force - u3",'FontSize', 20);
     legend('x','y','z','FontSize', 15)
 
-
-    
-    % 
-    % % Plot unnecessary
-    % figure(4);
-    % tiledlayout(2,3)
-    % nexttile
-    % plot(t, payload.rotation_estimation(4,:),t,ones(1,length(t))*payload.J(1),LineWidth=2.0)
-    % title("Inertia xx",'FontSize', 20);
-    % legend('Estimate','Ground Truth','FontSize', 15)
-    % nexttile
-    % plot(t, payload.rotation_estimation(5,:),t,ones(1,length(t))*payload.J(5),LineWidth=2.0)
-    % title("Inertia yy",'FontSize', 20);
-    % legend('Estimate','Ground Truth','FontSize', 15)
-    % nexttile
-    % plot(t, payload.rotation_estimation(6,:),t,ones(1,length(t))*payload.J(9),LineWidth=2.0)
-    % title("Inertia zz",'FontSize', 20);
-    % legend('Estimate','Ground Truth','FontSize', 15)
-    % nexttile
-    % plot(t, payload.translation_estimation(2,:),t,ones(1,length(t))*payload.body2CoG(1),LineWidth=2.0)
-    % title("From Mass CoG (x)",'FontSize', 20);
-    % legend('Estimate','Ground Truth','FontSize', 15)
-    % nexttile
-    % plot(t, payload.translation_estimation(3,:),t,ones(1,length(t))*payload.body2CoG(2),LineWidth=2.0)
-    % title("From Mass CoG (y)",'FontSize', 20);
-    % legend('Estimate','Ground Truth','FontSize', 15)
-    % nexttile
-    % plot(t, payload.translation_estimation(4,:),t,ones(1,length(t))*payload.body2CoG(3),LineWidth=2.0)
-    % title("From Mass CoG (z)",'FontSize', 20);
-    % legend('Estimate','Ground Truth','FontSize', 15)
-    
-    
-    % % resultant force
-    % figure(5)
-    % tiledlayout(2,1)
-    % nexttile
-    % plot(t, payload.force(1,:), t , payload.force(2,:), t , payload.force(3,:),LineWidth=2.0);
-    % title("Force Input",'FontSize', 20);
-    % legend('x','y','z','FontSize', 15)
-    % nexttile
-    % plot(t, payload.moment(1,:), t , payload.moment(2,:), t , payload.moment(3,:),LineWidth=2.0);
-    % title("Moment Input",'FontSize', 20);
-    % legend('x','y','z','FontSize', 15)
 end
