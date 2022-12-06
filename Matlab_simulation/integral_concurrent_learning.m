@@ -1,13 +1,13 @@
 classdef integral_concurrent_learning
     properties
         % used in moment ICL control
-        N_diag 
+        N_diag
         mat_diag_matrix
         mat_diag_sum
         index_diag
+        if_full_diag
         W_last
-        f_last
-        current_force
         current_moment
+        current_force
     end
 end

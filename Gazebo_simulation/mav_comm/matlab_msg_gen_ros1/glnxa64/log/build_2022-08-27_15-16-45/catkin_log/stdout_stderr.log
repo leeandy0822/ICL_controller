@@ -1,0 +1,272 @@
+[0/1] Re-running CMake...
+CMake Warning (dev) in CMakeLists.txt:
+  No project() command is present.  The top-level CMakeLists.txt file must
+  contain a literal, direct call to the project() command.  Add a line of
+  code such as
+
+    project(ProjectName)
+
+  near the top of the file, but after cmake_minimum_required().
+
+  CMake is pretending there is a "project(Project)" command on the first
+  line.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Deprecation Warning at CMakeLists.txt:4 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Using CATKIN_DEVEL_PREFIX: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/devel
+-- Using CMAKE_PREFIX_PATH: /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1;/home/leeandy/MATLAB_2021b/toolbox/ros/mlroscpp/custom_messages
+-- This workspace overlays: /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1;/home/leeandy/MATLAB_2021b/toolbox/ros/mlroscpp/custom_messages
+-- Using PYTHON_EXECUTABLE: /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2
+-- Using Debian Python package layout
+-- Using empy: /usr/bin/empy
+-- Using CATKIN_ENABLE_TESTING: off
+-- catkin 0.7.17
+-- BUILD_SHARED_LIBS is on
+-- BUILD_SHARED_LIBS is on
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- ~~  traversing 2 packages in topological order:
+-- ~~  - mav_msgs
+-- ~~  - mav_planning_msgs
+-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- +++ processing catkin package: 'mav_msgs'
+-- ==> add_subdirectory(mav_msgs)
+-- Disabling the following message generators: geneus;genlisp;gennodejs
+-- Using these message generators: gencpp;genpy
+-- mav_msgs: 9 messages, 0 services
+-- +++ processing catkin package: 'mav_planning_msgs'
+-- ==> add_subdirectory(mav_planning_msgs)
+-- Disabling the following message generators: geneus;genlisp;gennodejs
+-- Using these message generators: gencpp;genpy
+-- mav_planning_msgs: 7 messages, 2 services
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build
+ninja: no work to do.
+[1/24] cd /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/RollPitchYawrateThrust.msg geometry_msgs/Vector3:std_msgs/Header
+[2/24] cd /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/RateThrust.msg geometry_msgs/Vector3:std_msgs/Header
+[3/24] cd /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/Status.msg std_msgs/Header
+[4/24] cd /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/FilteredSensorData.msg geometry_msgs/Vector3:std_msgs/Header
+[5/24] cd /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/TorqueThrust.msg geometry_msgs/Vector3:std_msgs/Header
+[6/24] cd /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/AttitudeThrust.msg geometry_msgs/Quaternion:geometry_msgs/Vector3:std_msgs/Header
+[7/24] cd /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/GpsWaypoint.msg std_msgs/Header
+[8/24] cd /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/Actuators.msg std_msgs/Header
+[9/24] cd /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/srv/PlannerService.srv geometry_msgs/Quaternion:trajectory_msgs/MultiDOFJointTrajectory:mav_planning_msgs/PolynomialSegment4D:geometry_msgs/Transform:geometry_msgs/PoseStamped:geometry_msgs/Point:trajectory_msgs/MultiDOFJointTrajectoryPoint:mav_planning_msgs/PolynomialTrajectory4D:geometry_msgs/Twist:geometry_msgs/Pose:geometry_msgs/Vector3:std_msgs/Header
+[10/24] cd /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/msg/Polygon2D.msg mav_planning_msgs/Point2D
+[11/24] cd /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/System_pose.msg geometry_msgs/Quaternion:geometry_msgs/Pose:geometry_msgs/Vector3:geometry_msgs/Point:std_msgs/Header
+[12/24] cd /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/srv/PolygonService.srv mav_planning_msgs/PolygonWithHoles:mav_planning_msgs/PolygonWithHolesStamped:mav_planning_msgs/Polygon2D:std_msgs/Header:mav_planning_msgs/Point2D
+[13/24] cd /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/msg/Point2D.msg
+[14/24] cd /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/msg/PolygonWithHolesStamped.msg mav_planning_msgs/PolygonWithHoles:mav_planning_msgs/Polygon2D:std_msgs/Header:mav_planning_msgs/Point2D
+[15/24] cd /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/msg/PolynomialSegment4D.msg std_msgs/Header
+[16/24] cd /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/msg/PolygonWithHoles.msg mav_planning_msgs/Polygon2D:mav_planning_msgs/Point2D
+[17/24] cd /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/msg/PointCloudWithPose.msg geometry_msgs/Quaternion:sensor_msgs/PointField:geometry_msgs/TransformStamped:sensor_msgs/PointCloud2:geometry_msgs/Transform:geometry_msgs/Vector3:std_msgs/Header
+[18/24] cd /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/msg/PolynomialTrajectory4D.msg mav_planning_msgs/PolynomialSegment4D:std_msgs/Header
+[19/24] Generating Python from MSG mav_msgs/System_pose
+[20/24] Generating C++ code from mav_msgs/System_pose.msg
+[21/24] Generating Python msg __init__.py for mav_msgs
+[22/24] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_System_pose_message.cpp.o
+[23/24] Linking CXX shared library /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/devel/lib/libmav_msgs_matlab.so
+[23/24] Install the project...
+-- Install configuration: "Release"
+-- Installing: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/_setup_util.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/env.sh
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/setup.bash
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/local_setup.bash
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/setup.sh
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/local_setup.sh
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/setup.zsh
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/local_setup.zsh
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/.rosinstall
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_msgs/msg/Actuators.msg
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_msgs/msg/AttitudeThrust.msg
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_msgs/msg/FilteredSensorData.msg
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_msgs/msg/GpsWaypoint.msg
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_msgs/msg/RateThrust.msg
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_msgs/msg/RollPitchYawrateThrust.msg
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_msgs/msg/Status.msg
+-- Installing: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_msgs/msg/System_pose.msg
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_msgs/msg/TorqueThrust.msg
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_msgs/cmake/mav_msgs-msg-paths.cmake
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_msgs
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_msgs/AttitudeThrust.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_msgs/GpsWaypoint.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_msgs/TorqueThrust.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_msgs/RateThrust.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_msgs/RollPitchYawrateThrust.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_msgs/FilteredSensorData.h
+-- Installing: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_msgs/System_pose.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_msgs/Actuators.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_msgs/Status.h
+Listing /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/devel/lib/python2.7/dist-packages/mav_msgs ...
+Listing /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/devel/lib/python2.7/dist-packages/mav_msgs/msg ...
+Compiling /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/devel/lib/python2.7/dist-packages/mav_msgs/msg/_System_pose.py ...
+Compiling /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/devel/lib/python2.7/dist-packages/mav_msgs/msg/__init__.py ...
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/_TorqueThrust.py
+-- Installing: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/_System_pose.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/_Status.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/_AttitudeThrust.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/_RateThrust.py
+-- Installing: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/__init__.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/_RollPitchYawrateThrust.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/_FilteredSensorData.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/_GpsWaypoint.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/_Actuators.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/_Status.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/_Actuators.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/_TorqueThrust.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/_AttitudeThrust.py
+-- Installing: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/__init__.pyc
+-- Installing: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/_System_pose.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/_RateThrust.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/_RollPitchYawrateThrust.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/_FilteredSensorData.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/msg/_GpsWaypoint.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/__init__.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_msgs/__init__.pyc
+-- Installing: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/pkgconfig/mav_msgs.pc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_msgs/cmake/mav_msgs-msg-extras.cmake
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_msgs/cmake/mav_msgsConfig.cmake
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_msgs/cmake/mav_msgsConfig-version.cmake
+-- Installing: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_msgs/package.xml
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_msgs
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_msgs/visibility_control.h
+-- Installing: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/libmav_msgs_matlab.so
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m/
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_msgs
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_msgs/TorqueThrust.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_msgs/RollPitchYawrateThrust.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_msgs/Actuators.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_msgs/AttitudeThrust.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_msgs/RateThrust.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_msgs/Status.m
+-- Installing: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_msgs/System_pose.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_msgs/GpsWaypoint.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_msgs/FilteredSensorData.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_msgs
+-- Installing: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_msgs/system_pose.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_msgs/rollPitchYawrateThrust.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_msgs/gpsWaypoint.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_msgs/status.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_msgs/filteredSensorData.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_msgs/attitudeThrust.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_msgs/actuators.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_msgs/torqueThrust.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_msgs/rateThrust.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_planning_msgs/msg/Point2D.msg
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_planning_msgs/msg/PointCloudWithPose.msg
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_planning_msgs/msg/Polygon2D.msg
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_planning_msgs/msg/PolygonWithHoles.msg
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_planning_msgs/msg/PolygonWithHolesStamped.msg
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_planning_msgs/msg/PolynomialSegment4D.msg
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_planning_msgs/msg/PolynomialTrajectory4D.msg
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_planning_msgs/srv/PlannerService.srv
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_planning_msgs/srv/PolygonService.srv
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_planning_msgs/cmake/mav_planning_msgs-msg-paths.cmake
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_planning_msgs
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_planning_msgs/PolynomialSegment4D.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_planning_msgs/PolygonWithHoles.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_planning_msgs/PolygonWithHolesStamped.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_planning_msgs/PolygonService.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_planning_msgs/PolygonServiceRequest.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_planning_msgs/PlannerService.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_planning_msgs/PlannerServiceResponse.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_planning_msgs/PolynomialTrajectory4D.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_planning_msgs/PlannerServiceRequest.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_planning_msgs/Polygon2D.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_planning_msgs/PointCloudWithPose.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_planning_msgs/PolygonServiceResponse.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_planning_msgs/Point2D.h
+Listing /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/devel/lib/python2.7/dist-packages/mav_planning_msgs ...
+Listing /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/devel/lib/python2.7/dist-packages/mav_planning_msgs/msg ...
+Listing /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/devel/lib/python2.7/dist-packages/mav_planning_msgs/srv ...
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/msg
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/msg/_Polygon2D.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/msg/_PolygonWithHolesStamped.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/msg/_PolygonWithHoles.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/msg/__init__.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/msg/_PolynomialTrajectory4D.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/msg/_PolygonWithHolesStamped.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/msg/_PointCloudWithPose.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/msg/_PolynomialSegment4D.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/msg/_Point2D.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/msg/__init__.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/msg/_PolynomialSegment4D.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/msg/_Polygon2D.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/msg/_PointCloudWithPose.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/msg/_PolynomialTrajectory4D.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/msg/_Point2D.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/msg/_PolygonWithHoles.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/__init__.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/__init__.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/srv
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/srv/_PolygonService.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/srv/_PlannerService.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/srv/__init__.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/srv/_PolygonService.py
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/srv/__init__.pyc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/python2.7/dist-packages/mav_planning_msgs/srv/_PlannerService.py
+-- Installing: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/pkgconfig/mav_planning_msgs.pc
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_planning_msgs/cmake/mav_planning_msgs-msg-extras.cmake
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_planning_msgs/cmake/mav_planning_msgsConfig.cmake
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_planning_msgs/cmake/mav_planning_msgsConfig-version.cmake
+-- Installing: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/share/mav_planning_msgs/package.xml
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_planning_msgs
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/include/mav_planning_msgs/visibility_control.h
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/lib/libmav_planning_msgs_matlab.so
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m/
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_planning_msgs
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_planning_msgs/PolynomialSegment4D.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_planning_msgs/PolynomialTrajectory4D.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_planning_msgs/PointCloudWithPose.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_planning_msgs/Polygon2D.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_planning_msgs/PolygonWithHolesStamped.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_planning_msgs/PlannerServiceRequest.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_planning_msgs/PolygonServiceRequest.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_planning_msgs/Point2D.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_planning_msgs/PolygonServiceResponse.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_planning_msgs/PlannerServiceResponse.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+msggen/+mav_planning_msgs/PolygonWithHoles.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_planning_msgs
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_planning_msgs/plannerServiceRequest.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_planning_msgs/polygonServiceResponse.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_planning_msgs/polynomialTrajectory4D.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_planning_msgs/polygonWithHoles.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_planning_msgs/plannerServiceResponse.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_planning_msgs/pointCloudWithPose.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_planning_msgs/polygonWithHolesStamped.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_planning_msgs/point2D.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_planning_msgs/polygon2D.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_planning_msgs/polygonServiceRequest.m
+-- Up-to-date: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install/m//+ros/+internal/+ros/+custommessages/+mav_planning_msgs/polynomialSegment4D.m
+Base path: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64
+Source space: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/src
+Build space: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build
+Devel space: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/devel
+Install space: /home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install
+####
+#### Running command: "ninja build.ninja" in "/home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build"
+####
+####
+#### Running command: "ninja install install -j12 -l12" in "/home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/build"
+####
