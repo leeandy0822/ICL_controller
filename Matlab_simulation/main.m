@@ -45,7 +45,7 @@ uav3 = multirotor_dynamics;
 multirotor.dt = dt;
 multirotor.sim_t = sim_t;
 multirotor.t = 0:dt:sim_t;
-multirotor.m = 2.8;
+multirotor.m = 3.2;
 multirotor.J = [0.2, 0, 0;
                 0, 0.2, 0;
                 0, 0, 0.1];
@@ -97,7 +97,7 @@ elseif SELECT_FLIGHT_MODE == MODE_HOVERING
     multirotor.R(:, 1) = [1; 0; 0; 0; 1; 0; 0; 0; 1];
     multirotor.W(:, 1) = [0.01; -0.01; 0.01];
     multirotor.mass_estimation(1, 1) = 2.5;
-    multirotor.inertia_estimation(1:2, 1) = [0.05 ; 0];
+    multirotor.inertia_estimation(1:2, 1) = [0.08 ; 0];
     multirotor.inertia_estimation(3:5, 1) = [0.01; 0.01; 0.01];
 end
 
@@ -272,6 +272,27 @@ nexttile
 plot(t, multirotor.inertia_estimation(2,:),t,ones(1,length(t))*-multirotor.body2CoG(2),LineWidth=1.0)
 title("CoG (y)",'FontSize', 20);
 legend('Estimated (m)','Ground Truth(m)','FontSize', 15)
+
+
+
+figure;
+tiledlayout(3,1)
+nexttile
+% Plot position tracking error
+plot(t,uav1.rotor_thrust(1, :),t,uav1.rotor_thrust(2, :),t,uav1.rotor_thrust(3, :),t,uav1.rotor_thrust(4, :),LineWidth=1.0)
+title("UAV1 Motor input",'FontSize', 20);
+legend('rotor1','rotor2','rotor3','rotor4','FontSize', 15)
+nexttile
+% Plot position tracking error
+plot(t,uav2.rotor_thrust(1, :),t,uav2.rotor_thrust(2, :),t,uav2.rotor_thrust(3, :),t,uav2.rotor_thrust(4, :),LineWidth=1.0)
+title("UAV2 Motor input",'FontSize', 20);
+legend('rotor1','rotor2','rotor3','rotor4','FontSize', 15)
+nexttile
+% Plot position tracking error
+plot(t,uav3.rotor_thrust(1, :),t,uav3.rotor_thrust(2, :),t,uav3.rotor_thrust(3, :),t,uav3.rotor_thrust(4, :),LineWidth=1.0)
+title("UAV3 Motor input",'FontSize', 20);
+legend('rotor1','rotor2','rotor3','rotor4','FontSize', 15)
+
 
 
 

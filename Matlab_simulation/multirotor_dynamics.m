@@ -34,7 +34,7 @@ classdef multirotor_dynamics
         % control input
         force_moment
         rotor_thrust
-        body2CoG = [0.15; 0.05; 0];
+        body2CoG = [0.15; 0; 0];
         F_disturbance
         
         % distrubition
