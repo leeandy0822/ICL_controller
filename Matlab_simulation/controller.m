@@ -18,8 +18,8 @@ classdef controller
            e3 = multirotor.e3;
            
            % control gains
-           kx = diag([8; 8; 8]);
-           kv = diag([9; 9; 9]);
+           kx = diag([10; 10; 10]);
+           kv = diag([8; 8; 8]);
            kR = diag([9; 9; 9]);
            kW = diag([4; 4; 4]);
            
@@ -52,9 +52,7 @@ classdef controller
            A = (-kx*ex_ned - kv*ev_ned + F_ff);
            b3 = R*e3;
            f = -vec_dot(A, b3);
-           ex_ned
-           ev_ned
-           F_ff
+
            % Rd
            norm_A = norm(A);
            b3d = -A/norm_A;

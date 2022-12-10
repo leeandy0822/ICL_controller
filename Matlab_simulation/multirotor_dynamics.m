@@ -36,7 +36,15 @@ classdef multirotor_dynamics
         rotor_thrust
         body2CoG = [0.15; 0.05; 0];
         F_disturbance
+        
+        % distrubition
+        distribution_matrix
+        distribution_matrix_inv
+        uav1_pos
+        uav2_pos
+        uav3_pos
 
+        
     end
     methods
         function dX = dynamics(obj, t, X, F, alpha)
