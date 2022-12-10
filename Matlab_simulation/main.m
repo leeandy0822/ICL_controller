@@ -4,7 +4,7 @@ tic;
 
 % simulation time
 dt = 0.0025;
-sim_t = 20;
+sim_t = 40;
 
 % flight mode
 MODE_TRACKING = 0;
@@ -51,10 +51,9 @@ multirotor.J = [0.2, 0, 0;
                 0, 0, 0.1];
 multirotor.d = 0.250;
 multirotor.c_tau = 1.347e-2;
-multirotor.uav1_pos = [0.25, 0];
-multirotor.uav2_pos = [0, -0.5];
-multirotor.uav3_pos = [0, 0.5];
-multirotor.uav4_pos = [-0.25,0];
+multirotor.uav1_pos = [0.25 , 0];
+multirotor.uav2_pos = [-0.25 , -0.5];
+multirotor.uav3_pos = [-0.25 , 0.5];
 
 uav1.allocation_matrix = cal_allocation_matrix(multirotor.d, multirotor.c_tau);
 uav1.allocation_matrix_inv = cal_allocation_matrix_inv(uav1.allocation_matrix);
@@ -97,8 +96,8 @@ elseif SELECT_FLIGHT_MODE == MODE_HOVERING
     multirotor.v(:, 1) = [0.1; -0.1; 0.1];
     multirotor.R(:, 1) = [1; 0; 0; 0; 1; 0; 0; 0; 1];
     multirotor.W(:, 1) = [0.01; -0.01; 0.01];
-    multirotor.mass_estimation(1, 1) = 2;
-    multirotor.inertia_estimation(1:2, 1) = [0.0 ; 0];
+    multirotor.mass_estimation(1, 1) = 2.5;
+    multirotor.inertia_estimation(1:2, 1) = [0.05 ; 0];
     multirotor.inertia_estimation(3:5, 1) = [0.01; 0.01; 0.01];
 end
 
@@ -116,13 +115,6 @@ icl.W_last = zeros(3, 1);
 icl.current_moment = zeros(3, 1);
 icl.current_force = 0;
 
-icl_mass = integral_concurrent_learning;
-icl_mass.N_diag = 10; 
-icl_mass.mat_diag_matrix = zeros(1, icl_mass.N_diag);
-icl_mass.mat_diag_sum = zeros(1, 1);
-icl_mass.index_diag = 0;
-icl_mass.if_full_diag = 0;
-icl_mass.current_force = 0 ; 
 
 % initialize trajectory
 tra = zeros(12, length(multirotor.t));
@@ -148,14 +140,17 @@ for i = 2:length(multirotor.t)
 
     uav1_thrust = uav1.allocation_matrix_inv*uav1_control;
     uav1_bound = bound_control(uav1_thrust, thrust_max, thrust_min);
+    uav1.rotor_thrust(:, i) = uav1_bound;
     uav1_control = uav1.allocation_matrix*uav1_bound;
 
     uav2_thrust = uav2.allocation_matrix_inv*uav2_control;
-    uav2_bound = bound_control(uav1_thrust, thrust_max, thrust_min);
+    uav2_bound = bound_control(uav2_thrust, thrust_max, thrust_min);
+    uav2.rotor_thrust(:, i) = uav2_bound;
     uav2_control = uav2.allocation_matrix*uav2_bound;
 
     uav3_thrust = uav3.allocation_matrix_inv*uav3_control;
-    uav3_bound = bound_control(uav1_thrust, thrust_max, thrust_min);
+    uav3_bound = bound_control(uav3_thrust, thrust_max, thrust_min);
+    uav3.rotor_thrust(:, i) = uav3_bound;
     uav3_control = uav3.allocation_matrix*uav3_bound;
 
     control = multirotor.distribution_matrix*[uav1_control; uav2_control; uav3_control];
@@ -198,7 +193,6 @@ for i = 2:length(multirotor.t)
     
     % save rotor thrust
     multirotor.force_moment(:, i) = control(1:4);
-%     multirotor.rotor_thrust(:, i) = multirotor.allocation_matrix_inv*control(1:4);
     
     % save moment of inertia
     multirotor.mass_estimation(1, i) = mass_est;
@@ -278,6 +272,7 @@ nexttile
 plot(t, multirotor.inertia_estimation(2,:),t,ones(1,length(t))*-multirotor.body2CoG(2),LineWidth=1.0)
 title("CoG (y)",'FontSize', 20);
 legend('Estimated (m)','Ground Truth(m)','FontSize', 15)
+
 
 
 text = sprintf('\nElapsed time : %.2f seconds\n', toc);
