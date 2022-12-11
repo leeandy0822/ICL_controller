@@ -9,11 +9,10 @@ fprintf("done");
 sim_t = 90;
 traj_mode = "hover";
 
-[payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t);
+[payload]= gazebo_init(traj_mode, sim_t);
 uav1 = gazebo_uav;
 uav2 = gazebo_uav;
 uav3 = gazebo_uav;
-uav4 = gazebo_uav;
 
 % initialize controller 
 ctrl = gazebo_controller;
@@ -21,28 +20,24 @@ ctrl = gazebo_controller;
 dis_handle = gazebo_distributed;
 % initialize trajectory
 traj_handle = gazebo_trajectory;
-
 %% initialize ros function
 system_pose = rossubscriber("/pub_system_pose","DataFormat","struct");
-[uav1.pub, uav1.msg] = rospublisher("/firefly1/command/roll_pitch_yawrate_thrust","mav_msgs/RollPitchYawrateThrust");
-[uav2.pub, uav2.msg] = rospublisher("/firefly2/command/roll_pitch_yawrate_thrust","mav_msgs/RollPitchYawrateThrust");
-[uav3.pub, uav3.msg] = rospublisher("/firefly3/command/roll_pitch_yawrate_thrust","mav_msgs/RollPitchYawrateThrust");
-[uav4.pub, uav4.msg] = rospublisher("/firefly4/command/roll_pitch_yawrate_thrust","mav_msgs/RollPitchYawrateThrust");
+[uav1.pub, uav1.msg] = rospublisher("/firefly1/Wrench_command","mav_msgs/TorqueThrust");
+[uav2.pub, uav2.msg] = rospublisher("/firefly2/Wrench_command","mav_msgs/TorqueThrust");
+[uav3.pub, uav3.msg] = rospublisher("/firefly3/Wrench_command","mav_msgs/TorqueThrust");
 
 initial_time = (rostime("now").Sec + rostime("now").Nsec/1000000000);
 payload.cur_t = 0;
 
 iter = 1; 
-[uav1, uav2, uav3, uav4, payload] = getPose(uav1,uav2,uav3,uav4,payload,system_pose,iter); 
+[uav1, uav2, uav3, payload] = getPose(uav1,uav2,uav3,payload,system_pose,iter); 
 % initialize the grasp matrix
 p1 = uav1.x - payload.x(:,iter);
 p2 = uav2.x - payload.x(:,iter);
 p3 = uav3.x - payload.x(:,iter);
-p4 = uav4.x - payload.x(:,iter);
-p1(3) = p1(3) - 0.02;
-p2(3) = p2(3) - 0.02;
-p3(3) = p3(3) - 0.02;
-p4(3) = p4(3) - 0.02;
+p1(3) = 0;
+p2(3) = 0;
+p3(3) = 0;
 
 payload.B = [       eye(3)   eye(3)        eye(3)       eye(3); 
                  hat_map(p1)  hat_map(p2)   hat_map(p3)  hat_map(p4)];
@@ -58,7 +53,7 @@ while payload.cur_t < sim_t
     
     tic
 
-    [uav1, uav2, uav3, uav4, payload] = getPose(uav1,uav2,uav3,uav4,payload,system_pose,iter); 
+    [uav1, uav2, uav3, payload] = getPose(uav1,uav2,uav3,payload,system_pose,iter); 
     % Get time
     payload.cur_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
 
@@ -121,12 +116,4 @@ payload.translation_estimation(:,iter-1)
 payload.rotation_estimation(:,iter-1)
 
 gazebo_plotgraph(payload);
-% u1 = 0 ; 
-% u2 = 0 ; 
-% u3 = 0 ; 
-% u4 = 0 ; 
-% force_to_uav(u1,uav1,payload,iter);
-% force_to_uav(u2,uav2,payload,iter);
-% force_to_uav(u3,uav3,payload,iter);
-% force_to_uav(u4,uav4,payload,iter);
 

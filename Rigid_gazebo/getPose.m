@@ -1,4 +1,4 @@
-function [uav1,uav2,uav3,payload] = getPose(uav1,uav2,uav3,payload,system_pose,i)
+function [uav1,uav2,uav3,multirotor] = getPose(uav1,uav2,uav3,multirotor,system_pose,i)
 
     % subscribers get data
     
@@ -15,18 +15,14 @@ function [uav1,uav2,uav3,payload] = getPose(uav1,uav2,uav3,payload,system_pose,i
     pose_uav3_data = System_pose.Uav3;
     pose_uav3_a = System_pose.Uav3Acc;
 
-    pose_uav4_data = System_pose.Uav4;
-    pose_uav4_a = System_pose.Uav4Acc;
-
-
     %% Get payload position and orientation
-    payload.x(:,i) = [ pose_payload_data.Position.X; pose_payload_data.Position.Y;pose_payload_data.Position.Z];
+    multirotor.x(:,i) = [ pose_payload_data.Position.X; pose_payload_data.Position.Y;pose_payload_data.Position.Z];
     q =  [pose_payload_data.Orientation.W pose_payload_data.Orientation.X pose_payload_data.Orientation.Y pose_payload_data.Orientation.Z];
     temp_R = quat2rotm(q);
-    payload.a = pose_payload_acc;
-    payload.v(:,i) = [pose_payload_vel.X ;pose_payload_vel.Y ;pose_payload_vel.Z];
-    payload.R(:,i) = reshape(temp_R,[9,1]);
-    payload.W(:,i) = [System_pose.PayloadW.X ; System_pose.PayloadW.Y; System_pose.PayloadW.Z];
+    multirotor.a = pose_payload_acc;
+    multirotor.v(:,i) = [pose_payload_vel.X ;pose_payload_vel.Y ;pose_payload_vel.Z];
+    multirotor.R(:,i) = reshape(temp_R,[9,1]);
+    multirotor.W(:,i) = [System_pose.PayloadW.X ; System_pose.PayloadW.Y; System_pose.PayloadW.Z];
     %% Get UAV1 payload position and orientation
     uav1.x = [pose_uav1_data.Position.X;pose_uav1_data.Position.Y; pose_uav1_data.Position.Z];    
     uav1.q = [pose_uav1_data.Orientation.W pose_uav1_data.Orientation.X pose_uav1_data.Orientation.Y pose_uav1_data.Orientation.Z];

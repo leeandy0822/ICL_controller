@@ -2,9 +2,12 @@
 close all;
 tic;
 
+rosshutdown
+rosinit
+
 % simulation time
 dt = 0.0025;
-sim_t = 30;
+sim_t = 120;
 
 % flight mode
 MODE_TRACKING = 0;
@@ -39,9 +42,6 @@ select_moment_adaptive_w_wo_ICL = moment_adaptive_with_ICL;
 
 % initialize parameters
 multirotor = multirotor_dynamics;
-uav1 = multirotor_dynamics;
-uav2 = multirotor_dynamics;
-uav3 = multirotor_dynamics;
 multirotor.dt = dt;
 multirotor.sim_t = sim_t;
 multirotor.t = 0:dt:sim_t;
@@ -51,19 +51,8 @@ multirotor.J = [0.2, 0, 0;
                 0, 0, 0.1];
 multirotor.d = 0.1250;
 multirotor.c_tau = 1.347e-2;
-multirotor.uav1_pos = [0.25 , 0];
-multirotor.uav2_pos = [-0.25 , -0.5];
-multirotor.uav3_pos = [-0.25 , 0.5];
 
-uav1.allocation_matrix = cal_allocation_matrix(multirotor.d, multirotor.c_tau);
-uav1.allocation_matrix_inv = cal_allocation_matrix_inv(uav1.allocation_matrix);
-uav2.allocation_matrix = cal_allocation_matrix(multirotor.d, multirotor.c_tau);
-uav2.allocation_matrix_inv = cal_allocation_matrix_inv(uav2.allocation_matrix);
-uav3.allocation_matrix = cal_allocation_matrix(multirotor.d, multirotor.c_tau);
-uav3.allocation_matrix_inv = cal_allocation_matrix_inv(uav3.allocation_matrix);
 
-multirotor.distribution_matrix = distribution(multirotor.uav1_pos,multirotor.uav2_pos,multirotor.uav3_pos);
-multirotor.distribution_matrix_inv = distribution_inv(multirotor.distribution_matrix);
 multirotor.x = zeros(3, length(multirotor.t));
 multirotor.v = zeros(3, length(multirotor.t));
 multirotor.R = zeros(9, length(multirotor.t));
@@ -82,21 +71,43 @@ thrust_max = 9;
 thrust_min = 0;
 raw_W = zeros(3, length(multirotor.t));
 
+% ROS Gazebo setup
+uav1 = gazebo_uav;
+uav2 = gazebo_uav;
+uav3 = gazebo_uav;
+
+system_pose = rossubscriber("/pub_system_pose","DataFormat","struct");
+[uav1.pub, uav1.msg] = rospublisher("/firefly1/Wrench_command","mav_msgs/TorqueThrust");
+[uav2.pub, uav2.msg] = rospublisher("/firefly2/Wrench_command","mav_msgs/TorqueThrust");
+[uav3.pub, uav3.msg] = rospublisher("/firefly3/Wrench_command","mav_msgs/TorqueThrust");
+
+multirotor.cur_t = 0;
+iter = 1;
+
+[uav1, uav2, uav3, multirotor] = getPose(uav1,uav2,uav3,multirotor,system_pose,iter); 
+
+multirotor.uav1_pos = uav1.x - multirotor.x(:,iter);
+multirotor.uav2_pos = uav2.x - multirotor.x(:,iter);
+multirotor.uav3_pos = uav3.x - multirotor.x(:,iter);
+
+multirotor.distribution_matrix = distribution(multirotor.uav1_pos,multirotor.uav2_pos,multirotor.uav3_pos);
+multirotor.distribution_matrix_inv = distribution_inv(multirotor.distribution_matrix);
+
 % initialize states
 if SELECT_FLIGHT_MODE == MODE_TRACKING
-    multirotor.x(:, 1) = [0; 0; 0.95];
-    multirotor.v(:, 1) = [0; 0; 0];
-    multirotor.R(:, 1) = [1; 0; 0; 0; 1; 0; 0; 0; 1];
-    multirotor.W(:, 1) = [0; 0; 0];
+%     multirotor.x(:, 1) = [0; 0; 0.95];
+%     multirotor.v(:, 1) = [0; 0; 0];
+%     multirotor.R(:, 1) = [1; 0; 0; 0; 1; 0; 0; 0; 1];
+%     multirotor.W(:, 1) = [0; 0; 0];
     multirotor.mass_estimation(1, 1) = 1.5;
     multirotor.inertia_estimation(1:2, 1) = [0.05 ; 0.05];
     multirotor.inertia_estimation(3:5, 1) = [0.005; 0.005; 0.005];
 elseif SELECT_FLIGHT_MODE == MODE_HOVERING
-    multirotor.x(:, 1) = [1.1; 0.9; 0];
-    multirotor.v(:, 1) = [0.1; -0.1; 0.1];
-    multirotor.R(:, 1) = [1; 0; 0; 0; 1; 0; 0; 0; 1];
-    multirotor.W(:, 1) = [0.01; -0.01; 0.01];
-    multirotor.mass_estimation(1, 1) = 2.5;
+%     multirotor.x(:, 1) = [1.1; 0.9; 0];
+%     multirotor.v(:, 1) = [0.1; -0.1; 0.1];
+%     multirotor.R(:, 1) = [1; 0; 0; 0; 1; 0; 0; 0; 1];
+%     multirotor.W(:, 1) = [0.01; -0.01; 0.01];
+    multirotor.mass_estimation(1, 1) = 5.9;
     multirotor.inertia_estimation(1:2, 1) = [0 ; 0];
     multirotor.inertia_estimation(3:5, 1) = [0.01; 0.01; 0.01];
 end
@@ -111,9 +122,17 @@ icl.mat_diag_matrix = zeros(5, icl.N_diag);
 icl.mat_diag_sum = zeros(5, 1);
 icl.index_diag = 0;
 icl.if_full_diag = 0;
+
+icl.mass_N_diag = 10;
+icl.mass_mat_diag_matrix = zeros(1, icl.N_diag);
+icl.mass_mat_diag_sum = zeros(1, 1);
+icl.mass_index_diag = 0;
+icl.mass_if_full_diag = 0;
+
 icl.W_last = zeros(3, 1);
 icl.current_moment = zeros(3, 1);
 icl.current_force = 0;
+
 
 
 % initialize trajectory
@@ -121,86 +140,68 @@ tra = zeros(12, length(multirotor.t));
 traj = trajectory;
 
 
-for i = 2:length(multirotor.t)
-    i
-    t_now = multirotor.t(i);
+iter = iter+1;
+dt = 0.02;
+multirotor.t(:,1) = 0;
+initial_time = (rostime("now").Sec + rostime("now").Nsec/1000000000)
+multirotor.last_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
+icl_rot.f_last = [0 ; 0 ; 0];
+time_rec = multirotor.cur_t;
+
+while multirotor.cur_t < sim_t
+    
+    tic 
+    [uav1, uav2, uav3, multirotor] = getPose(uav1,uav2,uav3,multirotor,system_pose,iter); 
+    % Get time
+    multirotor.cur_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
 
     % desired trajectory
-    tra(:, i) = traj.traj_generate(t_now, SELECT_FLIGHT_MODE);
-    Xd_enu = tra(1:9, i-1);
-    b1d = tra(10:12, i);
-    
+    tra(:, iter-1) = traj.traj_generate(multirotor.cur_t, SELECT_FLIGHT_MODE);
+
+    if multirotor.cur_t < time_rec
+        Xd = traj.traj_generate(time_rec+ 0.02, SELECT_FLIGHT_MODE);
+    end
+
+    Xd_enu = tra(1:9, iter-1);
+    b1d = tra(10:12, iter-1);
+
     % control input and error
     [control_dis, error, mass_est, J_est, icl] = ctrl.geometric_tracking_ctrl(i, multirotor, Xd_enu, b1d, icl,dt, select_force_feedforward, select_moment_feedforward, select_moment_adaptive_w_wo_ICL, SELECT_FILTER);
 
-    U_star = multirotor.distribution_matrix_inv*control_dis;
-    uav1_control = U_star(1:4);
-    uav2_control = U_star(5:8);
-    uav3_control = U_star(9:12);
+    control_dis
+    U_star = multirotor.distribution_matrix_inv*control_dis
+    uav1.control = U_star(1:4);
+    uav2.control = U_star(5:8);
+    uav3.control = U_star(9:12);
 
-    uav1_thrust = uav1.allocation_matrix_inv*uav1_control;
-    uav1_bound = bound_control(uav1_thrust, thrust_max, thrust_min);
-    uav1.rotor_thrust(:, i) = uav1_bound;
-    uav1_control = uav1.allocation_matrix*uav1_bound;
+    wrench_to_ros(uav1);
+    wrench_to_ros(uav2);
+    wrench_to_ros(uav3);
 
-    uav2_thrust = uav2.allocation_matrix_inv*uav2_control;
-    uav2_bound = bound_control(uav2_thrust, thrust_max, thrust_min);
-    uav2.rotor_thrust(:, i) = uav2_bound;
-    uav2_control = uav2.allocation_matrix*uav2_bound;
-
-    uav3_thrust = uav3.allocation_matrix_inv*uav3_control;
-    uav3_bound = bound_control(uav3_thrust, thrust_max, thrust_min);
-    uav3.rotor_thrust(:, i) = uav3_bound;
-    uav3_control = uav3.allocation_matrix*uav3_bound;
-
-    control = multirotor.distribution_matrix*[uav1_control; uav2_control; uav3_control];
-
-    control - control_dis
-    %% CoG drift effect
-
-    R = reshape(multirotor.R(:, i-1), 3, 3);
-    W = multirotor.W(:, i-1);
-    % derivative
-    dW = [0 ; 0 ; 0 ] ; 
-    if i > 2
-       dW = (W - multirotor.W(:,i-2))/dt;
-    end
-    e3 = multirotor.e3;
-    
-    alpha = hat_map(dW)*multirotor.body2CoG + hat_map(W)*hat_map(W)*multirotor.body2CoG;
-%     fprintf("Translation force : %.2f %.2f %.2f\n", alpha(1), alpha(2), alpha(3))
-    M_drift = hat_map(multirotor.body2CoG)*control(1)*e3;
-    control(2:4) = control(2:4) + M_drift;
-
-    %% icl record
-    icl.current_force = control(1);
-    %% dynamics
-    X0 = [vec_enu_to_ned(multirotor.x(:, i-1));
-        vec_enu_to_ned(multirotor.v(:, i-1));
-        reshape(reshape(multirotor.R(:, i-1), 3, 3), 9, 1);
-        multirotor.W(:, i-1)];
-    [T, X_new] = ode45(@(t, x) multirotor.dynamics(t, x, control, alpha), [0, dt], X0, control);
-    multirotor.x(:, i) = vec_ned_to_enu(X_new(end, 1:3));
-    multirotor.v(:, i) = vec_ned_to_enu(X_new(end, 4:6));
-    multirotor.R(:, i) = X_new(end, 7:15);
-    multirotor.W(:, i) = X_new(end, 16:18);
+    icl.current_force = control_dis(1);
+    icl.current_moment = control_dis(2:4);
 
     % save the error
-    multirotor.ex(:, i) = error(1:3);
-    multirotor.ev(:, i) = error(4:6);
-    multirotor.eR(:, i) = error(7:9);
-    multirotor.eW(:, i) = error(10:12);
+    multirotor.ex(:, iter) = error(1:3);
+    multirotor.ev(:, iter) = error(4:6);
+    multirotor.eR(:, iter) = error(7:9);
+    multirotor.eW(:, iter) = error(10:12);
     
     % save rotor thrust
-    multirotor.force_moment(:, i) = control(1:4);
+    multirotor.force_moment(:, iter) = control_dis(1:4);
     
     % save moment of inertia
-    multirotor.mass_estimation(1, i) = mass_est;
-    multirotor.inertia_estimation(:, i) = J_est;
-    multirotor.F_disturbance(:,i)= alpha*multirotor.m;
+
+    multirotor.mass_estimation(1, iter) = mass_est;
+    multirotor.inertia_estimation(:, iter) = J_est;
     % save control input for ICL control
-    icl.current_force = control(1);
-    icl.current_moment = control(2:4);
+
+    iter = iter + 1; 
+    multirotor.t(:,iter) = toc;
+    if (iter > 5)
+        dt = toc;
+    end
+    time_rec = multirotor.cur_t;
 
 end
 

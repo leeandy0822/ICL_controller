@@ -1,4 +1,4 @@
-function [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t)
+function [payload]= gazebo_init(traj_mode, sim_t)
 
     payload = gazebo_payload;
     payload.traj_mode = traj_mode;
@@ -39,24 +39,24 @@ function [payload, icl_trans, icl_rot]= gazebo_init(traj_mode, sim_t)
     payload.u4 = zeros(3, payload.total_step);
     payload.translation_estimation(:,1) = [payload.m; 0 ; 0 ; 0 ];
     payload.rotation_estimation(:, 1) = [0; 0; 0; 0; 0; 0];
-    %% ICL initialize
-
-    % Translation ICL initialize
-    icl_trans = integral_concurrent_learning;
-    icl_trans.N_diag = 20;
-    icl_trans.mat_diag_matrix = zeros(4, icl_trans.N_diag);
-    icl_trans.mat_diag_sum = zeros(4, 1);
-    icl_trans.index_diag = 0;
-    icl_trans.current_force = zeros(3, 1);
-    
-    % Rotation ICL initialize
-    icl_rot = integral_concurrent_learning;
-    icl_rot.N_diag = 20;
-    icl_rot.mat_diag_matrix = zeros(6, icl_rot.N_diag);
-    icl_rot.mat_diag_sum = zeros(6, 1);
-    icl_rot.index_diag = 0;
-    icl_rot.current_moment = zeros(3,1);
-    icl_rot.W_last = zeros(3, 1);
-    icl_rot.f_last = zeros(3, 1);
+%     %% ICL initialize
+% 
+%     % Translation ICL initialize
+%     icl_trans = integral_concurrent_learning;
+%     icl_trans.N_diag = 20;
+%     icl_trans.mat_diag_matrix = zeros(4, icl_trans.N_diag);
+%     icl_trans.mat_diag_sum = zeros(4, 1);
+%     icl_trans.index_diag = 0;
+%     icl_trans.current_force = zeros(3, 1);
+%     
+%     % Rotation ICL initialize
+%     icl_rot = integral_concurrent_learning;
+%     icl_rot.N_diag = 20;
+%     icl_rot.mat_diag_matrix = zeros(6, icl_rot.N_diag);
+%     icl_rot.mat_diag_sum = zeros(6, 1);
+%     icl_rot.index_diag = 0;
+%     icl_rot.current_moment = zeros(3,1);
+%     icl_rot.W_last = zeros(3, 1);
+%     icl_rot.f_last = zeros(3, 1);
 
 end

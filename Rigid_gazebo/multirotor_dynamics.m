@@ -3,6 +3,8 @@ classdef multirotor_dynamics
         % simulation time
         dt = 0.01;
         sim_t = 10;
+        cur_t % for gazebo
+        last_t
         t
         iter
         % parameters
@@ -20,6 +22,7 @@ classdef multirotor_dynamics
         % states
         x
         v
+        a
         R
         W
         dW
