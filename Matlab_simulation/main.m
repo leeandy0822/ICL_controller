@@ -4,12 +4,16 @@ tic;
 
 % simulation time
 dt = 0.0025;
-sim_t = 30;
+sim_t = 20;
 
+% optimize ?
+MODE_OPTIMIZE = 0;
+MODE_EVEN = 1; 
+SELECT_OPTIMIZATION = MODE_EVEN; 
 % flight mode
 MODE_TRACKING = 0;
 MODE_HOVERING = 1;
-SELECT_FLIGHT_MODE = MODE_HOVERING;
+SELECT_FLIGHT_MODE = MODE_TRACKING;
 
 % whether to impose noise or not
 WITH_NOISE = 1;
@@ -51,9 +55,18 @@ multirotor.J = [0.2, 0, 0;
                 0, 0, 0.1];
 multirotor.d = 0.1250;
 multirotor.c_tau = 1.347e-2;
-multirotor.uav1_pos = [0.25 , 0];
-multirotor.uav2_pos = [-0.25 , -0.5];
-multirotor.uav3_pos = [-0.25 , 0.5];
+
+% in ned frame 
+if SELECT_OPTIMIZATION == MODE_EVEN
+    multirotor.uav1_pos = [0.25 , 0];
+    multirotor.uav2_pos = [-0.25 , -0.5];
+    multirotor.uav3_pos = [-0.25 , 0.5];
+else 
+    multirotor.uav1_pos = [0.25 , 0.02];
+    multirotor.uav2_pos = [0, -0.5];
+    multirotor.uav3_pos = [-0.25 , 0.02];
+end
+
 
 uav1.allocation_matrix = cal_allocation_matrix(multirotor.d, multirotor.c_tau);
 uav1.allocation_matrix_inv = cal_allocation_matrix_inv(uav1.allocation_matrix);
@@ -61,6 +74,10 @@ uav2.allocation_matrix = cal_allocation_matrix(multirotor.d, multirotor.c_tau);
 uav2.allocation_matrix_inv = cal_allocation_matrix_inv(uav2.allocation_matrix);
 uav3.allocation_matrix = cal_allocation_matrix(multirotor.d, multirotor.c_tau);
 uav3.allocation_matrix_inv = cal_allocation_matrix_inv(uav3.allocation_matrix);
+
+uav1.force_moment = zeros(4, length(multirotor.t));
+uav2.force_moment = zeros(4, length(multirotor.t));
+uav3.force_moment = zeros(4, length(multirotor.t));
 
 multirotor.distribution_matrix = distribution(multirotor.uav1_pos,multirotor.uav2_pos,multirotor.uav3_pos);
 multirotor.distribution_matrix_inv = distribution_inv(multirotor.distribution_matrix);
@@ -88,15 +105,15 @@ if SELECT_FLIGHT_MODE == MODE_TRACKING
     multirotor.v(:, 1) = [0; 0; 0];
     multirotor.R(:, 1) = [1; 0; 0; 0; 1; 0; 0; 0; 1];
     multirotor.W(:, 1) = [0; 0; 0];
-    multirotor.mass_estimation(1, 1) = 1.5;
-    multirotor.inertia_estimation(1:2, 1) = [0.05 ; 0.05];
+    multirotor.mass_estimation(1, 1) = 3;
+    multirotor.inertia_estimation(1:2, 1) = [0 ; 0];
     multirotor.inertia_estimation(3:5, 1) = [0.005; 0.005; 0.005];
 elseif SELECT_FLIGHT_MODE == MODE_HOVERING
-    multirotor.x(:, 1) = [1.1; 0.9; 0];
+    multirotor.x(:, 1) = [1.1; 0.9; 0.95];
     multirotor.v(:, 1) = [0.1; -0.1; 0.1];
     multirotor.R(:, 1) = [1; 0; 0; 0; 1; 0; 0; 0; 1];
     multirotor.W(:, 1) = [0.01; -0.01; 0.01];
-    multirotor.mass_estimation(1, 1) = 2.5;
+    multirotor.mass_estimation(1, 1) = 3;
     multirotor.inertia_estimation(1:2, 1) = [0 ; 0];
     multirotor.inertia_estimation(3:5, 1) = [0.01; 0.01; 0.01];
 end
@@ -193,7 +210,10 @@ for i = 2:length(multirotor.t)
     
     % save rotor thrust
     multirotor.force_moment(:, i) = control(1:4);
-    
+    uav1.force_moment(:, i) = uav1_control(1:4);
+    uav2.force_moment(:, i) = uav2_control(1:4);
+    uav3.force_moment(:, i) = uav3_control(1:4);
+
     % save moment of inertia
     multirotor.mass_estimation(1, i) = mass_est;
     multirotor.inertia_estimation(:, i) = J_est;
@@ -274,6 +294,28 @@ title("CoG (y)",'FontSize', 20);
 legend('Estimated (m)','Ground Truth(m)','FontSize', 15)
 
 
+figure;
+tiledlayout(4,1)
+nexttile
+% Plot position tracking error
+plot(t,multirotor.force_moment(1, :),t,uav1.force_moment(1, :),t,uav2.force_moment(1, :),t,uav3.force_moment(1, :),LineWidth=1.0)
+title("Force (N)",'FontSize', 15);
+legend('Total','uav1','uav2','uav3','FontSize', 10)
+nexttile
+% Plot position tracking error
+plot(t,multirotor.force_moment(2, :),t,uav1.force_moment(2, :),t,uav2.force_moment(2, :),t,uav3.force_moment(2, :),LineWidth=1.0)
+title("Moment x (N*m)",'FontSize', 15);
+legend('Total','uav1','uav2','uav3','FontSize', 10)
+nexttile
+% Plot position tracking error
+plot(t,multirotor.force_moment(3, :),t,uav1.force_moment(3, :),t,uav2.force_moment(3, :),t,uav3.force_moment(3, :),LineWidth=1.0)
+title("Moment y (N*m)",'FontSize', 15);
+legend('Total','uav1','uav2','uav3','FontSize', 10)
+nexttile
+% Plot position tracking error
+plot(t,multirotor.force_moment(4, :),t,uav1.force_moment(4, :),t,uav2.force_moment(4, :),t,uav3.force_moment(4, :),LineWidth=1.0)
+title("Moment z (N*m)",'FontSize', 15);
+legend('Total','uav1','uav2','uav3','FontSize', 10)
 
 figure;
 tiledlayout(3,1)

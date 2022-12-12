@@ -21,7 +21,7 @@ classdef controller
            kx = diag([9; 9; 9]);
            kv = diag([7; 7; 7]);
            kR = diag([9; 9; 9]);
-           kW = diag([4; 4; 4]);
+           kW = diag([5; 5; 5]);
            
            % convert position and velocity from enu to ned
            x_ned = vec_enu_to_ned(x_enu);
@@ -49,7 +49,7 @@ classdef controller
            end
            
            % f
-           A = (-kx*ex_ned - kv*ev_ned + F_ff)
+           A = (-kx*ex_ned - kv*ev_ned + F_ff);
            b3 = R*e3;
            f = -vec_dot(A, b3);
 

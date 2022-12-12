@@ -9,8 +9,8 @@ classdef trajectory
                 % xd, vd, b1d
                 out = zeros(12, 1);
                 % frequency of trajectory
-                f_x = 1.2;
-                f_y = 1.0;
+                f_x = 0.6;
+                f_y = 0.5;
                 % xd
                 out(1) = sin(f_x*t);
                 out(2) = sin(f_y*t);
@@ -33,17 +33,11 @@ classdef trajectory
                 % xd
                 out(1) = 1;
                 out(2) = 1;
-                out(3) = 0.05*t;
-                if t > 20
-                    out(3)= 1;
-                end
+                out(3) = 1;
                 % vd
                 out(4) = 0;
                 out(5) = 0;
-                out(6) = 0.05;
-                if t > 20
-                    out(6) = 0;
-                end
+                out(6) = 0;
                 % ad
                 out(7) = 0;
                 out(8) = 0;
