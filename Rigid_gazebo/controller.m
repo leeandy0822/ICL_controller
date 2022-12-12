@@ -18,10 +18,10 @@ classdef controller
            e3 = multirotor.e3;
            
            % control gains
-           kx = diag([12; 12; 12]);
-           kv = diag([9; 9; 9]);
-           kR = diag([10; 10; 10]);
-           kW = diag([10; 10; 10]);
+           kx = diag([20; 20; 20]);
+           kv = diag([12; 12; 12]);
+           kR = diag([15; 15; 15]);
+           kW = diag([8; 8; 8]);
            
            % convert position and velocity from enu to ned
            x_ned = vec_enu_to_ned(x_enu);
@@ -53,9 +53,11 @@ classdef controller
            b3 = R*e3;
            f = -vec_dot(A, b3);
 
+           A = vec_ned_to_enu(A);
+
            % Rd
            norm_A = norm(A);
-           b3d = -A/norm_A;
+           b3d = A/norm_A;
            b2d = vec_cross(b3d, b1d);
            norm_b2d = norm(b2d);
            b2d = b2d/norm_b2d;
@@ -83,7 +85,7 @@ classdef controller
            % M
            M_back = -kR*eR - kW*eW;
            M = M_back - M_ff;
-%            M= vec_ned_to_enu(M);
+
            % f, M
            control(1) = f;
            control(2) = M(1);

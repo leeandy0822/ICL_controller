@@ -143,7 +143,7 @@ traj = trajectory;
 iter = iter+1;
 dt = 0.02;
 multirotor.t(:,1) = 0;
-initial_time = (rostime("now").Sec + rostime("now").Nsec/1000000000)
+initial_time = (rostime("now").Sec + rostime("now").Nsec/1000000000);
 multirotor.last_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
 icl_rot.f_last = [0 ; 0 ; 0];
 time_rec = multirotor.cur_t;
@@ -166,7 +166,7 @@ while multirotor.cur_t < sim_t
     b1d = tra(10:12, iter-1);
 
     % control input and error
-    [control_dis, error, mass_est, J_est, icl] = ctrl.geometric_tracking_ctrl(i, multirotor, Xd_enu, b1d, icl,dt, select_force_feedforward, select_moment_feedforward, select_moment_adaptive_w_wo_ICL, SELECT_FILTER);
+    [control_dis, error, mass_est, J_est, icl] = ctrl.geometric_tracking_ctrl(iter, multirotor, Xd_enu, b1d, icl,dt, select_force_feedforward, select_moment_feedforward, select_moment_adaptive_w_wo_ICL, SELECT_FILTER);
 
     control_dis
     U_star = multirotor.distribution_matrix_inv*control_dis

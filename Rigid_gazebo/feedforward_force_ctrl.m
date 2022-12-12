@@ -1,8 +1,8 @@
 classdef feedforward_force_ctrl
    properties
-       gamma_m = 0.2;
+       gamma_m = 0.01;
        C1 = 2;
-       kcl_m = 0.001;
+       kcl_m = 0.0001;
 
    end
    
@@ -16,9 +16,9 @@ classdef feedforward_force_ctrl
             % calculate the regression matrix
             a = [multirotor.a.X ; multirotor.a.Y; multirotor.a.Z];
             
-            if a(3) > 10
-                a(3) = 9.8;
-            end
+%             if a(3) > 10
+%                 a(3) = 9.8;
+%             end
             Y_m = [ad(1); ad(2); ad(3) - multirotor.g];
             Y_m_transpose = Y_m';
             

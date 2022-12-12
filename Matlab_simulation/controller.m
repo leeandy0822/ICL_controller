@@ -49,7 +49,7 @@ classdef controller
            end
            
            % f
-           A = (-kx*ex_ned - kv*ev_ned + F_ff);
+           A = (-kx*ex_ned - kv*ev_ned + F_ff)
            b3 = R*e3;
            f = -vec_dot(A, b3);
 
