@@ -106,7 +106,7 @@ elseif SELECT_FLIGHT_MODE == MODE_HOVERING
 
     multirotor.mass_estimation(1, 1) = 7;
     multirotor.inertia_estimation(1:2, 1) = [0 ; 0];
-    multirotor.inertia_estimation(3:5, 1) = [0.2; 0.2; 0.3];
+    multirotor.inertia_estimation(3:5, 1) = [0.3; 0.3; 0.2];
 end
 
 % initialize controller
@@ -180,7 +180,7 @@ while multirotor.cur_t < sim_t
     icl.current_moment = control_dis(2:4);
 
     % save the error
-    error'
+
     multirotor.ex(:, iter) = error(1:3);
     multirotor.ev(:, iter) = error(4:6);
     multirotor.eR(:, iter) = error(7:9);
@@ -192,7 +192,9 @@ while multirotor.cur_t < sim_t
     % save moment of inertia
 
     multirotor.mass_estimation(1, iter) = mass_est;
+    mass_est
     multirotor.inertia_estimation(:, iter) = J_est;
+    J_est
     % save control input for ICL control
 
     iter = iter + 1; 
@@ -233,23 +235,23 @@ figure;
 tiledlayout(2,2)
 nexttile
 % Plot position tracking error
-plot(t,multirotor.ex(1, :),t,multirotor.ex(2, :),t,multirotor.ex(3, :),LineWidth=1.0)
+plot(t,multirotor.ex(1, 1:iter),t,multirotor.ex(2, 1:iter),t,multirotor.ex(3, 1:iter),LineWidth=1.0)
 title("Postion Tracking errors",'FontSize', 20);
 legend('ex_1','ex_2','ex_3','FontSize', 15)
 nexttile
 % Plot velocity tracking error
-plot(t,multirotor.ev(1, :),t,multirotor.ev(2, :),t,multirotor.ev(3, :),LineWidth=1.0)
+plot(t,multirotor.ev(1, 1:iter),t,multirotor.ev(2, 1:iter),t,multirotor.ev(3, 1:iter),LineWidth=1.0)
 title("Velocity Tracking errors",'FontSize', 20);
 legend('ev_1','ev_2','ev_3','FontSize', 15)
 
 nexttile
 % Plot rotation tracking error
-plot(t,multirotor.eR(1, :),t,multirotor.eR(2, :),t,multirotor.eR(3,:),LineWidth=1.0)
+plot(t,multirotor.eR(1, 1:iter),t,multirotor.eR(2, 1:iter),t,multirotor.eR(3,1:iter),LineWidth=1.0)
 title("Rotation Errors",'FontSize', 20);
 legend('er_1','er_2','er_3','FontSize', 15)
 nexttile
 % Plot Omega tracking error
-plot(t,multirotor.eW(1,:),t,multirotor.eW(2,:),t,multirotor.eW(3,:),LineWidth=1.0)
+plot(t,multirotor.eW(1,1:iter),t,multirotor.eW(2,1:iter),t,multirotor.eW(3,1:iter),LineWidth=1.0)
 title("Angular Velocity Errors",'FontSize', 20);
 legend('eo_1','eo_2','eo_3','FontSize', 15)
 
@@ -258,18 +260,20 @@ legend('eo_1','eo_2','eo_3','FontSize', 15)
 figure;
 tiledlayout(3,1)
 nexttile
+
+t = 1:1:iter-1;
 % Plot necessary
-theta_m_ground_truth = ones(1, length(multirotor.t))*multirotor.m;
-t = multirotor.t;
-plot(t,multirotor.mass_estimation,t,theta_m_ground_truth,LineWidth=1.0)
+theta_m_ground_truth = ones(1, length(t))*multirotor.m;
+
+plot(t,multirotor.mass_estimation(:,1:iter-1),t,theta_m_ground_truth(:,1:iter-1),LineWidth=1.0)
 title("Mass",'FontSize', 20);
 legend('Estimated Mass(kg)','Ground Truth(kg)','FontSize', 15)
 nexttile
-plot(t, multirotor.inertia_estimation(1,:),t,ones(1,length(t))*-multirotor.body2CoG(1),LineWidth=1.0)
+plot(t, multirotor.inertia_estimation(1,1:iter-1),t,ones(1,iter-1)*-multirotor.body2CoG(1),LineWidth=1.0)
 title("CoG (x)",'FontSize', 20);
 legend('Estimated (m)','Ground Truth(m)','FontSize', 15)
 nexttile
-plot(t, multirotor.inertia_estimation(2,:),t,ones(1,length(t))*-multirotor.body2CoG(2),LineWidth=1.0)
+plot(t, multirotor.inertia_estimation(2,1:iter-1),t,ones(1,iter-1)*-multirotor.body2CoG(2),LineWidth=1.0)
 title("CoG (y)",'FontSize', 20);
 legend('Estimated (m)','Ground Truth(m)','FontSize', 15)
 

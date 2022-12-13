@@ -2,7 +2,7 @@ classdef feedforward_force_ctrl
    properties
        gamma_m = 0.01;
        C1 = 3;
-       kcl_m = 0.000001;
+       kcl_m = 0;
 
    end
    
