@@ -16,12 +16,12 @@ classdef controller
            R = reshape(multirotor.R(:, iter-1), 3, 3);
            W = multirotor.W(:, iter-1);
            e3 = multirotor.e3;
-           
+
            % control gains
-           kx = diag([20; 20; 20]);
-           kv = diag([12; 12; 12]);
-           kR = diag([15; 15; 15]);
-           kW = diag([8; 8; 8]);
+           kx = diag([6; 6; 5]);
+           kv = diag([15; 15; 40]);
+           kR = diag([60; 60; 60]);
+           kW = diag([50; 50; 50]);
            
            % convert position and velocity from enu to ned
            x_ned = vec_enu_to_ned(x_enu);

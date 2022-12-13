@@ -33,15 +33,15 @@ classdef trajectory
                 % xd
                 out(1) = 0.5;
                 out(2) = 0;
-                out(3) = 0.05*t;
-                if t > 60
-                    out(3)= 3;
+                out(3) = 2;
+                if t > 20
+                    out(3)= 2;
                 end
                 % vd
                 out(4) = 0;
                 out(5) = 0;
-                out(6) = 0.05;
-                if t > 60
+                out(6) = 0;
+                if t > 20
                     out(6) = 0;
                 end
                 % ad

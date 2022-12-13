@@ -7,7 +7,7 @@ rosinit
 
 % simulation time
 dt = 0.0025;
-sim_t = 120;
+sim_t = 60;
 
 % flight mode
 MODE_TRACKING = 0;
@@ -75,41 +75,38 @@ raw_W = zeros(3, length(multirotor.t));
 uav1 = gazebo_uav;
 uav2 = gazebo_uav;
 uav3 = gazebo_uav;
+uav4 = gazebo_uav;
 
 system_pose = rossubscriber("/pub_system_pose","DataFormat","struct");
 [uav1.pub, uav1.msg] = rospublisher("/firefly1/Wrench_command","mav_msgs/TorqueThrust");
 [uav2.pub, uav2.msg] = rospublisher("/firefly2/Wrench_command","mav_msgs/TorqueThrust");
 [uav3.pub, uav3.msg] = rospublisher("/firefly3/Wrench_command","mav_msgs/TorqueThrust");
+[uav4.pub, uav4.msg] = rospublisher("/firefly4/Wrench_command","mav_msgs/TorqueThrust");
 
 multirotor.cur_t = 0;
 iter = 1;
 
-[uav1, uav2, uav3, multirotor] = getPose(uav1,uav2,uav3,multirotor,system_pose,iter); 
+[uav1, uav2, uav3, uav4,multirotor] = getPose(uav1,uav2,uav3,uav4,multirotor,system_pose,iter); 
 
 multirotor.uav1_pos = uav1.x - multirotor.x(:,iter);
 multirotor.uav2_pos = uav2.x - multirotor.x(:,iter);
 multirotor.uav3_pos = uav3.x - multirotor.x(:,iter);
+multirotor.uav4_pos = uav4.x - multirotor.x(:,iter);
 
-multirotor.distribution_matrix = distribution(multirotor.uav1_pos,multirotor.uav2_pos,multirotor.uav3_pos);
+multirotor.distribution_matrix = distribution(multirotor.uav1_pos,multirotor.uav2_pos,multirotor.uav3_pos,multirotor.uav4_pos);
 multirotor.distribution_matrix_inv = distribution_inv(multirotor.distribution_matrix);
 
 % initialize states
 if SELECT_FLIGHT_MODE == MODE_TRACKING
-%     multirotor.x(:, 1) = [0; 0; 0.95];
-%     multirotor.v(:, 1) = [0; 0; 0];
-%     multirotor.R(:, 1) = [1; 0; 0; 0; 1; 0; 0; 0; 1];
-%     multirotor.W(:, 1) = [0; 0; 0];
+
     multirotor.mass_estimation(1, 1) = 1.5;
     multirotor.inertia_estimation(1:2, 1) = [0.05 ; 0.05];
     multirotor.inertia_estimation(3:5, 1) = [0.005; 0.005; 0.005];
 elseif SELECT_FLIGHT_MODE == MODE_HOVERING
-%     multirotor.x(:, 1) = [1.1; 0.9; 0];
-%     multirotor.v(:, 1) = [0.1; -0.1; 0.1];
-%     multirotor.R(:, 1) = [1; 0; 0; 0; 1; 0; 0; 0; 1];
-%     multirotor.W(:, 1) = [0.01; -0.01; 0.01];
-    multirotor.mass_estimation(1, 1) = 5.9;
+
+    multirotor.mass_estimation(1, 1) = 7;
     multirotor.inertia_estimation(1:2, 1) = [0 ; 0];
-    multirotor.inertia_estimation(3:5, 1) = [0.01; 0.01; 0.01];
+    multirotor.inertia_estimation(3:5, 1) = [0.2; 0.2; 0.3];
 end
 
 % initialize controller
@@ -117,13 +114,13 @@ ctrl = controller;
 
 % initialize integral concurrent learning
 icl = integral_concurrent_learning;
-icl.N_diag = 10;
+icl.N_diag = 30;
 icl.mat_diag_matrix = zeros(5, icl.N_diag);
 icl.mat_diag_sum = zeros(5, 1);
 icl.index_diag = 0;
 icl.if_full_diag = 0;
 
-icl.mass_N_diag = 10;
+icl.mass_N_diag = 30;
 icl.mass_mat_diag_matrix = zeros(1, icl.N_diag);
 icl.mass_mat_diag_sum = zeros(1, 1);
 icl.mass_index_diag = 0;
@@ -151,7 +148,7 @@ time_rec = multirotor.cur_t;
 while multirotor.cur_t < sim_t
     
     tic 
-    [uav1, uav2, uav3, multirotor] = getPose(uav1,uav2,uav3,multirotor,system_pose,iter); 
+    [uav1, uav2, uav3, uav4,multirotor] = getPose(uav1,uav2,uav3,uav4, multirotor,system_pose,iter); 
     % Get time
     multirotor.cur_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
 
@@ -161,27 +158,29 @@ while multirotor.cur_t < sim_t
     if multirotor.cur_t < time_rec
         Xd = traj.traj_generate(time_rec+ 0.02, SELECT_FLIGHT_MODE);
     end
-
+    
     Xd_enu = tra(1:9, iter-1);
     b1d = tra(10:12, iter-1);
-
+    
     % control input and error
     [control_dis, error, mass_est, J_est, icl] = ctrl.geometric_tracking_ctrl(iter, multirotor, Xd_enu, b1d, icl,dt, select_force_feedforward, select_moment_feedforward, select_moment_adaptive_w_wo_ICL, SELECT_FILTER);
 
-    control_dis
-    U_star = multirotor.distribution_matrix_inv*control_dis
+    U_star = multirotor.distribution_matrix_inv*control_dis;
     uav1.control = U_star(1:4);
     uav2.control = U_star(5:8);
     uav3.control = U_star(9:12);
+    uav4.control = U_star(13:16);
 
     wrench_to_ros(uav1);
     wrench_to_ros(uav2);
     wrench_to_ros(uav3);
+    wrench_to_ros(uav4);
 
     icl.current_force = control_dis(1);
     icl.current_moment = control_dis(2:4);
 
     % save the error
+    error'
     multirotor.ex(:, iter) = error(1:3);
     multirotor.ev(:, iter) = error(4:6);
     multirotor.eR(:, iter) = error(7:9);
@@ -205,28 +204,28 @@ while multirotor.cur_t < sim_t
 
 end
 
-t = multirotor.t;
+t = 1:1:iter;
 
 figure;
 tiledlayout(3,1)
 nexttile
 % Plot position tracking error
-plot(t,multirotor.x(1, :),LineWidth=1.0);
+plot(t,multirotor.x(1, 1:iter),LineWidth=1.0);
 hold on
-plot(t,tra(1, :),LineWidth=1.0);
+plot(t,tra(1, 1:iter),LineWidth=1.0);
 title("Trajectory and Desired Trajectory",'FontSize', 18);
 legend('x','xd','FontSize', 15)
 nexttile
 % Plot velocity tracking error
-plot(t,multirotor.x(2, :),LineWidth=1.0)
+plot(t,multirotor.x(2, 1:iter),LineWidth=1.0)
 hold on
-plot(t,tra(2, :),LineWidth=1.0);
+plot(t,tra(2, 1:iter),LineWidth=1.0);
 legend('y','yd','FontSize', 15)
 nexttile
 % Plot rotation tracking error
-plot(t,multirotor.x(3, :),LineWidth=1.0)
+plot(t,multirotor.x(3, 1:iter),LineWidth=1.0)
 hold on
-plot(t,tra(3, :),LineWidth=1.0);
+plot(t,tra(3, 1:iter),LineWidth=1.0);
 legend('z','zd','FontSize', 15)
 xlabel('$Time(sec)$', 'Interpreter', 'latex')
 

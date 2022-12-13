@@ -46,6 +46,7 @@ classdef multirotor_dynamics
         uav1_pos
         uav2_pos
         uav3_pos
+        uav4_pos
 
         
     end

@@ -1,6 +1,6 @@
 classdef feedforward_moment_ctrl
    properties
-       gamma_diag = diag([0.0002, 0.0002, 0.001, 0.001, 0.001]);
+       gamma_diag = diag([0.02, 0.02, 0.2, 0.2, 0.2]);
        C2 = 3;
        kcl_j = diag([  0, 0, 0, 0, 0]);
    end
