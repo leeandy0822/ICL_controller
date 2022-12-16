@@ -7,7 +7,7 @@ rosinit
 
 % simulation time
 dt = 0.0025;
-sim_t = 60;
+sim_t = 50;
 
 % flight mode
 MODE_TRACKING = 0;
@@ -99,14 +99,14 @@ multirotor.distribution_matrix_inv = distribution_inv(multirotor.distribution_ma
 % initialize states
 if SELECT_FLIGHT_MODE == MODE_TRACKING
 
-    multirotor.mass_estimation(1, 1) = 1.5;
-    multirotor.inertia_estimation(1:2, 1) = [0.05 ; 0.05];
+    multirotor.mass_estimation(1, 1) = 8;
+    multirotor.inertia_estimation(1:2, 1) = [0 ; 0];
     multirotor.inertia_estimation(3:5, 1) = [0.005; 0.005; 0.005];
 elseif SELECT_FLIGHT_MODE == MODE_HOVERING
 
-    multirotor.mass_estimation(1, 1) = 7;
+    multirotor.mass_estimation(1, 1) = 9;
     multirotor.inertia_estimation(1:2, 1) = [0 ; 0];
-    multirotor.inertia_estimation(3:5, 1) = [0.3; 0.3; 0.2];
+    multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
 end
 
 % initialize controller
@@ -130,15 +130,11 @@ icl.W_last = zeros(3, 1);
 icl.current_moment = zeros(3, 1);
 icl.current_force = 0;
 
-
-
 % initialize trajectory
 tra = zeros(12, length(multirotor.t));
 traj = trajectory;
 
-
 iter = iter+1;
-dt = 0.02;
 multirotor.t(:,1) = 0;
 initial_time = (rostime("now").Sec + rostime("now").Nsec/1000000000);
 multirotor.last_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
@@ -149,6 +145,7 @@ while multirotor.cur_t < sim_t
     
     tic 
     [uav1, uav2, uav3, uav4,multirotor] = getPose(uav1,uav2,uav3,uav4, multirotor,system_pose,iter); 
+
     % Get time
     multirotor.cur_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
 
@@ -161,10 +158,12 @@ while multirotor.cur_t < sim_t
     
     Xd_enu = tra(1:9, iter-1);
     b1d = tra(10:12, iter-1);
-    
+
     % control input and error
     [control_dis, error, mass_est, J_est, icl] = ctrl.geometric_tracking_ctrl(iter, multirotor, Xd_enu, b1d, icl,dt, select_force_feedforward, select_moment_feedforward, select_moment_adaptive_w_wo_ICL, SELECT_FILTER);
-
+    error'
+    mass_est
+    J_est
     U_star = multirotor.distribution_matrix_inv*control_dis;
     uav1.control = U_star(1:4);
     uav2.control = U_star(5:8);
@@ -192,9 +191,7 @@ while multirotor.cur_t < sim_t
     % save moment of inertia
 
     multirotor.mass_estimation(1, iter) = mass_est;
-    mass_est
     multirotor.inertia_estimation(:, iter) = J_est;
-    J_est
     % save control input for ICL control
 
     iter = iter + 1; 

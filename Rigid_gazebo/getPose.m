@@ -2,7 +2,7 @@ function [uav1,uav2,uav3, uav4, multirotor] = getPose(uav1,uav2,uav3,uav4, multi
 
     % subscribers get data
     
-    System_pose = receive(system_pose,2);
+    System_pose = receive(system_pose,1);
     pose_payload_data = System_pose.Payload;
     pose_payload_acc = System_pose.PayloadAcc;
     pose_payload_vel = System_pose.PayloadVel;
