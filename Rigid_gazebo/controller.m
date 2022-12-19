@@ -20,8 +20,8 @@ classdef controller
            % control gains
            kx = diag([25; 25; 30]);
            kv = diag([15; 15; 15]);
-           kR = diag([60; 60; 60]);
-           kW = diag([12; 12; 12]);
+           kR = diag([30; 30; 30]);
+           kW = diag([10; 10; 8]);
            
            % convert position and velocity from enu to ned
            x_ned = vec_enu_to_ned(x_enu);
