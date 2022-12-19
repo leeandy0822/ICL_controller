@@ -7,7 +7,7 @@ rosinit
 
 % simulation time
 dt = 0.0025;
-sim_t = 150;
+sim_t = 100;
 
 % flight mode
 MODE_TRACKING = 0;
@@ -67,10 +67,7 @@ uav4 = gazebo_uav;
 command = gazebo_uav;
 
 system_pose = rossubscriber("/pub_system_pose","DataFormat","struct");
-[uav1.pub, uav1.msg] = rospublisher("/firefly1/Wrench_command","mav_msgs/TorqueThrust");
-[uav2.pub, uav2.msg] = rospublisher("/firefly2/Wrench_command","mav_msgs/TorqueThrust");
-[uav3.pub, uav3.msg] = rospublisher("/firefly3/Wrench_command","mav_msgs/TorqueThrust");
-[uav4.pub, uav4.msg] = rospublisher("/firefly4/Wrench_command","mav_msgs/TorqueThrust");
+
 [command.pub, command.msg] = rospublisher("/payload/command","std_msgs/Float32MultiArray");
 
 multirotor.cur_t = 0;
@@ -91,7 +88,8 @@ if SELECT_FLIGHT_MODE == MODE_TRACKING
 
     multirotor.mass_estimation(1, 1) = 9;
     multirotor.inertia_estimation(1:2, 1) = [0.05 ; 0];
-    multirotor.inertia_estimation(3:5, 1) = [0.005; 0.005; 0.005];
+    multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
+
 elseif SELECT_FLIGHT_MODE == MODE_HOVERING
 
     multirotor.mass_estimation(1, 1) = 9;
@@ -154,7 +152,7 @@ while multirotor.cur_t < sim_t
     % Get time
 %     multirotor.cur_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
     multirotor.cur_t = multirotor.cur_t + 0.0067;
-    dt = 0.01;
+    dt = 0.0067;
 
     % desired trajectory
     tra(:, iter-1) = traj.traj_generate(multirotor.cur_t, SELECT_FLIGHT_MODE);

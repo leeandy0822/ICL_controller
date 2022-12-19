@@ -7,8 +7,8 @@ classdef trajectory
             
             height = 1; 
             if FLIGHT_MODE == MODE_TRACKING
-                x = [0.5 ; 0 ; 0.025*t];
-                v = [0 ; 0; 0.025];
+                x = [0.5 ; 0 ; 1];
+                v = [0 ; 0; 0];
                 a = [0 ; 0 ;0 ];
             
                 if t > 40 
@@ -54,16 +54,12 @@ classdef trajectory
                 out(1) = 0.5;
                 out(2) = 0;
                 out(3) = 1;
-                if t > 20
-                    out(3)= 1;
-                end
+
                 % vd
                 out(4) = 0;
                 out(5) = 0;
                 out(6) = 0;
-                if t > 20
-                    out(6) = 0;
-                end
+
                 % ad
                 out(7) = 0;
                 out(8) = 0;
