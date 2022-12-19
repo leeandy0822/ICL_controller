@@ -1,7 +1,7 @@
 classdef feedforward_moment_ctrl
    properties
-       gamma_diag = diag([0.009, 0.009, 0.4, 0.4, 0.4]);
-       C2 = 0.2;
+       gamma_diag = diag([0.003, 0.003, 0.4, 0.4, 0.4]);
+       C2 = 1;
        kcl_j = diag([  0.000001, 0.000001, 0, 0, 0]);
    end
    
@@ -11,7 +11,7 @@ classdef feedforward_moment_ctrl
            M_ff = -vec_cross(W, multirotor.J*W);
        end
        
-       function [M_ff, theta_diag_hat, icl] = feedforward_moment_use_adaptive_ICL(obj, W, multirotor, eR, eW, J_est_last, icl, dt, iter, select_moment_adaptive_w_wo_ICL, SELECT_FILTER)
+       function [M_ff, theta_diag_hat, icl] = feedforward_moment_use_adaptive_ICL(obj, W, multirotor, eR, eW, J_est_last, icl, dt, iter, select_moment_adaptive_w_wo_ICL)
            % calculate the regression matrix
 
            inertia_Y_diag = [0, W(2)*W(3), -W(2)*W(3);

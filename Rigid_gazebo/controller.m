@@ -1,6 +1,6 @@
 classdef controller
    methods
-       function [control, error, mass_est , J_est, icl] = geometric_tracking_ctrl(obj, iter, multirotor, Xd_enu, b1d, icl, dt, select_force_feedforward, select_moment_feedforward, select_moment_adaptive_w_wo_ICL, SELECT_FILTER)
+       function [control, error, mass_est , J_est, icl] = geometric_tracking_ctrl(obj, iter, multirotor, Xd_enu, b1d, icl, dt, select_force_feedforward, select_moment_feedforward, select_moment_adaptive_w_wo_ICL)
            % f, M
            control = zeros(4, 1);
            
@@ -18,10 +18,10 @@ classdef controller
            e3 = multirotor.e3;
 
            % control gains
-           kx = diag([25; 25; 25]);
+           kx = diag([25; 25; 30]);
            kv = diag([15; 15; 15]);
-           kR = diag([50; 50; 50]);
-           kW = diag([20; 20; 12]);
+           kR = diag([60; 60; 60]);
+           kW = diag([12; 12; 12]);
            
            % convert position and velocity from enu to ned
            x_ned = vec_enu_to_ned(x_enu);
@@ -80,7 +80,7 @@ classdef controller
            if select_moment_feedforward == moment_feedforward_use_geometric
                [M_ff, J_est] = moment_feedforward.feedforward_moment_use_geometric(W, multirotor);
            elseif select_moment_feedforward == moment_feedforward_use_adaptive_ICL
-               [M_ff, J_est, icl] = moment_feedforward.feedforward_moment_use_adaptive_ICL(W, multirotor, eR, eW, J_est_last, icl, dt, iter, select_moment_adaptive_w_wo_ICL, SELECT_FILTER);
+               [M_ff, J_est, icl] = moment_feedforward.feedforward_moment_use_adaptive_ICL(W, multirotor, eR, eW, J_est_last, icl, dt, iter, select_moment_adaptive_w_wo_ICL);
            end
            
            % M
