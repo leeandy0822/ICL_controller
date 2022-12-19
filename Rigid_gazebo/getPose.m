@@ -19,6 +19,7 @@ function [uav1,uav2,uav3, uav4, multirotor] = getPose(uav1,uav2,uav3,uav4, multi
     multirotor.v(:,i) = [pose_payload_vel.X ;pose_payload_vel.Y ;pose_payload_vel.Z];
     multirotor.R(:,i) = reshape(temp_R,[9,1]);
     multirotor.W(:,i) = [System_pose.PayloadW.X ; System_pose.PayloadW.Y; System_pose.PayloadW.Z];
+    
     %% Get UAV1 payload position and orientation
     uav1.x = [pose_uav1_data.Position.X;pose_uav1_data.Position.Y; pose_uav1_data.Position.Z];    
 
