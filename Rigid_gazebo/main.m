@@ -7,23 +7,12 @@ rosinit
 
 % simulation time
 dt = 0.0025;
-sim_t = 50;
+sim_t = 150;
 
 % flight mode
 MODE_TRACKING = 0;
 MODE_HOVERING = 1;
-SELECT_FLIGHT_MODE = MODE_HOVERING;
-
-% whether to impose noise or not
-WITH_NOISE = 1;
-WITHOUT_NOISE = 2;
-SELECT_W_WO_NOISE = WITHOUT_NOISE;
-
-% select filter
-USE_NO_FILTER = 1;
-USE_FIRST_ORDER_LPF = 2;
-USE_ESTIMATOR = 5;
-SELECT_FILTER = USE_NO_FILTER;
+SELECT_FLIGHT_MODE = MODE_TRACKING;
 
 % select method to calculate force feedforward control
 force_feedforward_use_geometric = 1;
@@ -99,7 +88,7 @@ multirotor.distribution_matrix_inv = distribution_inv(multirotor.distribution_ma
 % initialize states
 if SELECT_FLIGHT_MODE == MODE_TRACKING
 
-    multirotor.mass_estimation(1, 1) = 8;
+    multirotor.mass_estimation(1, 1) = 9;
     multirotor.inertia_estimation(1:2, 1) = [0 ; 0];
     multirotor.inertia_estimation(3:5, 1) = [0.005; 0.005; 0.005];
 elseif SELECT_FLIGHT_MODE == MODE_HOVERING
@@ -147,7 +136,9 @@ while multirotor.cur_t < sim_t
     [uav1, uav2, uav3, uav4,multirotor] = getPose(uav1,uav2,uav3,uav4, multirotor,system_pose,iter); 
 
     % Get time
-    multirotor.cur_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
+%     multirotor.cur_t = (rostime("now").Sec + rostime("now").Nsec/1000000000) - initial_time;
+    multirotor.cur_t = multirotor.cur_t + 0.01;
+    dt = 0.01;
 
     % desired trajectory
     tra(:, iter-1) = traj.traj_generate(multirotor.cur_t, SELECT_FLIGHT_MODE);
@@ -161,9 +152,9 @@ while multirotor.cur_t < sim_t
 
     % control input and error
     [control_dis, error, mass_est, J_est, icl] = ctrl.geometric_tracking_ctrl(iter, multirotor, Xd_enu, b1d, icl,dt, select_force_feedforward, select_moment_feedforward, select_moment_adaptive_w_wo_ICL, SELECT_FILTER);
-    error'
+    error(1:3)
     mass_est
-    J_est
+    J_est(1)
     U_star = multirotor.distribution_matrix_inv*control_dis;
     uav1.control = U_star(1:4);
     uav2.control = U_star(5:8);
@@ -195,10 +186,7 @@ while multirotor.cur_t < sim_t
     % save control input for ICL control
 
     iter = iter + 1; 
-    multirotor.t(:,iter) = toc;
-    if (iter > 5)
-        dt = toc;
-    end
+
     time_rec = multirotor.cur_t;
 
 end

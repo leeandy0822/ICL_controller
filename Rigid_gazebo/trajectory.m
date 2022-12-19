@@ -5,29 +5,49 @@ classdef trajectory
             MODE_TRACKING = 0;
             MODE_HOVERING = 1;
             
+            height = 1; 
             if FLIGHT_MODE == MODE_TRACKING
-                % xd, vd, b1d
+                x = [0.5 ; 0 ; 0.025*t];
+                v = [0 ; 0; 0.025];
+                a = [0 ; 0 ;0 ];
+            
+                if t > 40 
+                    t = t - 40;
+                    x = [0.5 + 0.3*t ; 0 ; height];
+                    v = [0.3       ; 0   ; 0];
+                    a = [0          ; 0     ; 0];
+                    
+                    freq = 0.06;
+                    radius = 1.5;
+                    x = [radius*sin(freq*pi*t)+0.5 ; radius*cos(freq*pi*t)-radius; height];
+                    v = [radius*freq*pi*cos(freq*pi*t) ; -radius*freq*pi*sin(freq*pi*t) ; 0];
+                    a = [-radius*freq*freq*pi*pi*sin(freq*pi*t) ; -radius*freq*freq*pi*pi*cos(freq*pi*t) ;0];
+                end
+
+                % xd, vd, ad
                 out = zeros(12, 1);
-                % frequency of trajectory
-                f_x = 0.6;
-                f_y = 0.5;
+    
                 % xd
-                out(1) = sin(f_x*t);
-                out(2) = sin(f_y*t);
-                out(3) = 1;
+                out(1) = x(1);
+                out(2) = x(2);
+                out(3) = x(3);
                 % vd
-                out(4) = f_x*cos(f_x*t);
-                out(5) = f_y*cos(f_y*t);
-                out(6) = 0;
+                out(4) = v(1);
+                out(5) = v(2);
+                out(6) = v(3);
                 % ad
-                out(7) = -f_x*f_x*sin(f_x*t);
-                out(8) = -f_y*f_y*sin(f_y*t);
-                out(9) = 0;
-                % b1d
+                out(7) = a(1);
+                out(8) = a(2);
+                out(9) = a(3);
+    
+                % Rd 
                 out(10) = 1;
                 out(11) = 0;
                 out(12) = 0;
+
+
             elseif FLIGHT_MODE == MODE_HOVERING
+
                 % xd, vd, b1d
                 out = zeros(12, 1);
                 % xd
