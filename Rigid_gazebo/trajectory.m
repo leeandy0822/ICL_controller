@@ -11,8 +11,8 @@ classdef trajectory
                 v = [0 ; 0; 0];
                 a = [0 ; 0 ;0 ];
             
-                if t > 50 
-                    t = t - 50;
+                if t > 3 
+                    t = t - 3;
                     x = [0.5 + 0.3*t ; 0 ; height];
                     v = [0.3       ; 0   ; 0];
                     a = [0          ; 0     ; 0];
@@ -53,7 +53,7 @@ classdef trajectory
                 % xd
                 out(1) = 0.5;
                 out(2) = 0;
-                out(3) = 1;
+                out(3) = 0.6;
 
                 % vd
                 out(4) = 0;

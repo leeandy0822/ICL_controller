@@ -7,13 +7,17 @@ rosinit
 
 % simulation time
 dt = 0.0025;
-sim_t = 120;
 
 % flight mode
 MODE_TRACKING = 0;
 MODE_HOVERING = 1;
-SELECT_FLIGHT_MODE = MODE_TRACKING;
+SELECT_FLIGHT_MODE = MODE_HOVERING;
 
+if SELECT_FLIGHT_MODE == MODE_TRACKING
+    sim_t = 80;
+else
+    sim_t = 40;
+end
 % select method to calculate force feedforward control
 force_feedforward_use_geometric = 1;
 force_feedforward_use_adaptive_ICL = 2;
@@ -92,14 +96,14 @@ multirotor.distribution_matrix_inv = distribution_inv(multirotor.distribution_ma
 % initialize states
 if SELECT_FLIGHT_MODE == MODE_TRACKING
 
-    multirotor.mass_estimation(1, 1) = 9;
-    multirotor.inertia_estimation(1:2, 1) = [0.05 ; 0];
+    multirotor.mass_estimation(1, 1) = 8.65;
+    multirotor.inertia_estimation(1:2, 1) = [0.1789 ; 0.1789];
     multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
 
 elseif SELECT_FLIGHT_MODE == MODE_HOVERING
 
     multirotor.mass_estimation(1, 1) = 9;
-    multirotor.inertia_estimation(1:2, 1) = [0.05 ; 0];
+    multirotor.inertia_estimation(1:2, 1) = [0.05 ; 0.05];
     multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
 end
 
@@ -171,7 +175,7 @@ while multirotor.cur_t < sim_t
     
     error(1:3)
     mass_est
-    J_est(1)
+    J_est
 
     U_star = multirotor.distribution_matrix_inv*control_dis;
     uav1.control = U_star(1:4);
@@ -179,11 +183,6 @@ while multirotor.cur_t < sim_t
     uav3.control = U_star(9:12);
     uav4.control = U_star(13:16);
     
-    
-%     wrench_to_ros(uav1);
-%     wrench_to_ros(uav2);
-%     wrench_to_ros(uav3);
-%     wrench_to_ros(uav4);
     
     command.msg.Data = [uav1.control,uav2.control,uav3.control,uav4.control];
     send(command.pub, command.msg);
