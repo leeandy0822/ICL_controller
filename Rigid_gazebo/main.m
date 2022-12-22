@@ -11,13 +11,20 @@ dt = 0.0025;
 % flight mode
 MODE_TRACKING = 0;
 MODE_HOVERING = 1;
-SELECT_FLIGHT_MODE = MODE_HOVERING;
+SELECT_FLIGHT_MODE = MODE_TRACKING;
+
+% position mode
+MODE_NORMAL = 0 ; 
+MODE_OPTIMAL = 1 ; 
+SELECT_POSITION_MODE = MODE_OPTIMAL;
 
 if SELECT_FLIGHT_MODE == MODE_TRACKING
     sim_t = 80;
 else
     sim_t = 60;
 end
+
+
 % select method to calculate force feedforward control
 force_feedforward_use_geometric = 1;
 force_feedforward_use_adaptive_ICL = 2;
@@ -95,15 +102,25 @@ multirotor.distribution_matrix_inv = distribution_inv(multirotor.distribution_ma
 
 % initialize states
 if SELECT_FLIGHT_MODE == MODE_TRACKING
+    
+    if SELECT_POSITION_MODE == MODE_NORMAL
+        multirotor.mass_estimation(1, 1) = 8.6;
+        multirotor.inertia_estimation(1:2, 1) = [0.0714 ; 0];
+        multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
 
-    multirotor.mass_estimation(1, 1) = 8.5;
-    multirotor.inertia_estimation(1:2, 1) = [0.095 ; 0.024];
-    multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
+    elseif SELECT_POSITION_MODE == MODE_OPTIMAL
+        multirotor.mass_estimation(1, 1) = 8.5;
+        multirotor.inertia_estimation(1:2, 1) = [0.26 ; 0];
+        multirotor.inertia_estimation(1:2, 1) = [0.29 ; 0];
+        multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
+    
+    end
+
 
 elseif SELECT_FLIGHT_MODE == MODE_HOVERING
 
     multirotor.mass_estimation(1, 1) = 10;
-    multirotor.inertia_estimation(1:2, 1) = [0.15 ; -0.02];
+    multirotor.inertia_estimation(1:2, 1) = [0.05 ; -0.02];
     multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
 end
 
@@ -278,8 +295,8 @@ nexttile
 
 % Plot necessary
 theta_m_ground_truth = ones(1, length(t))*8.6;
-Cog_x = 0.095;
-Cog_y = 0.0238;
+Cog_x = 0.0714;
+Cog_y = 0;
 plot(t,multirotor.mass_estimation(:,1:iter),t,theta_m_ground_truth(:,1:iter),LineWidth=1.0)
 title("Mass",'FontSize', 20);
 legend('Estimated Mass(kg)','Ground Truth(kg)','FontSize', 15)
@@ -296,7 +313,7 @@ plot(t, multirotor.inertia_estimation(2,1:iter),t,ones(1,iter)*Cog_y,LineWidth=1
 title("CoG (y)",'FontSize', 20);
 legend('Estimated (m)','Ground Truth(m)','FontSize', 15)
 xlim([0,sim_t])
-ylim([-0.1, 0.2])
+ylim([-0.1, 0.1])
 
 
 

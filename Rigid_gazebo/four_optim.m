@@ -12,7 +12,7 @@ L = 0.7;
 g = 9.8;
 mass = 8.56;
 weight = mass*g;
-CoM = [0.06,0.04,0];  
+CoM = [0.07,0,0];  
 %% Solve Optimization
 A = [];
 b = [];
@@ -25,8 +25,8 @@ beq = [0 0 weight];
 f_lb = zeros(12,1);
 f_ub = 3*9.8*ones(12,1);
 
-lb = [ f_lb    ;   -0.7  ;   -0.7  ;  -0.5  ; -0.5];
-ub = [ f_ub    ;    0.7  ;    0.7   ;   0.5  ; 0.5];
+lb = [ f_lb    ;   -0.5  ;   -0.5  ;  -0.6 ; -0.6];
+ub = [ f_ub    ;    0.5 ;    0.5   ;   0.6  ; 0.6];
 
 ic_motor_x = zeros(1,12);
 for i = 3:3:12
@@ -144,8 +144,8 @@ function fun = myfunc(x)
     F4_norm = norm(x(10:12));
 
     energy_comsumption = (F1_norm^1.5 + F2_norm^1.5 + F3_norm^1.5 + F4_norm^1.5)/4;
-
-    fun = 10*energy_comsumption + 1/controlability;
-    fun = 5*energy_comsumption;
+    
+    K = 0.5;
+    fun = K*energy_comsumption + 1/controlability;
 
 end
