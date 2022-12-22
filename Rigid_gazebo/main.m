@@ -16,7 +16,7 @@ SELECT_FLIGHT_MODE = MODE_HOVERING;
 if SELECT_FLIGHT_MODE == MODE_TRACKING
     sim_t = 80;
 else
-    sim_t = 40;
+    sim_t = 60;
 end
 % select method to calculate force feedforward control
 force_feedforward_use_geometric = 1;
@@ -96,14 +96,14 @@ multirotor.distribution_matrix_inv = distribution_inv(multirotor.distribution_ma
 % initialize states
 if SELECT_FLIGHT_MODE == MODE_TRACKING
 
-    multirotor.mass_estimation(1, 1) = 8.65;
-    multirotor.inertia_estimation(1:2, 1) = [0.1789 ; 0.1789];
+    multirotor.mass_estimation(1, 1) = 8.5;
+    multirotor.inertia_estimation(1:2, 1) = [0.095 ; 0.024];
     multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
 
 elseif SELECT_FLIGHT_MODE == MODE_HOVERING
 
-    multirotor.mass_estimation(1, 1) = 9;
-    multirotor.inertia_estimation(1:2, 1) = [0.05 ; 0.05];
+    multirotor.mass_estimation(1, 1) = 10;
+    multirotor.inertia_estimation(1:2, 1) = [0.15 ; -0.02];
     multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
 end
 
@@ -277,22 +277,26 @@ tiledlayout(3,1)
 nexttile
 
 % Plot necessary
-theta_m_ground_truth = ones(1, length(t))*multirotor.m;
-
+theta_m_ground_truth = ones(1, length(t))*8.6;
+Cog_x = 0.095;
+Cog_y = 0.0238;
 plot(t,multirotor.mass_estimation(:,1:iter),t,theta_m_ground_truth(:,1:iter),LineWidth=1.0)
 title("Mass",'FontSize', 20);
 legend('Estimated Mass(kg)','Ground Truth(kg)','FontSize', 15)
 xlim([0,sim_t])
+ylim([5,11])
 nexttile
-plot(t, multirotor.inertia_estimation(1,1:iter),t,ones(1,iter)*-multirotor.body2CoG(1),LineWidth=1.0)
+plot(t, multirotor.inertia_estimation(1,1:iter),t,ones(1,iter)*Cog_x,LineWidth=1.0)
 title("CoG (x)",'FontSize', 20);
 legend('Estimated (m)','Ground Truth(m)','FontSize', 15)
 xlim([0,sim_t])
+ylim([0, 0.2])
 nexttile
-plot(t, multirotor.inertia_estimation(2,1:iter),t,ones(1,iter)*-multirotor.body2CoG(2),LineWidth=1.0)
+plot(t, multirotor.inertia_estimation(2,1:iter),t,ones(1,iter)*Cog_y,LineWidth=1.0)
 title("CoG (y)",'FontSize', 20);
 legend('Estimated (m)','Ground Truth(m)','FontSize', 15)
 xlim([0,sim_t])
+ylim([-0.1, 0.2])
 
 
 

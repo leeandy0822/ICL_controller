@@ -11,14 +11,14 @@ classdef trajectory
                 v = [0 ; 0; 0];
                 a = [0 ; 0 ;0 ];
             
-                if t > 3 
-                    t = t - 3;
+                if t > 4 
+                    t = t - 4;
                     x = [0.5 + 0.3*t ; 0 ; height];
                     v = [0.3       ; 0   ; 0];
                     a = [0          ; 0     ; 0];
                     
-                    freq = 0.06;
-                    radius = 1.5;
+                    freq = 0.03;
+                    radius = 2;
                     x = [radius*sin(freq*pi*t)+0.5 ; radius*cos(freq*pi*t)-radius; height];
                     v = [radius*freq*pi*cos(freq*pi*t) ; -radius*freq*pi*sin(freq*pi*t) ; 0];
                     a = [-radius*freq*freq*pi*pi*sin(freq*pi*t) ; -radius*freq*freq*pi*pi*cos(freq*pi*t) ;0];
