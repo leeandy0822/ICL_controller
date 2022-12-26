@@ -1,8 +1,8 @@
 classdef feedforward_force_ctrl
    properties
-       gamma_m = 0.018;
+       gamma_m = 0.025;
        C1 = 3;
-       kcl_m = 0.000000001;
+       kcl_m = 0.00000001;
 
    end
    

@@ -15,8 +15,9 @@ SELECT_FLIGHT_MODE = MODE_TRACKING;
 
 % position mode
 MODE_NORMAL = 0 ; 
-MODE_OPTIMAL = 1 ; 
-SELECT_POSITION_MODE = MODE_OPTIMAL;
+MODE_ENERGY = 1 ; 
+MODE_CONTROLLABILITY = 2; 
+SELECT_POSITION_MODE = MODE_CONTROLLABILITY;
 
 if SELECT_FLIGHT_MODE == MODE_TRACKING
     sim_t = 80;
@@ -45,12 +46,6 @@ multirotor = multirotor_dynamics;
 multirotor.dt = dt;
 multirotor.sim_t = sim_t;
 multirotor.t = 0:dt:sim_t;
-multirotor.m = 3.2;
-multirotor.J = [0.2, 0, 0;
-                0, 0.2, 0;
-                0, 0, 0.1];
-multirotor.d = 0.1250;
-multirotor.c_tau = 1.347e-2;
 
 multirotor.x = zeros(3, length(multirotor.t));
 multirotor.v = zeros(3, length(multirotor.t));
@@ -105,22 +100,28 @@ if SELECT_FLIGHT_MODE == MODE_TRACKING
     
     if SELECT_POSITION_MODE == MODE_NORMAL
         multirotor.mass_estimation(1, 1) = 8.6;
-        multirotor.inertia_estimation(1:2, 1) = [0.0714 ; 0];
+        multirotor.inertia_estimation(1:2, 1) = [0.05 ; 0];
         multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
+        file_title = "data/" + "normal";
+    elseif SELECT_POSITION_MODE == MODE_ENERGY
+        multirotor.mass_estimation(1, 1) = 8.67;
+        multirotor.inertia_estimation(1:2, 1) = [0.21 ; 0];
+        multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
+        file_title = "data/" + "optimal";
 
-    elseif SELECT_POSITION_MODE == MODE_OPTIMAL
-        multirotor.mass_estimation(1, 1) = 8.5;
-        multirotor.inertia_estimation(1:2, 1) = [0.26 ; 0];
-        multirotor.inertia_estimation(1:2, 1) = [0.29 ; 0];
+    elseif SELECT_POSITION_MODE == MODE_CONTROLLABILITY
+        multirotor.mass_estimation(1, 1) = 8.67;
+        multirotor.inertia_estimation(1:2, 1) = [0.27 ; 0];
         multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
-    
+        file_title = "data/" + "controllability";
+
     end
 
 
 elseif SELECT_FLIGHT_MODE == MODE_HOVERING
 
     multirotor.mass_estimation(1, 1) = 10;
-    multirotor.inertia_estimation(1:2, 1) = [0.05 ; -0.02];
+    multirotor.inertia_estimation(1:2, 1) = [0 ; 0];
     multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
 end
 
@@ -319,12 +320,12 @@ ylim([-0.1, 0.1])
 
 
 figure;
-tiledlayout(5,1)
+tiledlayout(2,3)
 nexttile
 % Plot position tracking error
-plot(t,multirotor.force_moment(1,1:iter),t,multirotor.force_moment(2, 1:iter),t,multirotor.force_moment(3, 1:iter),t,multirotor.force_moment(4, 1:iter),LineWidth=1.0)
-title("Total control input",'FontSize', 15);
-legend('Thrust','Moment x','Moment y','Moment z','FontSize', 12)
+plot(t,multirotor.force_moment(1,1:iter),LineWidth=1.0)
+title("Total force input",'FontSize', 15);
+legend('Thrust','FontSize', 12)
 xlim([0,sim_t])
 nexttile
 % Plot position tracking error
@@ -337,6 +338,11 @@ nexttile
 plot(t,uav2.force_moment(1, 1:iter),t,uav2.force_moment(2, 1:iter),t,uav2.force_moment(3, 1:iter),t,uav2.force_moment(4, 1:iter),LineWidth=1.0)
 title("UAV2 input",'FontSize', 15);
 legend('Thrust','Moment x','Moment y','Moment z','FontSize', 12)
+xlim([0,sim_t])
+nexttile
+plot(t,multirotor.force_moment(2, 1:iter),t,multirotor.force_moment(3, 1:iter),t,multirotor.force_moment(4, 1:iter),LineWidth=1.0)
+title("Total Moment input",'FontSize', 15);
+legend('Moment x','Moment y','Moment z','FontSize', 12)
 xlim([0,sim_t])
 nexttile
 % Plot position tracking error
@@ -352,8 +358,25 @@ legend('Thrust','Moment x','Moment y','Moment z','FontSize', 12)
 xlim([0,sim_t])
 
 
+uav1.energy = uav1.force_moment(1, 1000:iter)*uav1.force_moment(1, 1000:iter)';
+uav2.energy = uav2.force_moment(1, 1000:iter)*uav2.force_moment(1, 1000:iter)';
+uav3.energy = uav3.force_moment(1, 1000:iter)*uav3.force_moment(1, 1000:iter)';
+uav4.energy = uav4.force_moment(1, 1000:iter)*uav4.force_moment(1, 1000:iter)';
 
+uav1.energy = uav1.energy^1.5;
+uav2.energy = uav2.energy^1.5;
+uav3.energy = uav3.energy^1.5;
+uav4.energy = uav4.energy^1.5;
 
+all_energy = uav1.energy + uav2.energy + uav3.energy + uav4.energy;
+uav1.energy/all_energy
+uav2.energy/all_energy
+uav3.energy/all_energy
+uav4.energy/all_energy
 
-text = sprintf('\nElapsed time : %.2f seconds\n', toc);
-disp(text);
+if SELECT_FLIGHT_MODE == MODE_TRACKING
+    writematrix(multirotor.ex(:, 1:iter), file_title + "_position_error");
+    writematrix(multirotor.ev(:, 1:iter),file_title + '_velocity_error');
+    writematrix(multirotor.eR(:, 1:iter),file_title + '_rotation_error');
+    writematrix(multirotor.eW(:, 1:iter),file_title + '_angular_error');
+end

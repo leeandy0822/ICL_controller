@@ -27,6 +27,9 @@ classdef gazebo_uav
 
         %record force and moment
         force_moment
+
+        %energy
+        energy
     end
 
 end

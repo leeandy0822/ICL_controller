@@ -25,8 +25,8 @@ classdef controller
            kW = diag([11; 11; 8]);
 
            
-              kx = diag([25; 25; 40]);
-           kv = diag([15; 15; 15]);
+           kx = diag([25; 25; 35]);
+           kv = diag([15; 15; 12]);
            kR = diag([33; 33; 30]);
            kW = diag([12; 12; 8]);
 
