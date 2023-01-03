@@ -16,8 +16,10 @@ SELECT_FLIGHT_MODE = MODE_TRACKING;
 % position mode
 MODE_NORMAL = 0 ; 
 MODE_ENERGY = 1 ; 
-MODE_CONTROLLABILITY = 2; 
-SELECT_POSITION_MODE = MODE_CONTROLLABILITY;
+MODE_BOTH = 2; 
+MODE_CONTROLLABILITY = 3; 
+
+SELECT_POSITION_MODE = MODE_BOTH;
 
 if SELECT_FLIGHT_MODE == MODE_TRACKING
     sim_t = 80;
@@ -60,6 +62,7 @@ multirotor.inertia_estimation = zeros(5, length(multirotor.t));
 multirotor.force_moment = zeros(4, length(multirotor.t));
 multirotor.rotor_thrust = zeros(4, length(multirotor.t));
 multirotor.F_disturbance = zeros(3, length(multirotor.t));
+multirotor.energy = zeros(4, length(multirotor.t));
 
 thrust_max = 9;
 thrust_min = 0;
@@ -107,14 +110,19 @@ if SELECT_FLIGHT_MODE == MODE_TRACKING
         multirotor.mass_estimation(1, 1) = 8.67;
         multirotor.inertia_estimation(1:2, 1) = [0.21 ; 0];
         multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
-        file_title = "data/" + "optimal";
+        file_title = "data/" + "energy";
+
+    elseif SELECT_POSITION_MODE == MODE_BOTH
+        multirotor.mass_estimation(1, 1) = 8.67;
+        multirotor.inertia_estimation(1:2, 1) = [0.05 ; 0];
+        multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
+        file_title = "data/" + "both";
 
     elseif SELECT_POSITION_MODE == MODE_CONTROLLABILITY
         multirotor.mass_estimation(1, 1) = 8.67;
         multirotor.inertia_estimation(1:2, 1) = [0.27 ; 0];
         multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
         file_title = "data/" + "controllability";
-
     end
 
 
@@ -220,6 +228,12 @@ while multirotor.cur_t < sim_t
     uav2.force_moment(:, iter) = uav2.control;
     uav3.force_moment(:, iter) = uav3.control;
     uav4.force_moment(:, iter) = uav4.control;
+
+    multirotor.energy(1,iter) = uav1.control(1)*uav1.control(1);
+    multirotor.energy(2,iter) = uav2.control(1)*uav2.control(1);
+    multirotor.energy(3,iter) = uav3.control(1)*uav3.control(1);
+    multirotor.energy(4,iter) = uav4.control(1)*uav4.control(1);
+
 
     % save moment of inertia
 
@@ -358,10 +372,10 @@ legend('Thrust','Moment x','Moment y','Moment z','FontSize', 12)
 xlim([0,sim_t])
 
 
-uav1.energy = uav1.force_moment(1, 1000:iter)*uav1.force_moment(1, 1000:iter)';
-uav2.energy = uav2.force_moment(1, 1000:iter)*uav2.force_moment(1, 1000:iter)';
-uav3.energy = uav3.force_moment(1, 1000:iter)*uav3.force_moment(1, 1000:iter)';
-uav4.energy = uav4.force_moment(1, 1000:iter)*uav4.force_moment(1, 1000:iter)';
+uav1.energy = uav1.force_moment(1, 5000:iter)*uav1.force_moment(1, 5000:iter)';
+uav2.energy = uav2.force_moment(1, 5000:iter)*uav2.force_moment(1, 5000:iter)';
+uav3.energy = uav3.force_moment(1, 5000:iter)*uav3.force_moment(1, 5000:iter)';
+uav4.energy = uav4.force_moment(1, 5000:iter)*uav4.force_moment(1, 5000:iter)';
 
 uav1.energy = uav1.energy^1.5;
 uav2.energy = uav2.energy^1.5;
@@ -379,4 +393,6 @@ if SELECT_FLIGHT_MODE == MODE_TRACKING
     writematrix(multirotor.ev(:, 1:iter),file_title + '_velocity_error');
     writematrix(multirotor.eR(:, 1:iter),file_title + '_rotation_error');
     writematrix(multirotor.eW(:, 1:iter),file_title + '_angular_error');
+    writematrix(multirotor.energy(:, 1:iter),file_title + '_energy');
+
 end

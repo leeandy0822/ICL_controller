@@ -35,7 +35,7 @@ classdef multirotor_dynamics
         force_moment
         rotor_thrust
 
-        body2CoG = [0; -0.15; 0];
+        body2CoG = [0; -0.05; 0];
         F_disturbance
         
         % distrubition
@@ -44,7 +44,9 @@ classdef multirotor_dynamics
         uav1_pos
         uav2_pos
         uav3_pos
-
+        
+        icl_Y
+        icl_M
         
     end
     methods

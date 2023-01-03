@@ -31,6 +31,8 @@ classdef multirotor_dynamics
         ev
         eR
         eW
+        % energy
+        energy
         % estimation value
         mass_estimation
         inertia_estimation

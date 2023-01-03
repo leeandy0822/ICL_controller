@@ -25,8 +25,8 @@ beq = [0 0 weight];
 f_lb = zeros(12,1);
 f_ub = 3*9.8*ones(12,1);
 
-lb = [ f_lb    ;   -0.5  ;   -0.5  ;  -0.6 ; -0.6];
-ub = [ f_ub    ;    0.5 ;    0.5   ;   0.6  ; 0.6];
+lb = [ f_lb    ;   -0.4 ;   -0.4;  -0.4 ; -0.4];
+ub = [ f_ub    ;    0.4;     0.4  ;   0.4 ; 0.4];
 
 ic_motor_x = zeros(1,12);
 for i = 3:3:12
@@ -143,9 +143,13 @@ function fun = myfunc(x)
     F3_norm = norm(x(7:9));
     F4_norm = norm(x(10:12));
 
-    energy_comsumption = (F1_norm^1.5 + F2_norm^1.5 + F3_norm^1.5 + F4_norm^1.5)/4;
+    energy_comsumption = (F1_norm^1.5 + F2_norm^1.5 + F3_norm^1.5 + F4_norm^1.5);
     
     K = 1;
-    fun = K*energy_comsumption + 1/controlability;
+%     Unit_E = 1;
+%     Unit_C = 40;
+    Unit_E = 1;
+    Unit_C = 0;
+    fun = K*Unit_E*energy_comsumption + Unit_C*1/controlability;
 
 end

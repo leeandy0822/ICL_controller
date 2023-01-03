@@ -1,8 +1,8 @@
 classdef feedforward_moment_ctrl
    properties
-       gamma_diag = diag([0.02, 0.02, 0.001, 0.001, 0.001]);
+       gamma_diag = diag([0.06, 0.06, 0.001, 0.001, 0.001]);
        C2 = 2;
-       kcl_j = diag([  10, 10, 0, 0, 0]);
+       kcl_j = diag([0.0001, 0.0001, 0, 0, 0]);
    end
    
    methods
@@ -47,7 +47,7 @@ classdef feedforward_moment_ctrl
                                      W(1)*W(3)*dt, W(2) - icl.W_last(2), -W(1)*W(3)*dt;
                                      -W(1)*W(2)*dt, W(1)*W(2)*dt, W(3) - icl.W_last(3)];
                
-               force_y_diag_cl_integral = cog_Y_diag*dt;
+               force_y_diag_cl_integral = cog_Y_diag;
 
                y_diag_cl_integral = [force_y_diag_cl_integral inertia_y_diag_cl_integral];
                
@@ -57,7 +57,7 @@ classdef feedforward_moment_ctrl
                icl.W_last = W;
                
                % integral of moment control input
-               M_bar = icl.current_moment*dt;
+               M_bar = icl.current_moment;
                
                % prepare the past data
                mat_diag_now = y_diag_cl_integral_transpose*(M_bar - y_diag_cl_integral*J_est_last);

@@ -123,7 +123,7 @@ ctrl = controller;
 
 % initialize integral concurrent learning
 icl = integral_concurrent_learning;
-icl.N_diag = 10;
+icl.N_diag = 20;
 icl.mat_diag_matrix = zeros(5, icl.N_diag);
 icl.mat_diag_sum = zeros(5, 1);
 icl.index_diag = 0;
