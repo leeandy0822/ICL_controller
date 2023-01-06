@@ -53,6 +53,7 @@ multirotor.x = zeros(3, length(multirotor.t));
 multirotor.v = zeros(3, length(multirotor.t));
 multirotor.R = zeros(9, length(multirotor.t));
 multirotor.W = zeros(3, length(multirotor.t));
+multirotor.W_dot = zeros(3, length(multirotor.t));
 multirotor.ex = zeros(3, length(multirotor.t));
 multirotor.ev = zeros(3, length(multirotor.t));
 multirotor.eR = zeros(3, length(multirotor.t));
@@ -189,8 +190,9 @@ while multirotor.cur_t < sim_t
     b1d = tra(10:12, iter-1);
 
     % control input and error
-    [control_dis, error, mass_est, J_est, icl] = ctrl.geometric_tracking_ctrl(iter,uav_a, multirotor, Xd_enu, b1d, icl,dt, select_force_feedforward, select_moment_feedforward, select_moment_adaptive_w_wo_ICL);
-    
+    [control_dis, error, mass_est, J_est, icl, W_dot] = ctrl.geometric_tracking_ctrl(iter,uav_a, multirotor, Xd_enu, b1d, icl,dt, select_force_feedforward, select_moment_feedforward, select_moment_adaptive_w_wo_ICL);
+    multirotor.W_dot(:,iter) = W_dot;
+
     error(1:3)
     mass_est
     J_est
@@ -242,9 +244,9 @@ end
 t = 1:1:iter;
 t = t*0.0067;
 figure;
-tiledlayout(3,1)
+tiledlayout(2,2)
 nexttile
-% Plot position tracking error
+% Plot position 
 plot(t,multirotor.x(1, 1:iter),LineWidth=1.0);
 hold on
 plot(t,tra(1, 1:iter),LineWidth=1.0);
@@ -252,20 +254,25 @@ title("Trajectory and Desired Trajectory",'FontSize', 18);
 legend('x','xd','FontSize', 15)
 xlim([0,sim_t])
 nexttile
-% Plot velocity tracking error
+
 plot(t,multirotor.x(2, 1:iter),LineWidth=1.0)
 hold on
 plot(t,tra(2, 1:iter),LineWidth=1.0);
 legend('y','yd','FontSize', 15)
 xlim([0,sim_t])
 nexttile
-% Plot rotation tracking error
 plot(t,multirotor.x(3, 1:iter),LineWidth=1.0)
 hold on
 plot(t,tra(3, 1:iter),LineWidth=1.0);
 legend('z','zd','FontSize', 15)
 xlabel('$Time(sec)$', 'Interpreter', 'latex')
 xlim([0,sim_t])
+nexttile
+plot(t,multirotor.W_dot(:, 1:iter),LineWidth=1.0)
+legend('dW x','dW y','dW z','FontSize', 15)
+xlabel('$Time(sec)$', 'Interpreter', 'latex')
+xlim([0,sim_t])
+
 
 figure;
 tiledlayout(2,2)

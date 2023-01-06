@@ -1,6 +1,6 @@
 classdef feedforward_force_ctrl
    properties
-       gamma_m = diag([  0.025, 0.01, 0.01, 0.01]);
+       gamma_m = diag([  0.04, 0.01, 0.01, 0.01]);
        C1 = 3;
        kcl_m = diag([  0.000001, 0, 0, 0]);
 
@@ -13,7 +13,7 @@ classdef feedforward_force_ctrl
            F_ff = multirotor.m*ad - multirotor.m*multirotor.g*multirotor.e3;
        end
        
-       function [F_ff, theta_m_hat, icl] = feedforward_force_use_adaptive_ICL(obj,iter, ad, uav_a,multirotor, icl, ex, ev, mass_est_last, dt)
+       function [F_ff, theta_m_hat, icl, W_dot] = feedforward_force_use_adaptive_ICL(obj,iter, ad, uav_a,multirotor, icl, ex, ev, mass_est_last, dt)
             % calculate the regression matrix
             a = [multirotor.a.X ; multirotor.a.Y; multirotor.a.Z];
             R = reshape(multirotor.R(:, iter-1), 3, 3);
@@ -44,7 +44,7 @@ classdef feedforward_force_ctrl
                  R'*(a - uav_a(10:12)) - hat_map(W)*hat_map(W)*r4];
             A = [hat_map(r1); hat_map(r2); hat_map(r3) ; hat_map(r4)];
 
-            W_dot = pinv(A)*B
+            W_dot = pinv(A)*B;
 
 
             Y_m_mass = [ad(1); ad(2); ad(3) - multirotor.g];
