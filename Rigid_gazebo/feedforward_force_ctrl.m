@@ -1,8 +1,9 @@
 classdef feedforward_force_ctrl
    properties
-       gamma_m = 0.025;
+       gamma_m = diag([  0.025, 0.01, 0.01, 0.01]);
        C1 = 3;
-       kcl_m = 0.00000001;
+       kcl_m = diag([  0.000001, 0, 0, 0]);
+
 
    end
    
@@ -12,18 +13,49 @@ classdef feedforward_force_ctrl
            F_ff = multirotor.m*ad - multirotor.m*multirotor.g*multirotor.e3;
        end
        
-       function [F_ff, theta_m_hat, icl] = feedforward_force_use_adaptive_ICL(obj, ad, multirotor, icl, ex, ev, mass_est_last, dt)
+       function [F_ff, theta_m_hat, icl] = feedforward_force_use_adaptive_ICL(obj,iter, ad, uav_a,multirotor, icl, ex, ev, mass_est_last, dt)
             % calculate the regression matrix
             a = [multirotor.a.X ; multirotor.a.Y; multirotor.a.Z];
-            
-            if a(3) > 10
+            R = reshape(multirotor.R(:, iter-1), 3, 3);
+            W = multirotor.W(:, iter-1);
+            r1 = multirotor.uav1_pos;
+            r2 = multirotor.uav2_pos;
+            r3 = multirotor.uav3_pos;
+            r4 = multirotor.uav4_pos;
+            if a(3) > 10 
                 a(3) = 9.8;
             end
+            if uav_a(3) > 10 
+                uav_a(3) = 9.8;
+            end
+            if uav_a(6) > 10 
+                uav_a(6) = 9.8;
+            end
+            if uav_a(9) > 10 
+                uav_a(9) = 9.8;
+            end
+            if uav_a(12) > 10 
+                uav_a(12) = 9.8;
+            end
+%             B = A*x
+            B = [R'*(a - uav_a(1:3))   - hat_map(W)*hat_map(W)*r1;
+                 R'*(a - uav_a(4:6))   - hat_map(W)*hat_map(W)*r2;
+                 R'*(a - uav_a(7:9))   - hat_map(W)*hat_map(W)*r3;
+                 R'*(a - uav_a(10:12)) - hat_map(W)*hat_map(W)*r4];
+            A = [hat_map(r1); hat_map(r2); hat_map(r3) ; hat_map(r4)];
 
-            Y_m = [ad(1); ad(2); ad(3) - multirotor.g];
+            W_dot = pinv(A)*B
+
+
+            Y_m_mass = [ad(1); ad(2); ad(3) - multirotor.g];
+            Y_m_a = -R*(W_dot + hat_map(W)*hat_map(W));
+            Y_m = [Y_m_mass Y_m_a];
             Y_m_transpose = Y_m';
             
-            Ym_cl =   [a(1); a(2); a(3) - multirotor.g];
+            Ym_cl_mass =   [a(1); a(2); a(3) - multirotor.g];
+            Ym_cl_a = zeros(3,3);
+            Ym_cl = [Ym_cl_mass Ym_cl_a];
+
             F_bar = icl.current_force;
             % prepare the past data
             mat_diag_now = Ym_cl'*(F_bar - Ym_cl*mass_est_last);

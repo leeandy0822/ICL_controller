@@ -11,7 +11,7 @@ dt = 0.0025;
 % flight mode
 MODE_TRACKING = 0;
 MODE_HOVERING = 1;
-SELECT_FLIGHT_MODE = MODE_TRACKING;
+SELECT_FLIGHT_MODE = MODE_HOVERING;
 
 % position mode
 MODE_NORMAL = 0 ; 
@@ -19,7 +19,7 @@ MODE_ENERGY = 1 ;
 MODE_BOTH = 2; 
 MODE_CONTROLLABILITY = 3; 
 
-SELECT_POSITION_MODE = MODE_BOTH;
+SELECT_POSITION_MODE = MODE_NORMAL;
 
 if SELECT_FLIGHT_MODE == MODE_TRACKING
     sim_t = 80;
@@ -57,7 +57,7 @@ multirotor.ex = zeros(3, length(multirotor.t));
 multirotor.ev = zeros(3, length(multirotor.t));
 multirotor.eR = zeros(3, length(multirotor.t));
 multirotor.eW = zeros(3, length(multirotor.t));
-multirotor.mass_estimation = zeros(1, length(multirotor.t));
+multirotor.mass_estimation = zeros(4, length(multirotor.t));
 multirotor.inertia_estimation = zeros(5, length(multirotor.t));
 multirotor.force_moment = zeros(4, length(multirotor.t));
 multirotor.rotor_thrust = zeros(4, length(multirotor.t));
@@ -95,6 +95,7 @@ multirotor.uav2_pos = uav2.x - multirotor.x(:,iter);
 multirotor.uav3_pos = uav3.x - multirotor.x(:,iter);
 multirotor.uav4_pos = uav4.x - multirotor.x(:,iter);
 
+
 multirotor.distribution_matrix = distribution(multirotor.uav1_pos,multirotor.uav2_pos,multirotor.uav3_pos,multirotor.uav4_pos);
 multirotor.distribution_matrix_inv = distribution_inv(multirotor.distribution_matrix);
 
@@ -106,28 +107,14 @@ if SELECT_FLIGHT_MODE == MODE_TRACKING
         multirotor.inertia_estimation(1:2, 1) = [0.05 ; 0];
         multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
         file_title = "data/" + "normal";
-    elseif SELECT_POSITION_MODE == MODE_ENERGY
+    else
         multirotor.mass_estimation(1, 1) = 8.67;
         multirotor.inertia_estimation(1:2, 1) = [0.21 ; 0];
         multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
         file_title = "data/" + "energy";
-
-    elseif SELECT_POSITION_MODE == MODE_BOTH
-        multirotor.mass_estimation(1, 1) = 8.67;
-        multirotor.inertia_estimation(1:2, 1) = [0.05 ; 0];
-        multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
-        file_title = "data/" + "both";
-
-    elseif SELECT_POSITION_MODE == MODE_CONTROLLABILITY
-        multirotor.mass_estimation(1, 1) = 8.67;
-        multirotor.inertia_estimation(1:2, 1) = [0.27 ; 0];
-        multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
-        file_title = "data/" + "controllability";
     end
 
-
-elseif SELECT_FLIGHT_MODE == MODE_HOVERING
-
+else
     multirotor.mass_estimation(1, 1) = 10;
     multirotor.inertia_estimation(1:2, 1) = [0 ; 0];
     multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
@@ -145,8 +132,8 @@ icl.index_diag = 0;
 icl.if_full_diag = 0;
 
 icl.mass_N_diag = 30;
-icl.mass_mat_diag_matrix = zeros(1, icl.N_diag);
-icl.mass_mat_diag_sum = zeros(1, 1);
+icl.mass_mat_diag_matrix = zeros(4, icl.N_diag);
+icl.mass_mat_diag_sum = zeros(4, 1);
 icl.mass_index_diag = 0;
 icl.mass_if_full_diag = 0;
 
@@ -175,6 +162,11 @@ while multirotor.cur_t < sim_t
     pose_payload_data = System_pose.Payload;
     pose_payload_acc = System_pose.PayloadAcc;
     pose_payload_vel = System_pose.PayloadVel;
+    uav1.a = [System_pose.Uav1Acc.X;System_pose.Uav1Acc.Y; System_pose.Uav1Acc.Z];    
+    uav2.a = [System_pose.Uav2Acc.X;System_pose.Uav2Acc.Y; System_pose.Uav2Acc.Z];    
+    uav3.a = [System_pose.Uav3Acc.X;System_pose.Uav3Acc.Y; System_pose.Uav3Acc.Z];    
+    uav4.a = [System_pose.Uav4Acc.X;System_pose.Uav4Acc.Y; System_pose.Uav4Acc.Z];    
+    uav_a = [uav1.a ; uav2.a ; uav3.a ; uav4.a];
 
     %% Get payload position and orientation
     multirotor.x(:,iter) = [ pose_payload_data.Position.X; pose_payload_data.Position.Y;pose_payload_data.Position.Z];
@@ -197,7 +189,7 @@ while multirotor.cur_t < sim_t
     b1d = tra(10:12, iter-1);
 
     % control input and error
-    [control_dis, error, mass_est, J_est, icl] = ctrl.geometric_tracking_ctrl(iter, multirotor, Xd_enu, b1d, icl,dt, select_force_feedforward, select_moment_feedforward, select_moment_adaptive_w_wo_ICL);
+    [control_dis, error, mass_est, J_est, icl] = ctrl.geometric_tracking_ctrl(iter,uav_a, multirotor, Xd_enu, b1d, icl,dt, select_force_feedforward, select_moment_feedforward, select_moment_adaptive_w_wo_ICL);
     
     error(1:3)
     mass_est
@@ -237,7 +229,7 @@ while multirotor.cur_t < sim_t
 
     % save moment of inertia
 
-    multirotor.mass_estimation(1, iter) = mass_est;
+    multirotor.mass_estimation(:, iter) = mass_est;
     multirotor.inertia_estimation(:, iter) = J_est;
     % save control input for ICL control
 
@@ -310,9 +302,9 @@ nexttile
 
 % Plot necessary
 theta_m_ground_truth = ones(1, length(t))*8.6;
-Cog_x = 0.0714;
+Cog_x = 0.05;
 Cog_y = 0;
-plot(t,multirotor.mass_estimation(:,1:iter),t,theta_m_ground_truth(:,1:iter),LineWidth=1.0)
+plot(t,multirotor.mass_estimation(1,1:iter),t,theta_m_ground_truth(:,1:iter),LineWidth=1.0)
 title("Mass",'FontSize', 20);
 legend('Estimated Mass(kg)','Ground Truth(kg)','FontSize', 15)
 xlim([0,sim_t])

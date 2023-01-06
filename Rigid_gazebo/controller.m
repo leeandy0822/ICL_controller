@@ -1,6 +1,6 @@
 classdef controller
    methods
-       function [control, error, mass_est , J_est, icl] = geometric_tracking_ctrl(obj, iter, multirotor, Xd_enu, b1d, icl, dt, select_force_feedforward, select_moment_feedforward, select_moment_adaptive_w_wo_ICL)
+       function [control, error, mass_est , J_est, icl] = geometric_tracking_ctrl(obj, iter, uav_a,multirotor, Xd_enu, b1d, icl, dt, select_force_feedforward, select_moment_feedforward, select_moment_adaptive_w_wo_ICL)
            % f, M
            control = zeros(4, 1);
            
@@ -52,7 +52,7 @@ classdef controller
            if select_force_feedforward == force_feedforward_use_geometric
                [F_ff, mass_est] = force_feedforward.feedforward_force_use_geometric(ad_ned, multirotor);
            elseif select_force_feedforward == force_feedforward_use_adaptive_ICL
-               [F_ff, mass_est, icl] = force_feedforward.feedforward_force_use_adaptive_ICL(ad_ned, multirotor,icl,  ex_ned, ev_ned, mass_est_last, dt);
+               [F_ff, mass_est, icl] = force_feedforward.feedforward_force_use_adaptive_ICL(iter,ad_ned, uav_a, multirotor,icl,  ex_ned, ev_ned, mass_est_last, dt);
            end
            
            % f

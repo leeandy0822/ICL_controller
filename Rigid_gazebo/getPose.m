@@ -1,7 +1,6 @@
 function [uav1,uav2,uav3, uav4, multirotor] = getPose(uav1,uav2,uav3,uav4, multirotor,system_pose,i)
 
     % subscribers get data
-    
     System_pose = receive(system_pose,1);
     pose_payload_data = System_pose.Payload;
     pose_payload_acc = System_pose.PayloadAcc;
@@ -22,15 +21,19 @@ function [uav1,uav2,uav3, uav4, multirotor] = getPose(uav1,uav2,uav3,uav4, multi
     
     %% Get UAV1 payload position and orientation
     uav1.x = [pose_uav1_data.Position.X;pose_uav1_data.Position.Y; pose_uav1_data.Position.Z];    
+    uav1.a = [System_pose.Uav1Acc.X;System_pose.Uav1Acc.Y; System_pose.Uav1Acc.Z];    
 
     %% Get UAV2 payload position and orientation
     uav2.x = [pose_uav2_data.Position.X; pose_uav2_data.Position.Y; pose_uav2_data.Position.Z];
+    uav2.a = [System_pose.Uav2Acc.X;System_pose.Uav2Acc.Y; System_pose.Uav2Acc.Z];    
 
     %% Get UAV3 payload position and orientation    
     uav3.x = [pose_uav3_data.Position.X; pose_uav3_data.Position.Y; pose_uav3_data.Position.Z];
+    uav3.a = [System_pose.Uav1Acc.X;System_pose.Uav1Acc.Y; System_pose.Uav1Acc.Z];    
 
     %% Get UAV3 payload position and orientation    
     uav4.x = [pose_uav4_data.Position.X; pose_uav4_data.Position.Y; pose_uav4_data.Position.Z];
+    uav4.a = [System_pose.Uav4Acc.X;System_pose.Uav4Acc.Y; System_pose.Uav4Acc.Z];    
 
 
 end
