@@ -26,8 +26,8 @@ classdef controller
 
            
            kx = diag([25; 25; 35]);
-           kv = diag([15; 15; 12]);
-           kR = diag([33; 33; 30]);
+           kv = diag([18; 18; 12]);
+           kR = diag([35; 35; 30]);
            kW = diag([12; 12; 8]);
 
            % convert position and velocity from enu to ned

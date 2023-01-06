@@ -11,7 +11,7 @@ dt = 0.0025;
 % flight mode
 MODE_TRACKING = 0;
 MODE_HOVERING = 1;
-SELECT_FLIGHT_MODE = MODE_HOVERING;
+SELECT_FLIGHT_MODE = MODE_TRACKING;
 
 % position mode
 MODE_NORMAL = 0 ; 
@@ -22,9 +22,9 @@ MODE_CONTROLLABILITY = 3;
 SELECT_POSITION_MODE = MODE_NORMAL;
 
 if SELECT_FLIGHT_MODE == MODE_TRACKING
-    sim_t = 80;
+    sim_t = 70;
 else
-    sim_t = 60;
+    sim_t = 50;
 end
 
 
@@ -282,24 +282,28 @@ plot(t,multirotor.ex(1, 1:iter),t,multirotor.ex(2, 1:iter),t,multirotor.ex(3, 1:
 title("Postion Tracking errors",'FontSize', 20);
 legend('ex_1','ex_2','ex_3','FontSize', 15)
 xlim([0,sim_t])
+ylim([-1,1])
 nexttile
 % Plot velocity tracking error
 plot(t,multirotor.ev(1, 1:iter),t,multirotor.ev(2, 1:iter),t,multirotor.ev(3, 1:iter),LineWidth=1.0)
 title("Velocity Tracking errors",'FontSize', 20);
 legend('ev_1','ev_2','ev_3','FontSize', 15)
 xlim([0,sim_t])
+ylim([-1,1])
 nexttile
 % Plot rotation tracking error
 plot(t,multirotor.eR(1, 1:iter),t,multirotor.eR(2, 1:iter),t,multirotor.eR(3,1:iter),LineWidth=1.0)
 title("Rotation Errors",'FontSize', 20);
 legend('er_1','er_2','er_3','FontSize', 15);
 xlim([0,sim_t])
+ylim([0,1])
 nexttile
 % Plot Omega tracking error
 plot(t,multirotor.eW(1,1:iter),t,multirotor.eW(2,1:iter),t,multirotor.eW(3,1:iter),LineWidth=1.0)
 title("Angular Velocity Errors",'FontSize', 20);
 legend('eo_1','eo_2','eo_3','FontSize', 15)
 xlim([0,sim_t])
+ylim([0,1])
 
 
 
