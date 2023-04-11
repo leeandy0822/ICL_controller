@@ -249,6 +249,30 @@ plot(t,tra(3, :),LineWidth=1.0);
 legend('z','zd','FontSize', 15)
 xlabel('$Time(sec)$', 'Interpreter', 'latex')
 
+
+
+figure(1);
+plot3(tra(1,1:length(t)-20),tra(2,1:length(t)-20),tra(3,1:length(t)-20),'LineWidth', 1.4, 'Color','k')
+hold on;
+plot3(multirotor.x(1,1:length(t)-20),multirotor.x(2,1:length(t)-20),multirotor.x(3,1:length(t)-20),'LineWidth', 1, 'Color','r')
+hold on;
+title('Trajectory','FontSize', 20);
+hold on;
+
+for i = 1:300:length(t)
+    matrix = reshape(multirotor.R(:,i),3,3);
+    norm = 8;
+    quiver3(multirotor.x(1,i),multirotor.x(2,i),multirotor.x(3,i),matrix(1,1)/norm,matrix(2,1)/norm,matrix(3,1)/norm,'r',"LineWidth",1); 
+    quiver3(multirotor.x(1,i),multirotor.x(2,i),multirotor.x(3,i),matrix(1,2)/norm,matrix(2,2)/norm,matrix(3,2)/norm,'g',"LineWidth",1); 
+    quiver3(multirotor.x(1,i),multirotor.x(2,i),multirotor.x(3,i),matrix(1,3)/norm,matrix(2,3)/norm,matrix(3,3)/norm,'b',"LineWidth",1); 
+end
+
+hold on;
+grid on;
+xlabel('x(m)'), ylabel('y(m)'), zlabel('z(m)')
+axis equal
+
+
 figure;
 tiledlayout(2,2)
 nexttile

@@ -1,8 +1,8 @@
 classdef feedforward_force_ctrl
    properties
-       gamma_m = diag([  0.025, 0.00001, 0.00001, 0.00001]);
+       gamma_m = diag([  0.02, 0.00001, 0.00001, 0.00001]);
        C1 = 3;
-       kcl_m = diag([  0.000001, 0, 0, 0]);
+       kcl_m = diag([  0.0000008, 0, 0, 0]);
 
 
    end

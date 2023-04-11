@@ -19,12 +19,12 @@ MODE_ENERGY = 1 ;
 MODE_BOTH = 2; 
 MODE_CONTROLLABILITY = 3; 
 
-SELECT_POSITION_MODE = MODE_NORMAL;
+SELECT_POSITION_MODE = MODE_ENERGY;
 
 if SELECT_FLIGHT_MODE == MODE_TRACKING
     sim_t = 70;
 else
-    sim_t = 50;
+    sim_t = 60;
 end
 
 
@@ -243,67 +243,91 @@ end
 
 t = 1:1:iter;
 t = t*0.0067;
+
+
 figure;
-tiledlayout(2,2)
+plot3(tra(1,1:length(t)-20),tra(2,1:length(t)-20),tra(3,1:length(t)-20),'LineWidth', 1.4, 'Color','k')
+hold on;
+plot3(multirotor.x(1,1:length(t)-20),multirotor.x(2,1:length(t)-20),multirotor.x(3,1:length(t)-20),'LineWidth', 1, 'Color','r')
+hold on;
+title('Trajectory','FontSize', 20);
+hold on;
+
+for i = 1:300:length(t)
+    matrix = reshape(multirotor.R(:,i),3,3);
+    norm = 8;
+    quiver3(multirotor.x(1,i),multirotor.x(2,i),multirotor.x(3,i),matrix(1,1)/norm,matrix(2,1)/norm,matrix(3,1)/norm,'r',"LineWidth",1); 
+    quiver3(multirotor.x(1,i),multirotor.x(2,i),multirotor.x(3,i),matrix(1,2)/norm,matrix(2,2)/norm,matrix(3,2)/norm,'g',"LineWidth",1); 
+    quiver3(multirotor.x(1,i),multirotor.x(2,i),multirotor.x(3,i),matrix(1,3)/norm,matrix(2,3)/norm,matrix(3,3)/norm,'b',"LineWidth",1); 
+end
+
+hold on;
+grid on;
+xlabel('x(m)'), ylabel('y(m)'), zlabel('z(m)')
+axis equal
+
+
+figure;
+tiledlayout(3,1)
 nexttile
 % Plot position 
-plot(t,multirotor.x(1, 1:iter),LineWidth=1.0);
+plot(t,multirotor.x(1, 1:iter),LineWidth=3.0);
 hold on
-plot(t,tra(1, 1:iter),LineWidth=1.0);
-title("Trajectory and Desired Trajectory",'FontSize', 18);
+plot(t,tra(1, 1:iter),LineWidth=3.0);
+set(gca,'FontSize', 20);
+title('$Trajectory \ Tracking$','Interpreter', 'latex','FontSize', 30)
 legend('x','xd','FontSize', 15)
 xlim([0,sim_t])
+ylim([-0.5,1.5])
+grid on
 nexttile
-
-plot(t,multirotor.x(2, 1:iter),LineWidth=1.0)
+plot(t,multirotor.x(2, 1:iter),LineWidth=3.0)
 hold on
-plot(t,tra(2, 1:iter),LineWidth=1.0);
+plot(t,tra(2, 1:iter),LineWidth=3.0);
 legend('y','yd','FontSize', 15)
 xlim([0,sim_t])
+ylim([-0.5,1.5])
 nexttile
-plot(t,multirotor.x(3, 1:iter),LineWidth=1.0)
+plot(t,multirotor.x(3, 1:iter),LineWidth=3.0)
 hold on
-plot(t,tra(3, 1:iter),LineWidth=1.0);
+plot(t,tra(3, 1:iter),LineWidth=3.0);
 legend('z','zd','FontSize', 15)
 xlabel('$Time(sec)$', 'Interpreter', 'latex')
 xlim([0,sim_t])
-nexttile
-plot(t,multirotor.W_dot(:, 1:iter),LineWidth=1.0)
-legend('dW x','dW y','dW z','FontSize', 15)
-xlabel('$Time(sec)$', 'Interpreter', 'latex')
-xlim([0,sim_t])
+ylim([0,1.5])
+
 
 
 figure;
 tiledlayout(2,2)
 nexttile
 % Plot position tracking error
-plot(t,multirotor.ex(1, 1:iter),t,multirotor.ex(2, 1:iter),t,multirotor.ex(3, 1:iter),LineWidth=1.0)
+plot(t,multirotor.ex(1, 1:iter),t,multirotor.ex(2, 1:iter),t,multirotor.ex(3, 1:iter),LineWidth=3.0)
 title("Postion Tracking errors",'FontSize', 20);
 legend('ex_1','ex_2','ex_3','FontSize', 15)
 xlim([0,sim_t])
 ylim([-1,1])
 nexttile
 % Plot velocity tracking error
-plot(t,multirotor.ev(1, 1:iter),t,multirotor.ev(2, 1:iter),t,multirotor.ev(3, 1:iter),LineWidth=1.0)
+plot(t,multirotor.ev(1, 1:iter),t,multirotor.ev(2, 1:iter),t,multirotor.ev(3, 1:iter),LineWidth=3.0)
 title("Velocity Tracking errors",'FontSize', 20);
 legend('ev_1','ev_2','ev_3','FontSize', 15)
 xlim([0,sim_t])
 ylim([-1,1])
 nexttile
 % Plot rotation tracking error
-plot(t,multirotor.eR(1, 1:iter),t,multirotor.eR(2, 1:iter),t,multirotor.eR(3,1:iter),LineWidth=1.0)
+plot(t,multirotor.eR(1, 1:iter),t,multirotor.eR(2, 1:iter),t,multirotor.eR(3,1:iter),LineWidth=3.0)
 title("Rotation Errors",'FontSize', 20);
 legend('er_1','er_2','er_3','FontSize', 15);
 xlim([0,sim_t])
-ylim([0,1])
+ylim([-1,1])
 nexttile
 % Plot Omega tracking error
-plot(t,multirotor.eW(1,1:iter),t,multirotor.eW(2,1:iter),t,multirotor.eW(3,1:iter),LineWidth=1.0)
+plot(t,multirotor.eW(1,1:iter),t,multirotor.eW(2,1:iter),t,multirotor.eW(3,1:iter),LineWidth=3.0)
 title("Angular Velocity Errors",'FontSize', 20);
 legend('eo_1','eo_2','eo_3','FontSize', 15)
 xlim([0,sim_t])
-ylim([0,1])
+ylim([-1,1])
 
 
 
@@ -315,19 +339,19 @@ nexttile
 theta_m_ground_truth = ones(1, length(t))*8.6;
 Cog_x = 0.05;
 Cog_y = 0;
-plot(t,multirotor.mass_estimation(1,1:iter),t,theta_m_ground_truth(:,1:iter),LineWidth=1.0)
+plot(t,multirotor.mass_estimation(1,1:iter),t,theta_m_ground_truth(:,1:iter),LineWidth=3.0)
 title("Mass",'FontSize', 20);
 legend('Estimated Mass(kg)','Ground Truth(kg)','FontSize', 15)
 xlim([0,sim_t])
 ylim([5,11])
 nexttile
-plot(t, multirotor.inertia_estimation(1,1:iter),t,ones(1,iter)*Cog_x,LineWidth=1.0)
+plot(t, multirotor.inertia_estimation(1,1:iter),t,ones(1,iter)*Cog_x,LineWidth=3.0)
 title("CoG (x)",'FontSize', 20);
 legend('Estimated (m)','Ground Truth(m)','FontSize', 15)
 xlim([0,sim_t])
 ylim([0, 0.2])
 nexttile
-plot(t, multirotor.inertia_estimation(2,1:iter),t,ones(1,iter)*Cog_y,LineWidth=1.0)
+plot(t, multirotor.inertia_estimation(2,1:iter),t,ones(1,iter)*Cog_y,LineWidth=3.0)
 title("CoG (y)",'FontSize', 20);
 legend('Estimated (m)','Ground Truth(m)','FontSize', 15)
 xlim([0,sim_t])
@@ -340,36 +364,36 @@ figure;
 tiledlayout(2,3)
 nexttile
 % Plot position tracking error
-plot(t,multirotor.force_moment(1,1:iter),LineWidth=1.0)
+plot(t,multirotor.force_moment(1,1:iter),LineWidth=3.0)
 title("Total force input",'FontSize', 15);
 legend('Thrust','FontSize', 12)
 xlim([0,sim_t])
 nexttile
 % Plot position tracking error
-plot(t,uav1.force_moment(1,1:iter),t,uav1.force_moment(2, 1:iter),t,uav1.force_moment(3, 1:iter),t,uav1.force_moment(4, 1:iter),LineWidth=1.0)
+plot(t,uav1.force_moment(1,1:iter),t,uav1.force_moment(2, 1:iter),t,uav1.force_moment(3, 1:iter),t,uav1.force_moment(4, 1:iter),LineWidth=3.0)
 title("UAV1 input",'FontSize', 15);
 legend('Thrust','Moment x','Moment y','Moment z','FontSize', 12)
 xlim([0,sim_t])
 nexttile
 % Plot position tracking error
-plot(t,uav2.force_moment(1, 1:iter),t,uav2.force_moment(2, 1:iter),t,uav2.force_moment(3, 1:iter),t,uav2.force_moment(4, 1:iter),LineWidth=1.0)
+plot(t,uav2.force_moment(1, 1:iter),t,uav2.force_moment(2, 1:iter),t,uav2.force_moment(3, 1:iter),t,uav2.force_moment(4, 1:iter),LineWidth=3.0)
 title("UAV2 input",'FontSize', 15);
 legend('Thrust','Moment x','Moment y','Moment z','FontSize', 12)
 xlim([0,sim_t])
 nexttile
-plot(t,multirotor.force_moment(2, 1:iter),t,multirotor.force_moment(3, 1:iter),t,multirotor.force_moment(4, 1:iter),LineWidth=1.0)
+plot(t,multirotor.force_moment(2, 1:iter),t,multirotor.force_moment(3, 1:iter),t,multirotor.force_moment(4, 1:iter),LineWidth=3.0)
 title("Total Moment input",'FontSize', 15);
 legend('Moment x','Moment y','Moment z','FontSize', 12)
 xlim([0,sim_t])
 nexttile
 % Plot position tracking error
-plot(t,uav3.force_moment(1, 1:iter),t,uav3.force_moment(2, 1:iter),t,uav3.force_moment(3, 1:iter),t,uav3.force_moment(4, 1:iter),LineWidth=1.0)
+plot(t,uav3.force_moment(1, 1:iter),t,uav3.force_moment(2, 1:iter),t,uav3.force_moment(3, 1:iter),t,uav3.force_moment(4, 1:iter),LineWidth=3.0)
 title("UAV3 input",'FontSize', 15);
 legend('Thrust','Moment x','Moment y','Moment z','FontSize', 12)
 xlim([0,sim_t])
 nexttile
 % Plot position tracking error
-plot(t,uav4.force_moment(1, 1:iter),t,uav4.force_moment(2, 1:iter),t,uav4.force_moment(3, 1:iter),t,uav4.force_moment(4, 1:iter),LineWidth=1.0)
+plot(t,uav4.force_moment(1, 1:iter),t,uav4.force_moment(2, 1:iter),t,uav4.force_moment(3, 1:iter),t,uav4.force_moment(4, 1:iter),LineWidth=3.0)
 title("UAV4 input",'FontSize', 15);
 legend('Thrust','Moment x','Moment y','Moment z','FontSize', 12)
 xlim([0,sim_t])
