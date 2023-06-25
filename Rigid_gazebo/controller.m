@@ -25,10 +25,10 @@ classdef controller
            kW = diag([20; 20; 8]);
 % 
 %            
-%            kx = diag([25; 25; 45]);
-%            kv = diag([18; 18; 12]);
-%            kR = diag([35; 35; 30]);
-%            kW = diag([12; 12; 8]);
+%            kx = diag([30; 30; 40]);
+%            kv = diag([25; 25; 25]);
+%            kR = diag([30; 30; 30]);
+%            kW = diag([20; 20; 8]);
 
            % convert position and velocity from enu to ned
            x_ned = vec_enu_to_ned(x_enu);

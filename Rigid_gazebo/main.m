@@ -6,12 +6,12 @@ rosshutdown
 rosinit
 
 % simulation time
-dt = 0.0025;
+dt = 0.003;
 
 % flight mode
 MODE_TRACKING = 0;
 MODE_HOVERING = 1;
-SELECT_FLIGHT_MODE = MODE_TRACKING;
+SELECT_FLIGHT_MODE = MODE_TRACKING
 
 % position mode
 MODE_NORMAL = 0 ; 
@@ -19,7 +19,7 @@ MODE_ENERGY = 1 ;
 MODE_BOTH = 2; 
 MODE_CONTROLLABILITY = 3; 
 
-SELECT_POSITION_MODE = MODE_NORMAL;
+SELECT_POSITION_MODE = MODE_ENERGY;
 
 if SELECT_FLIGHT_MODE == MODE_TRACKING
     sim_t = 70;
@@ -105,12 +105,12 @@ if SELECT_FLIGHT_MODE == MODE_TRACKING
     
     if SELECT_POSITION_MODE == MODE_NORMAL
         multirotor.mass_estimation(1, 1) = 8.6;
-        multirotor.inertia_estimation(1:2, 1) = [0.035 ; 0.035];
+        multirotor.inertia_estimation(1:2, 1) = [0.046 ; 0.0115];
         multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
         file_title = "data/" + "normal";
     else
         multirotor.mass_estimation(1, 1) = 8.6;
-        multirotor.inertia_estimation(1:2, 1) = [0.013 ; 0.13];
+        multirotor.inertia_estimation(1:2, 1) = [0.0175; 0.05];
         multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
         file_title = "data/" + "energy";
     end
@@ -337,8 +337,8 @@ nexttile
 
 % Plot necessary
 theta_m_ground_truth = ones(1, length(t))*8.6;
-Cog_x = 0.035;
-Cog_y = 0.035;
+Cog_x = 0.046;
+Cog_y = 0.0115;
 plot(t,multirotor.mass_estimation(1,1:iter),t,theta_m_ground_truth(:,1:iter),LineWidth=3.0)
 title("Mass",'FontSize', 20);
 legend('Estimated Mass(kg)','Ground Truth(kg)','FontSize', 15)
@@ -361,7 +361,7 @@ temp_cog = ones(1,iter);
 for i = 1:1:iter
     temp_cog(1,i) = 1*sqrt(multirotor.inertia_estimation(2,i)*multirotor.inertia_estimation(2,i) + multirotor.inertia_estimation(1,i)*multirotor.inertia_estimation(1,i));
 end
-plot(t, temp_cog(1,1:iter),t,ones(1,iter)*0.0514,LineWidth=3.0)
+plot(t, temp_cog(1,1:iter),t,ones(1,iter)*0.051,LineWidth=3.0)
 title("CoG (y)",'FontSize', 20);
 legend('Estimated (m)','Ground Truth(m)','FontSize', 15)
 xlim([0,sim_t])
@@ -374,8 +374,8 @@ nexttile
 
 % Plot necessary
 theta_m_ground_truth = ones(1, length(t))*8.6;
-Cog_x = 0.035;
-Cog_y = 0.035;
+Cog_x = 0.046;
+Cog_y = 0.0115;
 plot(t,multirotor.mass_estimation(1,1:iter)-8.6,LineWidth=3.0)
 title("Estimated Error",'FontSize', 20);
 legend('Mass Estimated Error (kg)','FontSize', 15)

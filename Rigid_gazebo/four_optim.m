@@ -12,7 +12,7 @@ L = 0.7;
 g = 9.8;
 mass = 8.6;
 weight = mass*g;
-CoM = [0.035,0.035,0];  
+CoM = [0.046,0.0115,0];  
 %% Solve Optimization
 A = [];
 b = [];
