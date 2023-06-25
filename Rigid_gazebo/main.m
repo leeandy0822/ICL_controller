@@ -19,12 +19,12 @@ MODE_ENERGY = 1 ;
 MODE_BOTH = 2; 
 MODE_CONTROLLABILITY = 3; 
 
-SELECT_POSITION_MODE = MODE_ENERGY;
+SELECT_POSITION_MODE = MODE_NORMAL;
 
 if SELECT_FLIGHT_MODE == MODE_TRACKING
     sim_t = 70;
 else
-    sim_t = 60;
+    sim_t = 80;
 end
 
 
@@ -105,19 +105,19 @@ if SELECT_FLIGHT_MODE == MODE_TRACKING
     
     if SELECT_POSITION_MODE == MODE_NORMAL
         multirotor.mass_estimation(1, 1) = 8.6;
-        multirotor.inertia_estimation(1:2, 1) = [0.05 ; 0];
+        multirotor.inertia_estimation(1:2, 1) = [0.035 ; 0.035];
         multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
         file_title = "data/" + "normal";
     else
-        multirotor.mass_estimation(1, 1) = 8.67;
-        multirotor.inertia_estimation(1:2, 1) = [0.21 ; 0];
+        multirotor.mass_estimation(1, 1) = 8.6;
+        multirotor.inertia_estimation(1:2, 1) = [0.013 ; 0.13];
         multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
         file_title = "data/" + "energy";
     end
 
 else
-    multirotor.mass_estimation(1, 1) = 10;
-    multirotor.inertia_estimation(1:2, 1) = [0 ; 0];
+    multirotor.mass_estimation(1, 1) = 9.5;
+    multirotor.inertia_estimation(1:2, 1) = [0; 0];
     multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
 end
 
@@ -126,13 +126,13 @@ ctrl = controller;
 
 % initialize integral concurrent learning
 icl = integral_concurrent_learning;
-icl.N_diag = 30;
+icl.N_diag = 300;
 icl.mat_diag_matrix = zeros(5, icl.N_diag);
 icl.mat_diag_sum = zeros(5, 1);
 icl.index_diag = 0;
 icl.if_full_diag = 0;
 
-icl.mass_N_diag = 30;
+icl.mass_N_diag = 40;
 icl.mass_mat_diag_matrix = zeros(4, icl.N_diag);
 icl.mass_mat_diag_sum = zeros(4, 1);
 icl.mass_index_diag = 0;
@@ -332,13 +332,13 @@ ylim([-1,1])
 
 
 figure;
-tiledlayout(3,1)
+tiledlayout(4,1)
 nexttile
 
 % Plot necessary
 theta_m_ground_truth = ones(1, length(t))*8.6;
-Cog_x = 0.05;
-Cog_y = 0;
+Cog_x = 0.035;
+Cog_y = 0.035;
 plot(t,multirotor.mass_estimation(1,1:iter),t,theta_m_ground_truth(:,1:iter),LineWidth=3.0)
 title("Mass",'FontSize', 20);
 legend('Estimated Mass(kg)','Ground Truth(kg)','FontSize', 15)
@@ -349,14 +349,48 @@ plot(t, multirotor.inertia_estimation(1,1:iter),t,ones(1,iter)*Cog_x,LineWidth=3
 title("CoG (x)",'FontSize', 20);
 legend('Estimated (m)','Ground Truth(m)','FontSize', 15)
 xlim([0,sim_t])
-ylim([0, 0.2])
+ylim([-0.1, 0.1])
 nexttile
 plot(t, multirotor.inertia_estimation(2,1:iter),t,ones(1,iter)*Cog_y,LineWidth=3.0)
 title("CoG (y)",'FontSize', 20);
 legend('Estimated (m)','Ground Truth(m)','FontSize', 15)
 xlim([0,sim_t])
-ylim([-0.1, 0.1])
+ylim([-0.05, 0.15])
+nexttile
+temp_cog = ones(1,iter);
+for i = 1:1:iter
+    temp_cog(1,i) = 1*sqrt(multirotor.inertia_estimation(2,i)*multirotor.inertia_estimation(2,i) + multirotor.inertia_estimation(1,i)*multirotor.inertia_estimation(1,i));
+end
+plot(t, temp_cog(1,1:iter),t,ones(1,iter)*0.0514,LineWidth=3.0)
+title("CoG (y)",'FontSize', 20);
+legend('Estimated (m)','Ground Truth(m)','FontSize', 15)
+xlim([0,sim_t])
+ylim([-0.05, 0.15])
 
+
+figure;
+tiledlayout(2,1)
+nexttile
+
+% Plot necessary
+theta_m_ground_truth = ones(1, length(t))*8.6;
+Cog_x = 0.035;
+Cog_y = 0.035;
+plot(t,multirotor.mass_estimation(1,1:iter)-8.6,LineWidth=3.0)
+title("Estimated Error",'FontSize', 20);
+legend('Mass Estimated Error (kg)','FontSize', 15)
+xlim([0,sim_t])
+ylim([-2,2])
+
+nexttile
+temp_cog = ones(1,iter);
+for i = 1:1:iter
+    temp_cog(1,i) = 1*sqrt(multirotor.inertia_estimation(2,i)*multirotor.inertia_estimation(2,i) + multirotor.inertia_estimation(1,i)*multirotor.inertia_estimation(1,i));
+end
+plot(t, (multirotor.inertia_estimation(1,1:iter)-Cog_x),t, multirotor.inertia_estimation(2,1:iter)-Cog_y,LineWidth=3.0)
+legend("CoG_x Estimated Error(m)","CoG_y Estimated Error(m)", 'FontSize', 15)
+xlim([0,sim_t])
+ylim([-0.05, 0.03])
 
 
 

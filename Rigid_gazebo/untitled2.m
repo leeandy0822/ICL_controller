@@ -10,11 +10,11 @@ global CoM weight mass uav_mass;
 g = 9.8;
 uav_mass = 0.9;
 % Control the moving length of the UAV
-payload_mass = 1;
+payload_mass = 1.5;
 mass = 2*uav_mass + payload_mass;
 weight = mass*g;
 % Connect to energy 
-CoM = -0.06;
+CoM = 0.045;
 
 origin_matrix = [1  1 ; -0.33 - CoM 0.33-CoM];
 
@@ -30,8 +30,8 @@ beq = [weight];
 f_lb = zeros(2,1);
 f_ub = 3*9.8*ones(2,1);
 
-lb = [ f_lb ; -0.55 ; -0.55];
-ub = [ f_ub ;  0.55; 0.55];
+lb = [ f_lb ; -0.43 ; -0.43];
+ub = [ f_ub ;  0.43; 0.43];
 
 x0 = [ Force(1) Force(2) 0.33- CoM -0.33-CoM ];
 
@@ -63,7 +63,8 @@ function [c,ceq] = force_balance(x)
     % the position of uavs will affect CoG of system
     [x1] = x(3) - new_CoM;
     [x2] = x(4) - new_CoM;
-    ceq = x1*f1 + x2*f2 + 0.05;
+    new_CoM
+    ceq = x1*f1 + x2*f2;
 
 end
 

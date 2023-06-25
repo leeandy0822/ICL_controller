@@ -10,9 +10,9 @@ global CoM weight mass CoM_temp L;
 
 L = 0.7;
 g = 9.8;
-mass = 8.4;
+mass = 8.6;
 weight = mass*g;
-CoM = [0.05,0,0];  
+CoM = [0.035,0.035,0];  
 %% Solve Optimization
 A = [];
 b = [];
@@ -146,10 +146,8 @@ function fun = myfunc(x)
     energy_comsumption = (F1_norm^1.5 + F2_norm^1.5 + F3_norm^1.5 + F4_norm^1.5);
     
     K = 1;
-%     Unit_E = 1;
-%     Unit_C = 40;
+
     Unit_E = 1;
-    Unit_C = 0;
-    fun = K*Unit_E*energy_comsumption + Unit_C*1/controlability;
+    fun = K*Unit_E*energy_comsumption;
 
 end

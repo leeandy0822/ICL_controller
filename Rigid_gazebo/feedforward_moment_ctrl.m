@@ -1,8 +1,8 @@
 classdef feedforward_moment_ctrl
    properties
-       gamma_diag = diag([0.0015, 0.0015, 0.4, 0.4, 0.4]);
-       C2 = 2;
-       kcl_j = diag([  0.00000002, 0.00000002, 0, 0, 0]);
+       gamma_diag = diag([0.002, 0.002, 0.2, 0.2, 0.5]);
+       C2 = 0.3;
+       kcl_j = diag([  0.00001, 0.00001, 0, 0, 0]);
    end
    
    methods
@@ -19,7 +19,7 @@ classdef feedforward_moment_ctrl
                      W(1)*W(2), -W(1)*W(2), 0];
 
            Fz = icl.current_force;
-           cog_Y_diag = [0   -Fz ; 
+           cog_Y_diag = [0   -Fz; 
                         Fz 0  ;
                          0   0  ];
           
@@ -68,8 +68,12 @@ classdef feedforward_moment_ctrl
                icl.mat_diag_sum = sum(icl.mat_diag_matrix, 2);
                
                % moment of inertia update law
-               theta_diag_hat_dot_adaptive = obj.gamma_diag*Y_diag_transpose*(eW+obj.C2*eR);
-               theta_diag_hat_dot_ICL = obj.kcl_j*obj.gamma_diag*icl.mat_diag_sum;
+               constant = 1;
+               if iter > 1500
+                   constant = constant * 0.95;
+               end
+               theta_diag_hat_dot_adaptive = constant*obj.gamma_diag*Y_diag_transpose*(eW+obj.C2*eR);
+               theta_diag_hat_dot_ICL = constant*obj.kcl_j*obj.gamma_diag*icl.mat_diag_sum;
                theta_diag_hat_dot = theta_diag_hat_dot_adaptive + theta_diag_hat_dot_ICL;
                
                % moment of inertia estimation

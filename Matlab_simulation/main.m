@@ -4,7 +4,7 @@ tic;
 
 % simulation time
 dt = 0.0025;
-sim_t = 20;
+sim_t = 120;
 
 % optimize ?
 MODE_OPTIMIZE = 0;
@@ -251,7 +251,7 @@ xlabel('$Time(sec)$', 'Interpreter', 'latex')
 
 
 
-figure(1);
+figure;
 plot3(tra(1,1:length(t)-20),tra(2,1:length(t)-20),tra(3,1:length(t)-20),'LineWidth', 1.4, 'Color','k')
 hold on;
 plot3(multirotor.x(1,1:length(t)-20),multirotor.x(2,1:length(t)-20),multirotor.x(3,1:length(t)-20),'LineWidth', 1, 'Color','r')

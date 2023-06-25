@@ -1,8 +1,8 @@
 classdef feedforward_force_ctrl
    properties
-       gamma_m = diag([  0.02, 0.00001, 0.00001, 0.00001]);
-       C1 = 3;
-       kcl_m = diag([  0.0000008, 0, 0, 0]);
+       gamma_m = diag([  0.06, 0.00001, 0.00001, 0.00001]);
+       C1 = 2;
+       kcl_m = diag([  0.0003, 0, 0, 0]);
 
 
    end
@@ -44,11 +44,11 @@ classdef feedforward_force_ctrl
                  R'*(a - uav_a(10:12)) - hat_map(W)*hat_map(W)*r4];
             A = [hat_map(r1); hat_map(r2); hat_map(r3) ; hat_map(r4)];
 
-            W_dot = pinv(A)*B;
+            W_dot = pinv(A)*B*0;
 
 
             Y_m_mass = [ad(1); ad(2); ad(3) - multirotor.g];
-            Y_m_a = -R*(W_dot + hat_map(W)*hat_map(W));
+            Y_m_a = -R*(hat_map(W)*hat_map(W));
             Y_m = [Y_m_mass Y_m_a];
             Y_m_transpose = Y_m';
             
