@@ -144,7 +144,8 @@ function fun = myfunc(x)
     F4_norm = norm(x(10:12));
 
     energy_comsumption = (F1_norm^1.5 + F2_norm^1.5 + F3_norm^1.5 + F4_norm^1.5);
-    
+    energy_comsumption = (F1_norm - F2_norm)^2 +(F1_norm - F3_norm)^2 +(F1_norm - F4_norm)^2 +(F3_norm - F2_norm)^2 +(F4_norm - F2_norm)^2 +(F3_norm - F4_norm)^2;
+
     K = 1;
 
     Unit_E = 1;

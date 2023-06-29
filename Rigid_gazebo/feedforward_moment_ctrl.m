@@ -1,8 +1,8 @@
 classdef feedforward_moment_ctrl
    properties
-       gamma_diag = diag([0.003, 0.003, 0.2, 0.2, 0.5]);
-       C2 = 0.4;
-       kcl_j = diag([  0.00001, 0.00001, 0, 0, 0]);
+       gamma_diag = diag([0.002, 0.001, 0.2, 0.2, 0.5]);
+       C2 = 0.3;
+       kcl_j = diag([  0.0001, 0.0001, 0, 0, 0]);
    end
    
    methods
@@ -20,7 +20,7 @@ classdef feedforward_moment_ctrl
 
            Fz = icl.current_force;
            cog_Y_diag = [0   -Fz; 
-                        Fz 0  ;
+                         Fz   0 ;
                          0   0  ];
           
            Y_diag = [cog_Y_diag inertia_Y_diag];

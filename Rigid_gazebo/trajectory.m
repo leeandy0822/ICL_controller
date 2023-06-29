@@ -9,16 +9,16 @@ classdef trajectory
             if FLIGHT_MODE == MODE_TRACKING
 
                 if t > 0
-                x = [0.1*t ; 0 ; 0.25*t];
-                v = [0.1 ; 0; 0.25];
+                x = [0.08*t ; 0 ; 0.2*t];
+                v = [0.08 ; 0; 0.2];
                 a = [0 ; 0 ;0 ];
                 end
-                if t > 4 
-                    t = t - 4;
+                if t > 5 
+                    t = t - 5;
 
                     freq = 0.04;
                     radius = 2;
-                    x = [radius*sin(freq*pi*t)+0.4 ; radius*cos(freq*pi*t)-radius; height];
+                    x = [radius*sin(freq*pi*t)+0.4; radius*cos(freq*pi*t)-radius; height];
                     v = [radius*freq*pi*cos(freq*pi*t) ; -radius*freq*pi*sin(freq*pi*t) ; 0];
                     a = [-radius*freq*freq*pi*pi*sin(freq*pi*t) ; -radius*freq*freq*pi*pi*cos(freq*pi*t) ;0];
                 end

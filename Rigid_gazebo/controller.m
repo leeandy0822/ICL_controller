@@ -19,10 +19,10 @@ classdef controller
 
            % control gains
 
-           kx = diag([30; 30; 40]);
-           kv = diag([30; 30; 30]);
+           kx = diag([17; 17; 40]);
+           kv = diag([32; 32; 30]);
            kR = diag([30; 30; 30]);
-           kW = diag([20; 20; 8]);
+           kW = diag([25; 25; 8]);
 % 
 %            
 %            kx = diag([30; 30; 40]);
