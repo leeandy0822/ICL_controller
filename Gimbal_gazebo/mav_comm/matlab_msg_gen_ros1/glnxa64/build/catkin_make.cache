@@ -1,0 +1,2 @@
+mav_msgs:mav_planning_msgs
+-DBoost_NAMESPACE=mwboost -DCATKIN_ENABLE_TESTING=off -DCMAKE_PREFIX_PATH=/home/leeandy/MATLAB_2021b/sys/ros1/glnxa64/ros1;/home/leeandy/MATLAB_2021b/toolbox/ros/mlroscpp/custom_messages -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE=-O0 -DCATKIN_DEVEL_PREFIX=/home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/devel -DCMAKE_INSTALL_PREFIX=/home/leeandy/Desktop/ICL_controller/Gazebo_simulation/mav_comm/matlab_msg_gen_ros1/glnxa64/install -G Ninja

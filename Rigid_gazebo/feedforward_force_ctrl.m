@@ -1,6 +1,6 @@
 classdef feedforward_force_ctrl
    properties
-       gamma_m = diag([  0.06, 0.00001, 0.00001, 0.00001]);
+       gamma_m = diag([  0.05, 0.00001, 0.00001, 0.00001]);
        C1 = 2;
        kcl_m = diag([  0.0003, 0, 0, 0]);
 
@@ -22,6 +22,7 @@ classdef feedforward_force_ctrl
             r2 = multirotor.uav2_pos;
             r3 = multirotor.uav3_pos;
             r4 = multirotor.uav4_pos;
+		% gazebo acceleration bound control
             if a(3) > 10 
                 a(3) = 9.8;
             end

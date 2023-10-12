@@ -50,8 +50,11 @@ classdef multirotor_dynamics
         uav2_pos
         uav3_pos
         uav4_pos
-
-        
+        uav1_power
+        uav2_power
+        uav3_power
+        uav4_power
+        tra
     end
     methods
         function dX = dynamics(obj, t, X, F, alpha)

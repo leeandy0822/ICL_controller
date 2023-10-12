@@ -10,7 +10,7 @@ global CoM weight mass uav_mass;
 g = 9.8;
 uav_mass = 1.15;
 % Control the moving length of the UAV
-payload_mass = 1;
+payload_mass = 1.3;
 mass = 2*uav_mass + payload_mass;
 weight = mass*g;
 % Connect to energy 

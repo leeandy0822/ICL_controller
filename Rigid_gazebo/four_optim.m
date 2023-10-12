@@ -10,9 +10,9 @@ global CoM weight mass CoM_temp L;
 
 L = 0.7;
 g = 9.8;
-mass = 8.6;
+mass = 8.67;
 weight = mass*g;
-CoM = [0.046,0.0115,0];  
+CoM = [0.0478,0.012,0];  
 %% Solve Optimization
 A = [];
 b = [];
@@ -129,26 +129,17 @@ function fun = myfunc(x)
 
     uav_mass = 1.57;
     CoM_temp = CoM + (uav_mass/mass)*(x1_drift + x2_drift + x3_drift + x4_drift);
-    CoM_temp
     [p1] = edge1(x(13)) - CoM_temp;
     [p2] = edge2(x(14)) - CoM_temp;
     [p3] = edge3(x(15)) - CoM_temp;
     [p4] = edge4(x(16)) - CoM_temp;
 
-    B_m = [hat_map(p1) hat_map(p2) hat_map(p3) hat_map(p4)];
-
-    controlability = det(B_m*B_m')
     F1_norm = norm(x(1:3));
     F2_norm = norm(x(4:6));
     F3_norm = norm(x(7:9));
     F4_norm = norm(x(10:12));
 
-    energy_comsumption = (F1_norm^1.5 + F2_norm^1.5 + F3_norm^1.5 + F4_norm^1.5);
-    energy_comsumption = (F1_norm - F2_norm)^2 +(F1_norm - F3_norm)^2 +(F1_norm - F4_norm)^2 +(F3_norm - F2_norm)^2 +(F4_norm - F2_norm)^2 +(F3_norm - F4_norm)^2;
-
-    K = 1;
-
-    Unit_E = 1;
-    fun = K*Unit_E*energy_comsumption;
+    energy_comsumption = (F1_norm^1.5 - F2_norm^1.5)^2 +(F2_norm^1.5 - F3_norm^1.5)^2 +(F3_norm^1.5 - F4_norm^1.5)^2 + (F1_norm^1.5 - F4_norm^1.5)^2;
+    fun = energy_comsumption;
 
 end

@@ -19,10 +19,10 @@ MODE_ENERGY = 1 ;
 MODE_BOTH = 2; 
 MODE_CONTROLLABILITY = 3; 
 
-SELECT_POSITION_MODE = MODE_NORMAL;
+SELECT_POSITION_MODE = MODE_BOTH;
 
 if SELECT_FLIGHT_MODE == MODE_TRACKING
-    sim_t = 130;
+    sim_t = 100;
 else
     sim_t = 80;
 end
@@ -105,12 +105,12 @@ if SELECT_FLIGHT_MODE == MODE_TRACKING
     
     if SELECT_POSITION_MODE == MODE_NORMAL
         multirotor.mass_estimation(1, 1) = 9.5;
-        multirotor.inertia_estimation(1:2, 1) = [0; -0.02];
+        multirotor.inertia_estimation(1:2, 1) = [0; 0];
         multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
         file_title = "data/" + "normal";
     else
         multirotor.mass_estimation(1, 1) = 8.6;
-        multirotor.inertia_estimation(1:2, 1) = [0.16; 0.04];
+        multirotor.inertia_estimation(1:2, 1) = [0.17; 0.04];
         multirotor.inertia_estimation(3:5, 1) = [0.1; 0.1; 0.1];
         file_title = "data/" + "energy";
     end
@@ -267,108 +267,118 @@ xlabel('x(m)'), ylabel('y(m)'), zlabel('z(m)')
 axis equal
 
 
+
+
+
+t_temp = t(:,1:20:iter);
+ex_temp = multirotor.ex(:,1:20:iter);
+ev_temp = multirotor.ev(:,1:20:iter);
+eR_temp = multirotor.eR(:,1:20:iter);
+eW_temp = multirotor.eW(:,1:20:iter);
+mass_temp = multirotor.mass_estimation(:,1:20:iter);
+cogx_temp = multirotor.inertia_estimation(1,1:20:iter);
+cogy_temp = multirotor.inertia_estimation(2,1:20:iter);
+
 figure;
-tiledlayout(3,1)
+tiledlayout(3,2)
 nexttile
+
 % Plot position 
 plot(t,multirotor.x(1, 1:iter),LineWidth=3.0);
 hold on
 plot(t,tra(1, 1:iter),LineWidth=2.0);
-legend('$x$','$x_d$','FontSize', 15,'Location', 'southeast', 'Interpreter', 'latex')
-set(gca,'FontSize', 15);
-title('$Trajectory \ Tracking$','Interpreter', 'latex','FontSize', 20)
-ylabel('$x (m)$', 'Interpreter', 'latex')
+title('Trajectory Tracking','FontSize',28,'Interpreter', 'latex')
+legend('$x$','$x_d$','FontSize', 25,'Location', 'southeast', 'Interpreter', 'latex')
+y = ylabel('$x (m)$', 'Interpreter', 'latex','FontSize', 30);
+set(y, 'Units', 'Normalized', 'Position', [-0.08, 0.42])
 xlim([0,sim_t])
-ylim([-3,3])
+ylim([-5,5])
 grid on
 nexttile
+
+% Plot position tracking error
+plot(t_temp,ex_temp(1, :),LineWidth=3.0)
+title("Postion Errors(m)",'FontSize', 28,'Interpreter', 'latex');
+grid on
+y = ylabel('$e_{x_1}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 32);
+set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.42])
+xlim([0,sim_t])
+ylim([-1,1])
+nexttile
+
 plot(t,multirotor.x(2, 1:iter),LineWidth=3.0)
 hold on
 plot(t,tra(2, 1:iter),LineWidth=2.0);
-set(gca,'FontSize', 15);
-legend('$y$','$y_d$','FontSize', 15,'Location', 'northeast', 'Interpreter', 'latex')
-ylabel('$y (m)$', 'Interpreter', 'latex')
+legend('$y$','$y_d$','FontSize', 25,'Location', 'northeast', 'Interpreter', 'latex')
+y = ylabel('$y (m)$', 'Interpreter', 'latex','FontSize', 32);
+set(y, 'Units', 'Normalized', 'Position', [-0.08, 0.42])
 xlim([0,sim_t])
-ylim([-5,1])
+ylim([-5,5])
 grid on
 nexttile
+
+plot(t_temp,ex_temp(2, :),LineWidth=3.0)
+grid on
+y = ylabel('$e_{x_2}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 32);
+set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.42])
+xlim([0,sim_t])
+ylim([-1,1])
+nexttile
+
 plot(t,multirotor.x(3, 1:iter),LineWidth=3.0)
 hold on
-set(gca,'FontSize', 15);
 plot(t,tra(3, 1:iter),LineWidth=2.0);
-legend('$z$','$z_d$','FontSize', 15,'Location', 'southeast', 'Interpreter', 'latex')
-xlabel('$Time(sec)$', 'Interpreter', 'latex')
-ylabel('$z (m)$', 'Interpreter', 'latex')
+legend('$z$','$z_d$','FontSize', 25,'Location', 'southeast', 'Interpreter', 'latex')
+xlabel('$Time(s)$', 'Interpreter', 'latex','FontSize', 25);
+y = ylabel('$z (m)$', 'Interpreter', 'latex','FontSize', 32);
+set(y, 'Units', 'Normalized', 'Position', [-0.08, 0.42])
 xlim([0,sim_t])
 grid on
-ylim([-1,2])
-
-
-
-t_temp = t(:,1:20:iter)
-ex_temp = multirotor.ex(:,1:20:iter)
-ev_temp = multirotor.ev(:,1:20:iter)
-eR_temp = multirotor.eR(:,1:20:iter)
-eW_temp = multirotor.eW(:,1:20:iter)
-
-
-figure;
-tiledlayout(3,1)
+ylim([-0.5,1.5])
 nexttile
-% Plot position tracking error
-plot(t_temp,ex_temp(1, :),LineWidth=3.0)
-set(gca,'FontSize', 15);
-title("Postion Errors(m)",'FontSize', 25,'Interpreter', 'latex');
-grid on
-y = ylabel('$e_{x_1}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 22);
-set(y, 'Units', 'Normalized', 'Position', [-0.07, 0.42])
-xlim([0,sim_t])
-ylim([-1,1])
-nexttile
-plot(t_temp,ex_temp(2, :),LineWidth=3.0)
-set(gca,'FontSize', 15);
-grid on
-y = ylabel('$e_{x_2}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 22);
-set(y, 'Units', 'Normalized', 'Position', [-0.07, 0.42])
-xlim([0,sim_t])
-ylim([-1,1])
-nexttile
+
 plot(t_temp,ex_temp(3, :),LineWidth=3.0)
-set(gca,'FontSize', 15);
 grid on
-y = ylabel('$e_{x_3}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 22);
-set(y, 'Units', 'Normalized', 'Position', [-0.07, 0.42])
+y = ylabel('$e_{x_3}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 32);
+xlabel('$Time(s)$', 'Interpreter', 'latex','FontSize', 25);
+set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.42])
 xlim([0,sim_t])
 ylim([-1,1])
+
+
+
 
 figure;
 tiledlayout(3,1)
 nexttile
 % Plot position tracking error
 plot(t_temp,ev_temp(1, :),LineWidth=3.0)
-set(gca,'FontSize', 15);
-title("Velocity Errors(m/s)",'FontSize', 25,'Interpreter', 'latex');
 grid on
-y = ylabel('$e_{v_1}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 22);
-set(y, 'Units', 'Normalized', 'Position', [-0.07, 0.42])
+set(gca,'FontSize', 20);
+title("Velocity Errors(m/s)",'FontSize', 32,'Interpreter', 'latex');
+y = ylabel('$e_{v_1}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 36);
+set(y, 'Units', 'Normalized', 'Position', [-0.08, 0.42])
 xlim([0,sim_t])
-ylim([-1,1])
+ylim([-2,2])
 nexttile
 plot(t_temp,ev_temp(2, :),LineWidth=3.0)
-set(gca,'FontSize', 15);
+set(gca,'FontSize', 18);
 grid on
-y = ylabel('$e_{v_2}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 22);
-set(y, 'Units', 'Normalized', 'Position', [-0.07, 0.42])
+set(gca,'FontSize', 20);
+y = ylabel('$e_{v_2}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 36);
+set(y, 'Units', 'Normalized', 'Position', [-0.08, 0.42])
 xlim([0,sim_t])
-ylim([-1,1])
+ylim([-2,2])
 nexttile
 plot(t_temp,ev_temp(3, :),LineWidth=3.0)
-set(gca,'FontSize', 15);
+set(gca,'FontSize', 18);
 grid on
-y = ylabel('$e_{v_3}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 22);
-set(y, 'Units', 'Normalized', 'Position', [-0.07, 0.42])
+set(gca,'FontSize', 20);
+y = ylabel('$e_{v_3}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 36);
+xlabel('Time (s)', 'Interpreter', 'latex','FontSize', 27);
+set(y, 'Units', 'Normalized', 'Position', [-0.08, 0.42])
 xlim([0,sim_t])
-ylim([-1,1])
+ylim([-2,2])
 
 
 
@@ -376,28 +386,26 @@ figure;
 tiledlayout(3,1)
 nexttile
 % Plot position tracking error
-plot(t_temp,ex_temp(1, :),LineWidth=3.0)
-set(gca,'FontSize', 15);
-title("Rotation Errors(rad)",'FontSize', 25,'Interpreter', 'latex');
+plot(t_temp,eR_temp(1, :),LineWidth=3.0)
+title("Rotation Errors(rad)",'FontSize', 28,'Interpreter', 'latex');
 grid on
-y = ylabel('$e_{R_1}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 22);
-set(y, 'Units', 'Normalized', 'Position', [-0.07, 0.42])
+y = ylabel('$e_{R_1}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 36);
+set(y, 'Units', 'Normalized', 'Position', [-0.08, 0.42])
 xlim([0,sim_t])
 ylim([-1,1])
 nexttile
-plot(t_temp,ex_temp(2, :),LineWidth=3.0)
-set(gca,'FontSize', 15);
+plot(t_temp,eR_temp(2, :),LineWidth=3.0)
 grid on
-y = ylabel('$e_{R_2}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 22);
-set(y, 'Units', 'Normalized', 'Position', [-0.07, 0.42])
+y = ylabel('$e_{R_2}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 36);
+set(y, 'Units', 'Normalized', 'Position', [-0.08, 0.42])
 xlim([0,sim_t])
 ylim([-1,1])
 nexttile
-plot(t_temp,ex_temp(3, :),LineWidth=3.0)
-set(gca,'FontSize', 15);
+plot(t_temp,eR_temp(3, :),LineWidth=3.0)
 grid on
-y = ylabel('$e_{R_3}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 22);
-set(y, 'Units', 'Normalized', 'Position', [-0.07, 0.42])
+y = ylabel('$e_{R_3}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 36);
+xlabel('$Time(s)$', 'Interpreter', 'latex','FontSize', 27);
+set(y, 'Units', 'Normalized', 'Position', [-0.08, 0.42])
 xlim([0,sim_t])
 ylim([-1,1])
 
@@ -408,31 +416,28 @@ figure;
 tiledlayout(3,1)
 nexttile
 % Plot position tracking error
-plot(t_temp,ex_temp(1, :),LineWidth=3.0)
-set(gca,'FontSize', 15);
-title("Angualr Velocity Errors (rad/s)",'FontSize', 25,'Interpreter', 'latex');
+plot(t_temp,eW_temp(1, :),LineWidth=3.0)
+title("Angular Velocity Errors (rad/s)",'FontSize', 28,'Interpreter', 'latex');
 grid on
-y = ylabel('$e_{\Omega_1}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 22);
+y = ylabel('$e_{\Omega_1}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 32);
 set(y, 'Units', 'Normalized', 'Position', [-0.07, 0.42])
 xlim([0,sim_t])
 ylim([-1,1])
 nexttile
 plot(t_temp,ex_temp(2, :),LineWidth=3.0)
-set(gca,'FontSize', 15);
 grid on
-y = ylabel('$e_{\Omega_2}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 22);
+y = ylabel('$e_{\Omega_2}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 32);
 set(y, 'Units', 'Normalized', 'Position', [-0.07, 0.42])
 xlim([0,sim_t])
 ylim([-1,1])
 nexttile
 plot(t_temp,ex_temp(3, :),LineWidth=3.0)
-set(gca,'FontSize', 15);
 grid on
-y = ylabel('$e_{\Omega_3}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 22);
+y = ylabel('$e_{\Omega_3}$', 'Interpreter', 'latex','Rotation',0,'FontSize', 32);
+xlabel('$Time(s)$', 'Interpreter', 'latex','FontSize', 27);
 set(y, 'Units', 'Normalized', 'Position', [-0.07, 0.42])
 xlim([0,sim_t])
 ylim([-1,1])
-
 
 
 
@@ -440,69 +445,62 @@ figure;
 tiledlayout(3,1)
 nexttile
 % Plot necessary
-theta_m_ground_truth = ones(1, length(t))*8.6;
-Cog_x = 0.046;
-Cog_y = 0.0115;
-plot(t,multirotor.mass_estimation(1,1:iter),t,theta_m_ground_truth(:,1:iter),LineWidth=2.0)
-set(gca,'FontSize', 18);
-title("Mass",'FontSize', 20);
-legend('Estimated Mass(kg)','Ground Truth(kg)','FontSize', 15)
+Cog_x = 0.048;
+Cog_y = 0.012;
+plot(t_temp,mass_temp(1,:),t_temp,ones(1,numel(t_temp))*8.6,LineWidth=3.0)
+title('Mass Estimation','FontSize',28,'Interpreter', 'latex')
+legend('$\hat{\theta}_m$','$\theta_m$','FontSize', 28,'Location', 'southeast', 'Interpreter', 'latex','NumColumns',2)
+y = ylabel('$\hat{\theta}_m (kg)$','Interpreter', 'latex','FontSize', 25);
+set(y, 'Units', 'Normalized', 'Position', [-0.05, 0.42])
 xlim([0,sim_t])
-ylim([5,11])
+ylim([7,10])
 nexttile
-plot(t, multirotor.inertia_estimation(1,1:iter),t,ones(1,iter)*Cog_x,LineWidth=2.0)
-set(gca,'FontSize', 18);
-title("CoG (x)",'FontSize', 20);
-legend('Estimated (m)','Ground Truth(m)','FontSize', 15)
+plot(t_temp, cogx_temp,t_temp,ones(1,numel(t_temp))*Cog_x,LineWidth=3.0)
+title('CoG Estimation','FontSize',28,'Interpreter', 'latex')
+legend('$\hat{\theta}_{CoG_x}$','$\theta_{CoG_x}$','FontSize', 28,'Location', 'southeast', 'Interpreter', 'latex','NumColumns',2)
+y = ylabel('$\hat{\theta}_{CoG_x} (cm)$','Interpreter', 'latex','FontSize', 25);
+set(y, 'Units', 'Normalized', 'Position', [-0.05, 0.42])
 xlim([0,sim_t])
 ylim([-0.1, 0.1])
 nexttile
-plot(t, multirotor.inertia_estimation(2,1:iter),t,ones(1,iter)*Cog_y,LineWidth=2.0)
-set(gca,'FontSize', 18);
-title("CoG (y)",'FontSize', 20);
-legend('Estimated (m)','Ground Truth(m)','FontSize', 15)
+plot(t_temp, cogy_temp,t_temp,ones(1,numel(t_temp))*Cog_y,LineWidth=3.0)
+legend('$\hat{\theta}_{CoG_y}$','$\theta_{CoG_y}$','FontSize', 28,'Location', 'southeast', 'Interpreter', 'latex','NumColumns',2)
+y = ylabel('$\hat{\theta}_{CoG_y} (cm)$','Interpreter', 'latex','FontSize', 25);
+set(y, 'Units', 'Normalized', 'Position', [-0.05, 0.42])
+xlabel('$Time(s)$', 'Interpreter', 'latex','FontSize', 27);
 xlim([0,sim_t])
-ylim([-0.05, 0.15])
+ylim([-0.08, 0.08])
 
 
 figure;
 tiledlayout(2,1)
 nexttile
-
 % Plot necessary
 theta_m_ground_truth = ones(1, length(t))*8.6;
-Cog_x = 0.047;
+Cog_x = 0.048;
 Cog_y = 0.012;
-plot(t,multirotor.mass_estimation(1,1:iter)-8.6,LineWidth=2.0)
-set(gca,'FontSize', 18);
-title("Estimated Error",'FontSize', 20);
-legend('Mass Estimated Error (kg)','FontSize', 15)
+plot(t_temp,mass_temp-8.61,LineWidth=3.0)
+title("Estimation Error",'FontSize', 30,'Interpreter', 'latex');
+legend('$||\tilde{\theta}_m||$','FontSize', 28,'Interpreter', 'latex');
+y = ylabel('$||\tilde{\theta}_m||(kg)$','Interpreter', 'latex','FontSize', 28);
+set(y, 'Units', 'Normalized', 'Position', [-0.05, 0.42])
 xlim([0,sim_t])
-ylim([-1,1.5])
+ylim([-0.6,1.2])
 
 nexttile
 temp_cog = ones(1,iter);
 for i = 1:1:iter
     temp_cog(1,i) = 1*sqrt(multirotor.inertia_estimation(2,i)*multirotor.inertia_estimation(2,i) + multirotor.inertia_estimation(1,i)*multirotor.inertia_estimation(1,i));
 end
-plot(t, (multirotor.inertia_estimation(1,1:iter)-Cog_x),t, multirotor.inertia_estimation(2,1:iter)-Cog_y,LineWidth=2.0)
-legend("CoG_x Estimated Error(m)","CoG_y Estimated Error(m)", 'FontSize', 15,'Location', 'southeast')
-set(gca,'FontSize', 18);
+plot(t_temp, -(cogx_temp-Cog_x)*100,t_temp, -(cogy_temp-Cog_y)*100,LineWidth=3.0)
+legend("$||\tilde{\theta}_{CoG_x}||$","$||\tilde{\theta}_{CoG_y}||$", 'FontSize', 28,'Location', 'northeast','Interpreter', 'latex')
+y = ylabel('$||\tilde{\theta}_{CoG}||(cm)$','Interpreter', 'latex','FontSize', 28);
+set(y, 'Units', 'Normalized', 'Position', [-0.05, 0.42])
+xlabel('$Time(s)$', 'Interpreter', 'latex','FontSize', 27);
 xlim([0,sim_t])
-ylim([-0.05, 0.03])
-
-time_animation = t(1:40:end);
-data_animation = multirotor.mass_estimation(1,1:40:iter);
-video_generator(time_animation,data_animation, 20, "mass.avi", 1, "mass (kg)", 8.6)
+ylim([-2, 6])
 
 
-figure;
-tiledlayout(1,1)
-nexttile
-% Plot position tracking error
-xlim([0,sim_t])
-% Plot position tracking error
-total_power = multirotor.force_moment(1,1:iter).^1.5;
 uav1_power = uav1.force_moment(1,1:1:iter).^1.5;
 uav2_power = uav2.force_moment(1,1:1:iter).^1.5;
 uav3_power = uav3.force_moment(1,1:1:iter).^1.5;
@@ -514,84 +512,23 @@ title("Power Consumption",'FontSize', 15, 'Interpreter', 'latex');
 
 xlim([0,sim_t])
 
-
-temp_t = t;
-
-time = t(1:40:iter);
-
-uav1_power = uav1.force_moment(1,1:40:iter).^1.5;
-uav2_power = uav2.force_moment(1,1:40:iter).^1.5;
-uav3_power = uav3.force_moment(1,1:40:iter).^1.5;
-uav4_power = uav4.force_moment(1,1:40:iter).^1.5;
-
-duration = 10;
-offset = 50;
-video_name = "even_power.avi";
-
-% Set up the figure
-figure('Position', [0 0 720 300]); % Set figure size explicitly
-
-axis tight manual;
-ax = gca;
-ax.NextPlot = 'replaceChildren';
-numFrames = numel(time);
-
-% Create the video writer object
-videoFile = video_name;
-video = VideoWriter(videoFile, 'Motion JPEG AVI');
-video.FrameRate = numFrames / duration;
-open(video);
-
-for frame = 1:numFrames
-    % Clear the figure
-    cla;
-    
-    plot(time(1:frame),uav1_power(1:frame),time(1:frame), uav2_power(1:frame), time(1:frame), uav3_power(1:frame),time(1:frame),  uav4_power(1:frame), LineWidth=2.0)
-    % Plot the data points up to the current frame
-    legend('UAV1','UAV2','UAV3','UAV4','FontSize',15, 'Interpreter', 'latex', 'Location', 'southeast')
-    xlabel('Time(s)');
-    ylabel('$Power \propto F^{1.5} $', 'Interpreter', 'latex');
-        set(gca,'FontSize', 18);
-
-    title("Power Consumption",'FontSize', 18);
-    grid on;
-    pause(duration/numFrames);
-    ylim([50, 130])
-    xlim([min(time), max(time)+50])
-    % Capture the frame and add it to the video
-    frameData = getframe(gcf);
-    writeVideo(video, frameData);
-end
-
-% Close the video writer object
-close(video);
-
-% Display a message indicating the completion and file location
-fprintf('Animation saved as %s\n', videoFile);
+uav1_power = uav1.force_moment(1,1:20:iter).^1.5;
+uav2_power = uav2.force_moment(1,1:20:iter).^1.5;
+uav3_power = uav3.force_moment(1,1:20:iter).^1.5;
+uav4_power = uav4.force_moment(1,1:20:iter).^1.5;
 
 
-
-uav1.energy = uav1.force_moment(1, 5000:iter)*uav1.force_moment(1, 5000:iter)';
-uav2.energy = uav2.force_moment(1, 5000:iter)*uav2.force_moment(1, 5000:iter)';
-uav3.energy = uav3.force_moment(1, 5000:iter)*uav3.force_moment(1, 5000:iter)';
-uav4.energy = uav4.force_moment(1, 5000:iter)*uav4.force_moment(1, 5000:iter)';
-
-uav1.energy = uav1.energy^1.5;
-uav2.energy = uav2.energy^1.5;
-uav3.energy = uav3.energy^1.5;
-uav4.energy = uav4.energy^1.5;
-
-all_energy = uav1.energy + uav2.energy + uav3.energy + uav4.energy;
-uav1.energy/all_energy
-uav2.energy/all_energy
-uav3.energy/all_energy
-uav4.energy/all_energy
+uav_power = [uav1_power; uav2_power; uav3_power ; uav4_power];
 
 
-if SELECT_FLIGHT_MODE == MODE_TRACKING
-    writematrix(multirotor.ex(:, 1:iter), file_title + "_position_error");
-    writematrix(multirotor.ev(:, 1:iter),file_title + '_velocity_error');
-    writematrix(multirotor.eR(:, 1:iter),file_title + '_rotation_error');
-    writematrix(multirotor.eW(:, 1:iter),file_title + '_angular_error');
-    writematrix(multirotor.energy(:, 1:iter),file_title + '_energy');
-end
+multirotor.tra = tra;
+multirotor.uav1_power = uav1_power;
+multirotor.uav2_power = uav2_power;
+multirotor.uav3_power = uav3_power;
+multirotor.uav4_power = uav4_power;
+multirotor.t = t_temp;
+multirotor_data = multirotor;
+pos = multirotor.x(:, 1:20:iter);
+save('optimized.mat', 'multirotor_data');
+
+
