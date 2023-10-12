@@ -61,7 +61,7 @@ rule CXX_SHARED_LIBRARY_LINKER__mav_planning_msgs_matlab
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /home/leeandy/cmake-install15/bin/cmake -S/home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src -B/home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build
+  command = /usr/local/bin/cmake -S/home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src -B/home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build
   description = Re-running CMake...
   generator = 1
 

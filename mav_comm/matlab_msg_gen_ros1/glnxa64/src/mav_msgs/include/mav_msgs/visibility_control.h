@@ -28,5 +28,5 @@
   #define MAV_MSGS_PUBLIC_TYPE
 #endif
 #endif  // MAV_MSGS__VISIBILITY_CONTROL_H_
-// Generated 02-Sep-2022 13:31:50
+// Generated 12-Oct-2023 15:57:49
 // Copyright 2019-2020 The MathWorks, Inc.

@@ -61,78 +61,78 @@ CMake Warning:
 
 -- Build files have been written to: /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build
 [1/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/RateThrust.msg geometry_msgs/Vector3:std_msgs/Header
-[2/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/Status.msg std_msgs/Header
-[3/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/TorqueThrust.msg geometry_msgs/Vector3:std_msgs/Header
+[2/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/FilteredSensorData.msg geometry_msgs/Vector3:std_msgs/Header
+[3/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/System_pose.msg geometry_msgs/Pose:geometry_msgs/Point:std_msgs/Header:geometry_msgs/Vector3:geometry_msgs/Quaternion
 [4/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/GpsWaypoint.msg std_msgs/Header
-[5/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/AttitudeThrust.msg geometry_msgs/Vector3:std_msgs/Header:geometry_msgs/Quaternion
-[6/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/FilteredSensorData.msg geometry_msgs/Vector3:std_msgs/Header
-[7/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/Actuators.msg std_msgs/Header
-[8/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/RollPitchYawrateThrust.msg geometry_msgs/Vector3:std_msgs/Header
-[9/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/srv/PlannerService.srv geometry_msgs/Transform:geometry_msgs/PoseStamped:geometry_msgs/Vector3:trajectory_msgs/MultiDOFJointTrajectoryPoint:geometry_msgs/Point:mav_planning_msgs/PolynomialTrajectory4D:geometry_msgs/Twist:std_msgs/Header:geometry_msgs/Pose:mav_planning_msgs/PolynomialSegment4D:trajectory_msgs/MultiDOFJointTrajectory:geometry_msgs/Quaternion
-[10/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/msg/PolynomialTrajectory4D.msg mav_planning_msgs/PolynomialSegment4D:std_msgs/Header
-[11/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/msg/Point2D.msg
-[12/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/msg/PolynomialSegment4D.msg std_msgs/Header
-[13/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/System_pose.msg geometry_msgs/Pose:geometry_msgs/Point:std_msgs/Header:geometry_msgs/Vector3:geometry_msgs/Quaternion
-[14/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/srv/PolygonService.srv mav_planning_msgs/PolygonWithHolesStamped:mav_planning_msgs/PolygonWithHoles:std_msgs/Header:mav_planning_msgs/Polygon2D:mav_planning_msgs/Point2D
-[15/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/msg/Polygon2D.msg mav_planning_msgs/Point2D
+[5/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/Status.msg std_msgs/Header
+[6/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/AttitudeThrust.msg geometry_msgs/Vector3:std_msgs/Header:geometry_msgs/Quaternion
+[7/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/RollPitchYawrateThrust.msg geometry_msgs/Vector3:std_msgs/Header
+[8/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/msg/Polygon2D.msg mav_planning_msgs/Point2D
+[9/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/TorqueThrust.msg geometry_msgs/Vector3:std_msgs/Header
+[10/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/msg/Point2D.msg
+[11/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/srv/PolygonService.srv mav_planning_msgs/PolygonWithHolesStamped:mav_planning_msgs/PolygonWithHoles:std_msgs/Header:mav_planning_msgs/Polygon2D:mav_planning_msgs/Point2D
+[12/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/srv/PlannerService.srv geometry_msgs/Transform:geometry_msgs/PoseStamped:geometry_msgs/Vector3:trajectory_msgs/MultiDOFJointTrajectoryPoint:geometry_msgs/Point:mav_planning_msgs/PolynomialTrajectory4D:geometry_msgs/Twist:std_msgs/Header:geometry_msgs/Pose:mav_planning_msgs/PolynomialSegment4D:trajectory_msgs/MultiDOFJointTrajectory:geometry_msgs/Quaternion
+[13/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/msg/PolynomialSegment4D.msg std_msgs/Header
+[14/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_msgs/msg/Actuators.msg std_msgs/Header
+[15/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/msg/PolynomialTrajectory4D.msg mav_planning_msgs/PolynomialSegment4D:std_msgs/Header
 [16/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/msg/PointCloudWithPose.msg geometry_msgs/Transform:geometry_msgs/Vector3:sensor_msgs/PointCloud2:std_msgs/Header:geometry_msgs/TransformStamped:sensor_msgs/PointField:geometry_msgs/Quaternion
 [17/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/msg/PolygonWithHolesStamped.msg mav_planning_msgs/PolygonWithHoles:std_msgs/Header:mav_planning_msgs/Polygon2D:mav_planning_msgs/Point2D
 [18/78] cd /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/mav_planning_msgs && /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/build/catkin_generated/env_cached.sh /home/leeandy/.matlab/R2021b/ros1/glnxa64/venv/bin/python2 /home/leeandy/MATLAB/sys/ros1/glnxa64/ros1/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py mav_planning_msgs /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/src/mav_planning_msgs/msg/PolygonWithHoles.msg mav_planning_msgs/Polygon2D:mav_planning_msgs/Point2D
-[19/78] Generating C++ code from mav_msgs/GpsWaypoint.msg
-[20/78] Generating C++ code from mav_msgs/Status.msg
-[21/78] Generating C++ code from mav_msgs/AttitudeThrust.msg
-[22/78] Generating Python from MSG mav_msgs/RateThrust
-[23/78] Generating Python from MSG mav_msgs/RollPitchYawrateThrust
-[24/78] Generating Python from MSG mav_msgs/GpsWaypoint
-[25/78] Generating Python from MSG mav_msgs/TorqueThrust
-[26/78] Generating C++ code from mav_msgs/System_pose.msg
+[19/78] Generating C++ code from mav_msgs/Status.msg
+[20/78] Generating Python from MSG mav_msgs/AttitudeThrust
+[21/78] Generating Python from MSG mav_msgs/FilteredSensorData
+[22/78] Generating Python from MSG mav_msgs/GpsWaypoint
+[23/78] Generating Python from MSG mav_msgs/TorqueThrust
+[24/78] Generating Python from MSG mav_msgs/RateThrust
+[25/78] Generating Python from MSG mav_msgs/RollPitchYawrateThrust
+[26/78] Generating C++ code from mav_msgs/RateThrust.msg
 [27/78] Generating Python from MSG mav_msgs/Status
-[28/78] Generating Python from MSG mav_msgs/Actuators
-[29/78] Generating Python from MSG mav_msgs/FilteredSensorData
-[30/78] Generating C++ code from mav_msgs/RateThrust.msg
-[31/78] Generating C++ code from mav_msgs/RollPitchYawrateThrust.msg
-[32/78] Generating Python from MSG mav_msgs/AttitudeThrust
-[33/78] Generating Python from MSG mav_msgs/System_pose
+[28/78] Generating Python from MSG mav_msgs/System_pose
+[29/78] Generating Python from MSG mav_msgs/Actuators
+[30/78] Generating C++ code from mav_msgs/GpsWaypoint.msg
+[31/78] Generating C++ code from mav_msgs/AttitudeThrust.msg
+[32/78] Generating C++ code from mav_msgs/System_pose.msg
+[33/78] Generating C++ code from mav_msgs/RollPitchYawrateThrust.msg
 [34/78] Generating C++ code from mav_msgs/TorqueThrust.msg
-[35/78] Generating Python from MSG mav_planning_msgs/Point2D
-[36/78] Generating Python from MSG mav_planning_msgs/PolynomialSegment4D
-[37/78] Generating Python from MSG mav_planning_msgs/PolygonWithHolesStamped
-[38/78] Generating C++ code from mav_msgs/FilteredSensorData.msg
-[39/78] Generating Python msg __init__.py for mav_msgs
-[40/78] Generating C++ code from mav_planning_msgs/PointCloudWithPose.msg
-[41/78] Generating C++ code from mav_planning_msgs/PolynomialTrajectory4D.msg
-[42/78] Generating C++ code from mav_planning_msgs/Point2D.msg
-[43/78] Generating C++ code from mav_msgs/Actuators.msg
-[44/78] Generating Python from MSG mav_planning_msgs/PolygonWithHoles
-[45/78] Generating C++ code from mav_planning_msgs/PolygonWithHolesStamped.msg
-[46/78] Generating C++ code from mav_planning_msgs/PolynomialSegment4D.msg
-[47/78] Generating C++ code from mav_planning_msgs/PolygonWithHoles.msg
+[35/78] Generating C++ code from mav_planning_msgs/PolygonWithHolesStamped.msg
+[36/78] Generating C++ code from mav_msgs/FilteredSensorData.msg
+[37/78] Generating Python from MSG mav_planning_msgs/PolynomialSegment4D
+[38/78] Generating Python msg __init__.py for mav_msgs
+[39/78] Generating Python from MSG mav_planning_msgs/PolygonWithHolesStamped
+[40/78] Generating C++ code from mav_msgs/Actuators.msg
+[41/78] Generating C++ code from mav_planning_msgs/PolynomialSegment4D.msg
+[42/78] Generating C++ code from mav_planning_msgs/PolygonWithHoles.msg
+[43/78] Generating C++ code from mav_planning_msgs/PointCloudWithPose.msg
+[44/78] Generating C++ code from mav_planning_msgs/PolynomialTrajectory4D.msg
+[45/78] Generating Python from MSG mav_planning_msgs/Point2D
+[46/78] Generating C++ code from mav_planning_msgs/Point2D.msg
+[47/78] Generating Python from MSG mav_planning_msgs/PolygonWithHoles
 [48/78] Generating C++ code from mav_planning_msgs/Polygon2D.msg
 [49/78] Generating C++ code from mav_planning_msgs/PlannerService.srv
-[50/78] Generating C++ code from mav_planning_msgs/PolygonService.srv
-[51/78] Generating Python from MSG mav_planning_msgs/PointCloudWithPose
-[52/78] Generating Python from MSG mav_planning_msgs/PolynomialTrajectory4D
-[53/78] Generating Python from MSG mav_planning_msgs/Polygon2D
-[54/78] Generating Python code from SRV mav_planning_msgs/PolygonService
-[55/78] Generating Python code from SRV mav_planning_msgs/PlannerService
+[50/78] Generating Python from MSG mav_planning_msgs/PointCloudWithPose
+[51/78] Generating Python from MSG mav_planning_msgs/PolynomialTrajectory4D
+[52/78] Generating Python from MSG mav_planning_msgs/Polygon2D
+[53/78] Generating Python code from SRV mav_planning_msgs/PolygonService
+[54/78] Generating Python code from SRV mav_planning_msgs/PlannerService
+[55/78] Generating C++ code from mav_planning_msgs/PolygonService.srv
 [56/78] Generating Python msg __init__.py for mav_planning_msgs
 [57/78] Generating Python srv __init__.py for mav_planning_msgs
-[58/78] Building CXX object mav_planning_msgs/CMakeFiles/mav_planning_msgs_matlab.dir/src/mav_planning_msgs_Point2D_message.cpp.o
-[59/78] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_GpsWaypoint_message.cpp.o
-[60/78] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_RateThrust_message.cpp.o
-[61/78] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_RollPitchYawrateThrust_message.cpp.o
-[62/78] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_TorqueThrust_message.cpp.o
-[63/78] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_Actuators_message.cpp.o
-[64/78] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_AttitudeThrust_message.cpp.o
-[65/78] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_System_pose_message.cpp.o
+[58/78] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_GpsWaypoint_message.cpp.o
+[59/78] Building CXX object mav_planning_msgs/CMakeFiles/mav_planning_msgs_matlab.dir/src/mav_planning_msgs_Point2D_message.cpp.o
+[60/78] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_TorqueThrust_message.cpp.o
+[61/78] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_RateThrust_message.cpp.o
+[62/78] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_Status_message.cpp.o
+[63/78] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_FilteredSensorData_message.cpp.o
+[64/78] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_System_pose_message.cpp.o
+[65/78] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_Actuators_message.cpp.o
 [66/78] Building CXX object mav_planning_msgs/CMakeFiles/mav_planning_msgs_matlab.dir/src/mav_planning_msgs_Polygon2D_message.cpp.o
-[67/78] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_FilteredSensorData_message.cpp.o
+[67/78] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_RollPitchYawrateThrust_message.cpp.o
 [68/78] Building CXX object mav_planning_msgs/CMakeFiles/mav_planning_msgs_matlab.dir/src/mav_planning_msgs_PolygonWithHolesStamped_message.cpp.o
-[69/78] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_Status_message.cpp.o
-[70/78] Building CXX object mav_planning_msgs/CMakeFiles/mav_planning_msgs_matlab.dir/src/mav_planning_msgs_PolynomialTrajectory4D_message.cpp.o
-[71/78] Building CXX object mav_planning_msgs/CMakeFiles/mav_planning_msgs_matlab.dir/src/mav_planning_msgs_PolygonWithHoles_message.cpp.o
-[72/78] Building CXX object mav_planning_msgs/CMakeFiles/mav_planning_msgs_matlab.dir/src/mav_planning_msgs_PolynomialSegment4D_message.cpp.o
-[73/78] Building CXX object mav_planning_msgs/CMakeFiles/mav_planning_msgs_matlab.dir/src/mav_planning_msgs_PointCloudWithPose_message.cpp.o
+[69/78] Building CXX object mav_planning_msgs/CMakeFiles/mav_planning_msgs_matlab.dir/src/mav_planning_msgs_PointCloudWithPose_message.cpp.o
+[70/78] Building CXX object mav_msgs/CMakeFiles/mav_msgs_matlab.dir/src/mav_msgs_AttitudeThrust_message.cpp.o
+[71/78] Building CXX object mav_planning_msgs/CMakeFiles/mav_planning_msgs_matlab.dir/src/mav_planning_msgs_PolynomialSegment4D_message.cpp.o
+[72/78] Building CXX object mav_planning_msgs/CMakeFiles/mav_planning_msgs_matlab.dir/src/mav_planning_msgs_PolygonWithHoles_message.cpp.o
+[73/78] Building CXX object mav_planning_msgs/CMakeFiles/mav_planning_msgs_matlab.dir/src/mav_planning_msgs_PolynomialTrajectory4D_message.cpp.o
 [74/78] Linking CXX shared library /home/leeandy/Desktop/ICL_controller/mav_comm/matlab_msg_gen_ros1/glnxa64/devel/lib/libmav_msgs_matlab.so
 [75/78] Building CXX object mav_planning_msgs/CMakeFiles/mav_planning_msgs_matlab.dir/src/mav_planning_msgs_PolygonService_service.cpp.o
 [76/78] Building CXX object mav_planning_msgs/CMakeFiles/mav_planning_msgs_matlab.dir/src/mav_planning_msgs_PlannerService_service.cpp.o
