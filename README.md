@@ -36,7 +36,7 @@ $ rosgenmsg("mav_comm")
 2. Result will be like this
 ![](https://hackmd.io/_uploads/Sy9uPQSWa.png =600x300)
 3. follow the steps 
-4. See if **mavros_msgs/System_pose** exist when run **$ rosmsg list**
+4. See if **mav_msgs/System_pose** exist when run **$ rosmsg list**
 ![](https://hackmd.io/_uploads/r1XJOQH-a.png =300x130)
 
 ## How to use
@@ -46,7 +46,7 @@ $ roslaunch rotors_gazebo firefly_transportation.launch (Even Formation)
 $ roslaunch rotors_gazebo optimal_transportation.launch (Optimized Formation)
 ```
 2. press the start button of the gazebo world after 15 seconds (To allow the UAV attach to the payload)
-3. If you run the Even formation world, change SELECT_POSITION_MODE in the matlab main.c to MODE_NORMAL to allow better gain 
+3. If you run the Even formation world, change SELECT_POSITION_MODE in the matlab main.m to MODE_NORMAL to allow better gain 
 ![](https://hackmd.io/_uploads/H1mEqQHZp.png =350x120)
 4. run MATLAB main.c
 
