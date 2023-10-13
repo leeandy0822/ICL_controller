@@ -4,6 +4,7 @@
 ## Prequisites
 1. Able to run rotor_simulator 
 2. Ubuntu version : 18.04 or 20.04 (If you are able to run rotor_simulator example, that will be fine.)
+3. The version of gazebo must >9.0
 4. MATLAB version : **2021b** (Haven't tested the version above)
 5. Cmake version > **3.15.5** 
 - How to check? 
